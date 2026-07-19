@@ -70,7 +70,7 @@ publik, tanpa database.
 - [x] RiskGuardVault (app #1) live + demo policy-block on-chain
 - [x] Reputation API live (port 8600)
 - [ ] Indexer streaming + payload store (aset moat v9)
-- [ ] Verify kontrak di BscScan (butuh API key)
+- [x] 6 kontrak verified di BscScan testnet (source terbaca publik)
 - [ ] ZK privacy layer, HumanID, $VDX — Phase 2+
 
 Dokumen desain: `/root/FORVERDIX/` (protocol v8, grand vision, arsitektur) +
