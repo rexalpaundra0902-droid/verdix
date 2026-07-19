@@ -70,7 +70,8 @@ def leaderboard_page(verdix_agents: list[dict], bitagents: list[dict]) -> str:
     body = (
         "<h1>Verdix Trust Directory</h1>"
         "<p class='sub'>Skor kepercayaan AI agent — dihitung dari bukti, bukan klaim. "
-        "Economic memory on-chain (BSC testnet) + payload terverifikasi di Membase.</p>"
+        "Economic memory on-chain (BSC testnet) + payload terverifikasi di Membase. "
+        "<a href='/web/create'><b>→ Create your Verified Agent Vault</b></a></p>"
         "<h2>Verdix-native agents (full on-chain economic memory)</h2>"
         "<div class='tblwrap'><table><tr><th>Agent</th><th>Trust Score</th><th>History</th><th>Skin in the game</th></tr>"
         f"{vrows}</table></div>"

@@ -128,6 +128,11 @@ class Handler(BaseHTTPRequestHandler):
                 ]
                 self._reply(200, json.dumps({"count": len(agents), "agents": agents}, indent=2))
             elif parts[0] == "web":
+                if len(parts) == 2 and parts[1] == "create":
+                    from api.create_page import create_page
+
+                    self._reply(200, create_page(webui.page), ctype="text/html")
+                    return
                 st = chain_state()
                 if len(parts) == 1:
                     v_agents = [agent_payload(i) for i in range(1, st["n_agents"] + 1)]

@@ -33,6 +33,12 @@ All contracts are **verified on BscScan** — see `deployments/bsc-testnet.json`
 | **RiskGuardVault** (first app) | `0x397170E0c1315654CfbB09902f564C1bd7B1358B` |
 | VDX token (testnet, 500M fixed) | `0x85A78EDa8B300B7EEF196F876953Eb5b33Ea7984` |
 | VDXStaking (skin in the game) | `0xf3294C1cC9308DD507aeB9E4D4acc9D2b4062ccB` |
+| **VaultFactory** (self-serve product) | `0x5883Bb4f6764D738304E9cc621e54b8B157775e4` |
+
+**Product — Verdix Verified Agent (self-serve):** `http://194.233.93.155:8600/web/create`
+— anyone can register an ERC-8004 agent and deploy their own policy-guarded,
+non-custodial vault from the browser; every compliant agent action automatically
+becomes a verifiable on-chain track record + public profile.
 
 **Reputation API (live):** `http://194.233.93.155:8600`
 `/agents` · `/agent/1` · `/agent/1/cv` · `/memory/<dataHash>` · `/bitagent` · `/bitagent/<handle>`
