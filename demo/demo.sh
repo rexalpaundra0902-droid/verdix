@@ -41,11 +41,11 @@ ORACLE=$(echo "$DEPLOY_LOG"   | awk '/StressOracle  :/ {print $NF}')
 echo "registry=$REGISTRY memory=$MEMORY router=$ROUTER escrow=$ESCROW oracle=$ORACLE"
 [[ -n "$REGISTRY" && -n "$MEMORY" && -n "$ORACLE" ]] || { echo "deploy gagal"; echo "$DEPLOY_LOG" | tail -20; exit 1; }
 
-echo "== 3. register agents =="
-cast send $REGISTRY "newAgent(string)" "smc-bot.verdix.agent" --private-key $BOT_PK --rpc-url $RPC >/dev/null
-cast send $REGISTRY "newAgent(string)" "reku.verdix.agent" --private-key $CLIENT_PK --rpc-url $RPC >/dev/null
+echo "== 3. register agents (ERC-8004: agent = NFT) =="
+cast send $REGISTRY "register(string)" "https://smc-bot.agents.verdix.io/agent.json" --private-key $BOT_PK --rpc-url $RPC >/dev/null
+cast send $REGISTRY "register(string)" "https://reku.agents.verdix.io/agent.json" --private-key $CLIENT_PK --rpc-url $RPC >/dev/null
 BOT_ID=1; CLIENT_ID=2
-echo "smc-bot.verdix.agent = agentId $BOT_ID, reku.verdix.agent = agentId $CLIENT_ID"
+echo "smc-bot = agentId $BOT_ID, reku = agentId $CLIENT_ID"
 
 echo "== 4. Tier 2: escrow task (client -> bot) =="
 DEADLINE=$(( $(cast block latest --field timestamp --rpc-url $RPC) + 3600 ))
@@ -78,14 +78,27 @@ while read -r VALUE POSITIVE HASH; do
 done < "$OUT/att_lines.txt"
 echo "$N_ATT closed trades di-attest sebagai observed behavior under stress"
 
-echo "== 7. export Economic Memory =="
-python3 demo/export_entries.py --rpc $RPC --memory $MEMORY > "$OUT/entries.json"
+echo "== 7. export Economic Memory + control changes =="
+python3 demo/export_entries.py --rpc $RPC --memory $MEMORY \
+  --registry $REGISTRY --rotations-out "$OUT/rotations.json" > "$OUT/entries.json"
 echo "$(python3 -c "import json;print(len(json.load(open('$OUT/entries.json'))))") entries -> $OUT/entries.json"
 
 echo "== 8. Trust Intelligence =="
-python3 intel/trustscore.py "$OUT/entries.json" --agent $BOT_ID --name "smc-bot.verdix.agent" | tee "$OUT/economic_cv_bot.md"
-echo
-python3 intel/trustscore.py "$OUT/entries.json" --agent $CLIENT_ID --name "reku.verdix.agent" --json
+python3 intel/trustscore.py "$OUT/entries.json" --agent $BOT_ID --name "smc-bot" \
+  --rotations "$OUT/rotations.json" | tee "$OUT/economic_cv_bot.md"
+SCORE_BEFORE=$(python3 intel/trustscore.py "$OUT/entries.json" --agent $BOT_ID \
+  --rotations "$OUT/rotations.json" --json | python3 -c "import json,sys;print(json.load(sys.stdin)['trustScore'])")
+
+echo "== 9. anti 'beli reputasi': NFT identity bot dijual =="
+BUYER_ADDR=0x90F79bf6EB2c4f870365E785982E1f101E93b906  # anvil #3
+BOT_ADDR=$(cast wallet address $BOT_PK)
+cast send $REGISTRY "transferFrom(address,address,uint256)" $BOT_ADDR $BUYER_ADDR $BOT_ID \
+  --private-key $BOT_PK --rpc-url $RPC >/dev/null
+python3 demo/export_entries.py --rpc $RPC --memory $MEMORY \
+  --registry $REGISTRY --rotations-out "$OUT/rotations.json" >/dev/null
+SCORE_AFTER=$(python3 intel/trustscore.py "$OUT/entries.json" --agent $BOT_ID \
+  --rotations "$OUT/rotations.json" --json | python3 -c "import json,sys;print(json.load(sys.stdin)['trustScore'])")
+echo "Trust Score bot: $SCORE_BEFORE -> $SCORE_AFTER setelah identity pindah tangan (history lama di-discount)"
 
 echo
 echo "== DONE — Verdix Phase 1 hidup di anvil =="

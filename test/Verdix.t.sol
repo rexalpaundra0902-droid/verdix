@@ -38,41 +38,93 @@ contract VerdixTest is Test {
         vm.stopPrank();
 
         vm.prank(alice);
-        aliceId = reg.newAgent("alice.agent");
+        aliceId = reg.register("https://alice.agents.verdix.io/agent.json");
         vm.prank(bob);
-        bobId = reg.newAgent("bob.agent");
+        bobId = reg.register("https://bob.agents.verdix.io/agent.json");
         vm.prank(mallory);
-        malloryId = reg.newAgent("mallory.agent");
+        malloryId = reg.register("https://mallory.agents.verdix.io/agent.json");
 
         vm.deal(alice, 100 ether);
         vm.deal(bob, 100 ether);
         vm.deal(mallory, 100 ether);
     }
 
-    // ---------- Registry ----------
+    // ---------- Registry (ERC-8004 surface) ----------
 
-    function test_RegisterAndResolve() public view {
+    function test_RegisterMintsNftAndSetsUri() public view {
         assertEq(reg.agentCount(), 3);
-        assertEq(reg.resolveByDomain("alice.agent").agentAddress, alice);
-        assertEq(reg.resolveByAddress(bob).agentId, bobId);
+        assertEq(reg.ownerOf(aliceId), alice);
+        assertEq(reg.controllerOf(bobId), bob);
+        assertEq(reg.tokenURI(aliceId), "https://alice.agents.verdix.io/agent.json");
     }
 
-    function test_DomainCollisionReverts() public {
-        address eve = makeAddr("eve");
-        vm.prank(eve);
-        vm.expectRevert(AgentRegistry.DomainTaken.selector);
-        reg.newAgent("alice.agent");
-    }
+    function test_MetadataSetGet() public {
+        vm.prank(alice);
+        reg.setMetadata(aliceId, "agentDomain", bytes("alice.agent"));
+        assertEq(reg.getMetadata(aliceId, "agentDomain"), bytes("alice.agent"));
 
-    function test_UpdateAgentOnlyOwner() public {
         vm.prank(mallory);
         vm.expectRevert(AgentRegistry.NotAgentOwner.selector);
-        reg.updateAgent(aliceId, "stolen.agent", mallory);
+        reg.setMetadata(aliceId, "agentDomain", bytes("pwned"));
+    }
+
+    function test_SetAgentUriOnlyOwner() public {
+        vm.prank(mallory);
+        vm.expectRevert(AgentRegistry.NotAgentOwner.selector);
+        reg.setAgentURI(aliceId, "https://stolen/agent.json");
+    }
+
+    function test_SetAgentWalletRequiresConsentSignature() public {
+        (address wallet, uint256 walletPk) = makeAddrAndKey("botwallet");
+        uint256 deadline = block.timestamp + 1 hours;
+        bytes32 digest = keccak256(
+            abi.encodePacked(
+                "\x19Ethereum Signed Message:\n32",
+                keccak256(abi.encode("VerdixAgentWallet", block.chainid, address(reg), bobId, wallet, deadline))
+            )
+        );
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(walletPk, digest);
+
+        // signature valid → wallet terpasang, kontrol pindah tercatat
+        vm.prank(bob);
+        reg.setAgentWallet(bobId, wallet, deadline, abi.encodePacked(r, s, v));
+        assertEq(reg.controllerOf(bobId), wallet);
+        assertEq(reg.controlChangesOf(bobId).length, 1);
+
+        // signature dari key lain → revert (tidak bisa menunjuk wallet orang)
+        (, uint256 otherPk) = makeAddrAndKey("other");
+        (v, r, s) = vm.sign(otherPk, digest);
+        vm.prank(bob);
+        vm.expectRevert(AgentRegistry.BadWalletSignature.selector);
+        reg.setAgentWallet(bobId, wallet, deadline, abi.encodePacked(r, s, v));
+    }
+
+    /// Lubang "beli reputasi": transfer NFT agent HARUS tercatat sebagai
+    /// perpindahan kontrol dan wallet operasional lama dicabut.
+    function test_TransferLogsControlChangeAndClearsWallet() public {
+        (address wallet, uint256 walletPk) = makeAddrAndKey("botwallet");
+        uint256 deadline = block.timestamp + 1 hours;
+        bytes32 digest = keccak256(
+            abi.encodePacked(
+                "\x19Ethereum Signed Message:\n32",
+                keccak256(abi.encode("VerdixAgentWallet", block.chainid, address(reg), bobId, wallet, deadline))
+            )
+        );
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(walletPk, digest);
+        vm.prank(bob);
+        reg.setAgentWallet(bobId, wallet, deadline, abi.encodePacked(r, s, v));
+
+        vm.prank(bob);
+        reg.transferFrom(bob, mallory, bobId);
+
+        // kontrol = owner baru, wallet lama TIDAK diwarisi
+        assertEq(reg.controllerOf(bobId), mallory);
+        // dua control change: wallet_set + ownership_transfer → scorer akan decay
+        assertEq(reg.controlChangesOf(bobId).length, 2);
     }
 
     // ---------- Economic Memory admission ----------
 
-    /// Attack: agent menulis memory tentang dirinya sendiri langsung → harus revert.
     function test_SelfReportCannotWriteMemory() public {
         vm.prank(mallory);
         vm.expectRevert(EconomicMemory.NotRecorder.selector);
@@ -81,7 +133,6 @@ contract VerdixTest is Test {
         );
     }
 
-    /// Attack: mallory deploy recorder palsu → tetap bukan recorder resmi.
     function test_UnauthorizedRecorderContractReverts() public {
         vm.startPrank(mallory);
         PaymentRouter fake = new PaymentRouter(reg, mem);
@@ -110,12 +161,11 @@ contract VerdixTest is Test {
         assertEq(e.tier, 1);
         assertEq(e.valueWei, 2 ether);
         assertEq(bob.balance, 102 ether);
-        // entry ke-index di dua sisi graph
         assertEq(mem.entryIdsOf(aliceId).length, 1);
         assertEq(mem.entryIdsOf(bobId).length, 1);
     }
 
-    function test_PayRequiresAgentKey() public {
+    function test_PayRequiresControllerKey() public {
         vm.prank(mallory);
         vm.expectRevert(PaymentRouter.NotAgentOwner.selector);
         router.pay{value: 1 ether}(aliceId, bobId, bytes32(0));
@@ -141,11 +191,9 @@ contract VerdixTest is Test {
         vm.prank(alice);
         escrow.confirm(taskId);
 
-        // worker: +payment, bond balik; client: -payment saja, bond balik
         assertEq(bob.balance, bobBefore + 10 ether);
         assertEq(alice.balance, aliceBefore - 10 ether);
 
-        // 2 entries: worker Class2/Tier2 Success + client Class1/Tier1 Success
         assertEq(mem.entryCount(), 2);
         EconomicMemory.Entry memory w = mem.getEntry(0);
         assertEq(w.agentId, bobId);
@@ -157,19 +205,15 @@ contract VerdixTest is Test {
         assertEq(c.tier, 1);
     }
 
-    /// Cost-of-forgery: farming satu entry Tier-2 mengunci payment+2 bond selama task,
-    /// dan payment beneran pindah tangan (fee-less di kontrak, tapi gas + capital lock
-    /// + counterparty-diversity screening membuat farming tidak scalable).
     function test_FarmingRequiresRealCapitalLock() public {
         uint128 payment = 10 ether;
         uint128 bond = escrow.bondOf(payment);
-        assertEq(bond, 1 ether); // 10%
+        assertEq(bond, 1 ether);
 
         vm.prank(mallory);
         uint256 taskId = escrow.createTask{value: payment + bond}(
             malloryId, bobId, payment, uint64(block.timestamp + 1 days), bytes32("farm")
         );
-        // sebelum worker mengunci bond, TIDAK ADA entry yang bisa lahir
         vm.prank(mallory);
         vm.expectRevert(TaskEscrow.BadStatus.selector);
         escrow.confirm(taskId);
@@ -178,7 +222,6 @@ contract VerdixTest is Test {
         escrow.acceptTask{value: bond}(taskId);
         vm.prank(mallory);
         escrow.confirm(taskId);
-        // farming "berhasil" tapi 10 ether pindah beneran ke counterparty
         assertEq(mem.entryCount(), 2);
     }
 
@@ -186,14 +229,13 @@ contract VerdixTest is Test {
 
     function test_DisputeWorkerWinsTakesClientBond() public {
         uint256 taskId = _openAndAccept(10 ether);
-        uint256 bobBefore = bob.balance; // bond 1 eth sudah terkunci
+        uint256 bobBefore = bob.balance;
 
         vm.prank(bob);
         escrow.dispute(taskId);
         vm.prank(arbitrator);
         escrow.rule(taskId, true);
 
-        // payment 10 + bond worker balik 1 + bond client 1 (slash)
         assertEq(bob.balance, bobBefore + 12 ether);
         EconomicMemory.Entry memory e = mem.getEntry(0);
         assertEq(e.tier, 3);
@@ -209,7 +251,6 @@ contract VerdixTest is Test {
         vm.prank(arbitrator);
         escrow.rule(taskId, false);
 
-        // client dapat balik payment 10 + bond 1 + bond worker 1
         assertEq(alice.balance, aliceBefore + 12 ether);
         assertEq(uint8(mem.getEntry(0).outcome), uint8(EconomicMemory.Outcome.DisputedAgainst));
     }
@@ -264,6 +305,40 @@ contract VerdixTest is Test {
         assertEq(e.tier, 4);
         assertEq(uint8(e.actionClass), uint8(EconomicMemory.ActionClass.Stress));
         assertEq(uint8(e.outcome), uint8(EconomicMemory.Outcome.Failed));
+    }
+
+    // ---------- Escrow tetap jalan dengan operational wallet ----------
+
+    function test_EscrowWithOperationalWallet() public {
+        (address wallet, uint256 walletPk) = makeAddrAndKey("botwallet");
+        vm.deal(wallet, 10 ether);
+        uint256 deadline = block.timestamp + 1 hours;
+        bytes32 digest = keccak256(
+            abi.encodePacked(
+                "\x19Ethereum Signed Message:\n32",
+                keccak256(abi.encode("VerdixAgentWallet", block.chainid, address(reg), bobId, wallet, deadline))
+            )
+        );
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(walletPk, digest);
+        vm.prank(bob);
+        reg.setAgentWallet(bobId, wallet, deadline, abi.encodePacked(r, s, v));
+
+        uint128 payment = 5 ether;
+        uint128 bond = escrow.bondOf(payment);
+        vm.prank(alice);
+        uint256 taskId = escrow.createTask{value: payment + bond}(
+            aliceId, bobId, payment, uint64(block.timestamp + 1 days), bytes32("spec")
+        );
+        // owner asli (bob) BUKAN controller lagi → tidak bisa accept
+        vm.prank(bob);
+        vm.expectRevert(TaskEscrow.NotAgentOwner.selector);
+        escrow.acceptTask{value: bond}(taskId);
+        // wallet operasional yang accept + menerima payout
+        vm.prank(wallet);
+        escrow.acceptTask{value: bond}(taskId);
+        vm.prank(alice);
+        escrow.confirm(taskId);
+        assertEq(wallet.balance, 10 ether - bond + bond + payment);
     }
 
     // ---------- Fuzz ----------

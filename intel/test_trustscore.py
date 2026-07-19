@@ -99,6 +99,34 @@ class TrustScoreTest(unittest.TestCase):
         self.assertEqual(c.n_subject, 0)
         self.assertEqual(c.distinct_counterparties, 1)
 
+    def test_bought_identity_loses_history(self):
+        # agent dengan history bagus 6 counterparty...
+        history = [entry(1, cp, 2, 2, 5, 0, days_ago=cp + 10, eid=cp) for cp in range(2, 8)]
+        clean = compute(history, 1, now=NOW).score()
+        # ...lalu NFT identity-nya dijual (control change SESUDAH semua entry)
+        sold = compute(history, 1, now=NOW, control_changes=[NOW - 5 * DAY]).score()
+        self.assertLess(sold, clean * 0.70)  # skor rontok signifikan
+        self.assertLess(sold, clean - 20.0)
+        # dua kali pindah tangan → makin rontok
+        sold2 = compute(
+            history, 1, now=NOW, control_changes=[NOW - 6 * DAY, NOW - 5 * DAY]
+        ).score()
+        self.assertLess(sold2, sold)
+
+    def test_entries_after_control_change_count_fully(self):
+        rot = NOW - 30 * DAY
+        before = [entry(1, cp, 2, 2, 5, 0, days_ago=60, eid=cp) for cp in range(2, 5)]
+        after = [entry(1, cp, 2, 2, 5, 0, days_ago=5, eid=10 + cp) for cp in range(5, 8)]
+        c = compute(before + after, 1, now=NOW, control_changes=[rot])
+        # entry sesudah rotasi full weight; history lama jadi ketidakpastian —
+        # lebih baik daripada identity yang SEMUA history-nya pra-rotasi,
+        # tapi tetap di bawah fresh agent tanpa rotasi (anti "beli reputasi")
+        all_old = compute(before, 1, now=NOW, control_changes=[rot])
+        self.assertGreater(c.success_rate, 0.75)
+        self.assertGreater(c.success_rate, all_old.success_rate)
+        self.assertLess(c.success_rate, 1.0)
+        self.assertEqual(c.n_control_changes, 1)
+
     def test_economic_cv_renders(self):
         entries = [entry(1, 2, 1, 1, 5, 0, days_ago=1, eid=1)]
         cv = economic_cv(entries, 1, name="smc-bot", now=NOW)

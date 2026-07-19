@@ -90,9 +90,9 @@ contract TaskEscrow {
         payable
         returns (uint256 taskId)
     {
-        if (registry.getAgent(clientId).agentAddress != msg.sender) revert NotAgentOwner();
+        if (!registry.isController(clientId, msg.sender)) revert NotAgentOwner();
         if (clientId == workerId) revert SelfDelegation();
-        registry.getAgent(workerId); // revert kalau worker tidak terdaftar
+        registry.controllerOf(workerId); // revert kalau worker tidak terdaftar
         if (deadline <= block.timestamp) revert BadDeadline();
         if (payment == 0) revert BadValue();
         uint128 clientBond = bondOf(payment);
@@ -116,7 +116,7 @@ contract TaskEscrow {
     function acceptTask(uint256 taskId) external payable {
         Task storage t = tasks[taskId];
         if (t.status != Status.Open) revert BadStatus();
-        if (registry.getAgent(t.workerId).agentAddress != msg.sender) revert NotAgentOwner();
+        if (!registry.isController(t.workerId, msg.sender)) revert NotAgentOwner();
         if (block.timestamp >= t.deadline) revert DeadlinePassed();
         if (msg.value != t.workerBond) revert BadValue();
         t.status = Status.Accepted;
@@ -127,10 +127,10 @@ contract TaskEscrow {
     function confirm(uint256 taskId) external {
         Task storage t = tasks[taskId];
         if (t.status != Status.Accepted) revert BadStatus();
-        if (registry.getAgent(t.clientId).agentAddress != msg.sender) revert NotAgentOwner();
+        if (!registry.isController(t.clientId, msg.sender)) revert NotAgentOwner();
         t.status = Status.Confirmed;
 
-        _send(registry.getAgent(t.workerId).agentAddress, uint256(t.payment) + t.workerBond);
+        _send(registry.controllerOf(t.workerId), uint256(t.payment) + t.workerBond);
         _send(msg.sender, t.clientBond);
 
         memoryLog.record(
@@ -159,8 +159,8 @@ contract TaskEscrow {
         Task storage t = tasks[taskId];
         if (t.status != Status.Accepted) revert BadStatus();
         uint256 byAgent;
-        if (registry.getAgent(t.clientId).agentAddress == msg.sender) byAgent = t.clientId;
-        else if (registry.getAgent(t.workerId).agentAddress == msg.sender) byAgent = t.workerId;
+        if (registry.isController(t.clientId, msg.sender)) byAgent = t.clientId;
+        else if (registry.isController(t.workerId, msg.sender)) byAgent = t.workerId;
         else revert NotAgentOwner();
         t.status = Status.Disputed;
         emit TaskDisputed(taskId, byAgent);
@@ -173,8 +173,8 @@ contract TaskEscrow {
         if (t.status != Status.Disputed) revert BadStatus();
         t.status = Status.Resolved;
 
-        address clientAddr = registry.getAgent(t.clientId).agentAddress;
-        address workerAddr = registry.getAgent(t.workerId).agentAddress;
+        address clientAddr = registry.controllerOf(t.clientId);
+        address workerAddr = registry.controllerOf(t.workerId);
 
         if (workerWins) {
             _send(workerAddr, uint256(t.payment) + t.workerBond + t.clientBond);
@@ -198,7 +198,7 @@ contract TaskEscrow {
     function expire(uint256 taskId) external {
         Task storage t = tasks[taskId];
         if (block.timestamp < t.deadline) revert DeadlineNotPassed();
-        address clientAddr = registry.getAgent(t.clientId).agentAddress;
+        address clientAddr = registry.controllerOf(t.clientId);
 
         if (t.status == Status.Open) {
             t.status = Status.Expired;
@@ -225,7 +225,7 @@ contract TaskEscrow {
     function cancel(uint256 taskId) external {
         Task storage t = tasks[taskId];
         if (t.status != Status.Open) revert BadStatus();
-        if (registry.getAgent(t.clientId).agentAddress != msg.sender) revert NotAgentOwner();
+        if (!registry.isController(t.clientId, msg.sender)) revert NotAgentOwner();
         t.status = Status.Cancelled;
         _send(msg.sender, uint256(t.payment) + t.clientBond);
         emit TaskCancelled(taskId);

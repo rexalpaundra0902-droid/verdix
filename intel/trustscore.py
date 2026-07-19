@@ -54,6 +54,16 @@ W_DISPUTE = 0.15
 RECENCY_HALF_LIFE_DAYS = 90.0
 VOLUME_SATURATION_ETH = 1000.0  # volume yang dianggap "penuh" di komponen volume
 
+# Identity ERC-8004 = NFT transferable → reputasi bisa DIBELI. Mitigasi:
+# history yang diperoleh SEBELUM perpindahan kontrol (ownership transfer /
+# ganti operational wallet) hanya dibawa sebagian — skor mengikuti perilaku
+# controller sekarang, bukan token-nya.
+CONTROL_CHANGE_CARRYOVER = 0.4  # multiplier per perpindahan kontrol sesudah entry
+# Evidence yang hilang karena perpindahan kontrol tidak dibuang begitu saja —
+# ia berubah jadi KETIDAKPASTIAN: separuhnya masuk penyebut success rate sebagai
+# "outcome tak diketahui". Ini yang bikin identity hasil beli < identity fresh.
+CONTROL_CHANGE_UNCERTAINTY = 0.5
+
 OUTCOME_SUCCESS = 0
 OUTCOME_FAILED = 1
 OUTCOME_DISPUTED_FOR = 2
@@ -74,6 +84,7 @@ class Components:
     volume_eth: float
     distinct_counterparties: int
     disputes_against: int
+    n_control_changes: int
 
     def score(self) -> float:
         raw = (
@@ -95,8 +106,21 @@ def _is_success(outcome: int) -> bool:
     return outcome in (OUTCOME_SUCCESS, OUTCOME_DISPUTED_FOR)
 
 
-def compute(entries: list[dict], agent_id: int, now: int | None = None) -> Components:
+def _carryover(ts: int, control_changes: list[int]) -> float:
+    """Multiplier bukti untuk entry di timestamp ts: tiap perpindahan kontrol
+    SESUDAH entry memotong bobotnya (history itu milik controller lama)."""
+    n_after = sum(1 for c in control_changes if c > ts)
+    return CONTROL_CHANGE_CARRYOVER**n_after
+
+
+def compute(
+    entries: list[dict],
+    agent_id: int,
+    now: int | None = None,
+    control_changes: list[int] | None = None,
+) -> Components:
     now = int(now if now is not None else time.time())
+    control_changes = [int(c) for c in (control_changes or [])]
     subject = [e for e in entries if int(e["agentId"]) == agent_id]
     graph = [
         e
@@ -104,17 +128,26 @@ def compute(entries: list[dict], agent_id: int, now: int | None = None) -> Compo
         if int(e["agentId"]) == agent_id or int(e.get("counterpartyId", 0)) == agent_id
     ]
 
-    # --- success_rate: tier- & recency-weighted, subjek saja ---
-    num = den = 0.0
+    # --- success_rate: tier-, recency- & carryover-weighted, subjek saja ---
+    num = den = den_raw = 0.0
     for e in subject:
-        w = TIER_WEIGHT[int(e["tier"])] * _recency_weight(int(e["timestamp"]), now)
+        w_raw = TIER_WEIGHT[int(e["tier"])] * _recency_weight(int(e["timestamp"]), now)
+        w = w_raw * _carryover(int(e["timestamp"]), control_changes)
+        den_raw += w_raw
         den += w
         if _is_success(int(e["outcome"])):
             num += w
-    success_rate = (num / den) if den > 0 else 0.0
+    # evidence yang gugur karena kontrol pindah → sebagian jadi "unknown" di penyebut
+    lost = den_raw - den
+    success_rate = (num / (den + CONTROL_CHANGE_UNCERTAINTY * lost)) if den > 0 else 0.0
+    # fraksi evidence yang selamat — dipakai men-discount komponen graph
+    evidence_f = (den / den_raw) if den_raw > 0 else 1.0
 
-    # --- economic_volume: log-scaled, seluruh keterlibatan graph ---
-    volume_eth = sum(int(e["valueWei"]) for e in graph) / WEI
+    # --- economic_volume: log-scaled, carryover-adjusted ---
+    volume_eth = (
+        sum(int(e["valueWei"]) * _carryover(int(e["timestamp"]), control_changes) for e in graph)
+        / WEI
+    )
     economic_volume = min(
         1.0, math.log10(1.0 + volume_eth) / math.log10(1.0 + VOLUME_SATURATION_ETH)
     )
@@ -128,7 +161,7 @@ def compute(entries: list[dict], agent_id: int, now: int | None = None) -> Compo
             else int(e["agentId"])
         )
         if cp and cp != agent_id:
-            per_cp[cp] += 1.0
+            per_cp[cp] += _carryover(int(e["timestamp"]), control_changes)
     total = sum(per_cp.values())
     if total > 0:
         hhi = sum((c / total) ** 2 for c in per_cp.values())
@@ -136,6 +169,8 @@ def compute(entries: list[dict], agent_id: int, now: int | None = None) -> Compo
         counterparty_diversity = 1.0 - hhi
         # saturasi: dengan k counterparty seimbang, 1-HHI = 1-1/k; normalisasi ke target k=10
         counterparty_diversity = min(1.0, counterparty_diversity / (1.0 - 1.0 / 10.0))
+        # relasi graph dibangun controller lama → ikut ter-discount saat kontrol pindah
+        counterparty_diversity *= evidence_f
     else:
         counterparty_diversity = 0.0
 
@@ -144,7 +179,9 @@ def compute(entries: list[dict], agent_id: int, now: int | None = None) -> Compo
     if stress:
         s_num = s_den = 0.0
         for e in stress:
-            w = _recency_weight(int(e["timestamp"]), now)
+            w = _recency_weight(int(e["timestamp"]), now) * _carryover(
+                int(e["timestamp"]), control_changes
+            )
             s_den += w
             if _is_success(int(e["outcome"])):
                 s_num += w
@@ -180,13 +217,18 @@ def compute(entries: list[dict], agent_id: int, now: int | None = None) -> Compo
         volume_eth=volume_eth,
         distinct_counterparties=len(per_cp),
         disputes_against=disputes_against,
+        n_control_changes=len(control_changes),
     )
 
 
 def economic_cv(
-    entries: list[dict], agent_id: int, name: str = "", now: int | None = None
+    entries: list[dict],
+    agent_id: int,
+    name: str = "",
+    now: int | None = None,
+    control_changes: list[int] | None = None,
 ) -> str:
-    c = compute(entries, agent_id, now=now)
+    c = compute(entries, agent_id, now=now, control_changes=control_changes)
     label = name or f"Agent #{agent_id}"
     lines = [
         f"# Economic CV — {label}",
@@ -198,6 +240,8 @@ def economic_cv(
         f"- Volume terverifikasi: {c.volume_eth:.4f} ETH",
         f"- Counterparty unik: {c.distinct_counterparties}",
         f"- Kalah dispute: {c.disputes_against}",
+        f"- Perpindahan kontrol identity: {c.n_control_changes}"
+        + (" ⚠ history lama di-discount" if c.n_control_changes else ""),
         "",
         "| Komponen | Nilai | Bobot |",
         "|---|---|---|",
@@ -220,6 +264,11 @@ def main() -> int:
     ap.add_argument("--name", default="", help="nama tampilan agent")
     ap.add_argument("--now", type=int, default=None, help="override waktu skor (unix)")
     ap.add_argument("--json", action="store_true", help="output JSON, bukan Economic CV")
+    ap.add_argument(
+        "--rotations",
+        default=None,
+        help="file JSON {agentId: [timestamp perpindahan kontrol, ...]} dari registry",
+    )
     args = ap.parse_args()
 
     raw = (
@@ -228,12 +277,19 @@ def main() -> int:
         else open(args.entries_json).read()
     )
     entries = json.loads(raw)
+    rotations: list[int] = []
+    if args.rotations:
+        rotations = json.load(open(args.rotations)).get(str(args.agent), [])
 
     if args.json:
-        c = compute(entries, args.agent, now=args.now)
+        c = compute(entries, args.agent, now=args.now, control_changes=rotations)
         print(json.dumps({"agentId": args.agent, "trustScore": c.score(), **c.__dict__}, indent=2))
     else:
-        print(economic_cv(entries, args.agent, name=args.name, now=args.now))
+        print(
+            economic_cv(
+                entries, args.agent, name=args.name, now=args.now, control_changes=rotations
+            )
+        )
     return 0
 
 

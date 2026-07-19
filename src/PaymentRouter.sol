@@ -24,13 +24,13 @@ contract PaymentRouter {
         memoryLog = _memoryLog;
     }
 
-    /// @notice Bayar agent lain. msg.sender harus agentAddress dari fromAgentId.
+    /// @notice Bayar agent lain. msg.sender harus controller dari fromAgentId.
     function pay(uint256 fromAgentId, uint256 toAgentId, bytes32 memo) external payable {
-        if (registry.getAgent(fromAgentId).agentAddress != msg.sender) revert NotAgentOwner();
+        if (!registry.isController(fromAgentId, msg.sender)) revert NotAgentOwner();
         if (fromAgentId == toAgentId) revert SelfPayment();
         if (msg.value == 0) revert ZeroAmount();
 
-        address to = registry.getAgent(toAgentId).agentAddress;
+        address to = registry.controllerOf(toAgentId);
         (bool ok,) = to.call{value: msg.value}("");
         if (!ok) revert TransferFailed();
 

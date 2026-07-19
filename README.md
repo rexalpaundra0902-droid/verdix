@@ -9,7 +9,11 @@ verification tiers + trust intelligence, dogfooded oleh trading bot sendiri.
 ## Arsitektur
 
 ```
-Layer 0  AgentRegistry    — identity ERC-8004-style (agentId, domain, address)
+Layer 0  AgentRegistry    — ERC-8004 draft surface: agent = NFT ERC-721,
+                            register(agentURI), metadata k/v, operational wallet
+                            (signature consent). SETIAP perpindahan kontrol
+                            (transfer/wallet) tercatat → scorer men-discount
+                            history lama (anti "beli reputasi")
 Layer 2  EconomicMemory   — CORE ASSET: append-only log, HANYA recorder resmi
                             yang bisa menulis (self-report tidak mungkin masuk,
                             by construction)
@@ -33,8 +37,8 @@ yang didapat.
 ## Jalankan
 
 ```bash
-forge test                      # 19 test, termasuk skenario attack + fuzz
-python3 -m unittest intel.test_trustscore -v   # 9 test scorer
+forge test                      # 22 test, termasuk skenario attack + fuzz
+python3 -m unittest intel.test_trustscore -v   # 11 test scorer
 bash demo/demo.sh [journal.db]  # end-to-end di anvil lokal:
                                 # deploy → register 2 agent → escrow task →
                                 # payment → dogfood trade bot SMC (read-only)
@@ -50,4 +54,6 @@ bash demo/demo.sh [journal.db]  # end-to-end di anvil lokal:
 - [ ] Indexer streaming (eth_getLogs) + API
 - [ ] ZK privacy layer, HumanID, $VDX — Phase 2+
 
-Dokumen desain: `/root/FORVERDIX/` (protocol v8, grand vision, arsitektur).
+Dokumen desain: `/root/FORVERDIX/` (protocol v8, grand vision, arsitektur) +
+`docs/MOAT_V9_ADDENDUM.md` (reposisi moat: on-chain = bukti publik, payload
+off-chain + graph intelligence = aset proprietary; mitigasi identity transferable).

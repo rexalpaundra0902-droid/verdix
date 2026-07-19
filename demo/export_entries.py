@@ -13,6 +13,8 @@ import urllib.request
 
 SEL_ENTRY_COUNT = "0x0cbb0f83"  # entryCount()
 SEL_GET_ENTRY = "0x2cb01ddb"  # getEntry(uint64)
+SEL_AGENT_COUNT = "0xb7dc1284"  # agentCount()
+SEL_CONTROL_CHANGES = "0x2f5243f0"  # controlChangesOf(uint256)
 
 
 def eth_call(rpc: str, to: str, data: str) -> str:
@@ -69,11 +71,28 @@ def get_entries(rpc: str, memory_addr: str) -> list[dict]:
     return entries
 
 
+def get_rotations(rpc: str, registry_addr: str) -> dict[str, list[int]]:
+    """controlChangesOf(agentId) untuk semua agent → {agentId: [timestamps]}."""
+    n = int(eth_call(rpc, registry_addr, SEL_AGENT_COUNT), 16)
+    out: dict[str, list[int]] = {}
+    for agent_id in range(1, n + 1):
+        raw = eth_call(rpc, registry_addr, SEL_CONTROL_CHANGES + format(agent_id, "064x"))
+        # dynamic uint64[]: word0 offset, word1 length, lalu elemen
+        length = word(raw, 1)
+        out[str(agent_id)] = [word(raw, 2 + i) for i in range(length)]
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--rpc", default="http://127.0.0.1:8547")
     ap.add_argument("--memory", required=True, help="alamat kontrak EconomicMemory")
+    ap.add_argument("--registry", default=None, help="alamat AgentRegistry (utk export rotations)")
+    ap.add_argument("--rotations-out", default=None, help="tulis rotations JSON ke file ini")
     args = ap.parse_args()
+    if args.registry and args.rotations_out:
+        with open(args.rotations_out, "w") as f:
+            json.dump(get_rotations(args.rpc, args.registry), f, indent=2)
     print(json.dumps(get_entries(args.rpc, args.memory), indent=2))
     return 0
 
