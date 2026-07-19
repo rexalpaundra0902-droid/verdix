@@ -45,13 +45,32 @@ bash demo/demo.sh [journal.db]  # end-to-end di anvil lokal:
                                 # → export → Trust Score + Economic CV
 ```
 
+## Live di BSC Testnet (chain 97)
+
+Alamat kontrak + agent: `deployments/bsc-testnet.json`.
+Explorer: https://testnet.bscscan.com — Economic Memory berisi entries nyata
+(escrow, payment, dogfood 8 trade bot SMC).
+
+**RiskGuardVault** (`src/RiskGuardVault.sol`) — aplikasi pertama di atas Verdix:
+vault manusia dikelola AI agent dengan konstitusi risk on-chain (maxTx, daily
+cap, cooldown, whitelist venue, halt floor). Demo on-chain: aksi compliant =
+status 1 + entry di Economic Memory; aksi melanggar = mined **Fail** — policy
+menolak, bukan prompt yang memohon. Tx hash di `deployments/bsc-testnet.json`.
+
+**Reputation API** (`api/server.py`, systemd `verdix-api`, port 8600) —
+`GET /agents`, `/agent/<id>`, `/agent/<id>/cv`; dihitung on-the-fly dari chain
+publik, tanpa database.
+
 ## Status
 
-- [x] Kontrak Phase 1 + test (lokal, anvil)
-- [x] Trust Intelligence v0 (bobot = starting point, dituning via dogfooding)
+- [x] Kontrak Phase 1 + test (34 forge test)
+- [x] Trust Intelligence v0 + anti-beli-reputasi (11 unit test)
 - [x] Dogfood: closed trades bot SMC → Class 4 attestations
-- [ ] Deploy testnet (BSC/Base — nunggu wallet, Gate 1 w3lab)
-- [ ] Indexer streaming (eth_getLogs) + API
+- [x] Deploy BSC testnet + data on-chain nyata
+- [x] RiskGuardVault (app #1) live + demo policy-block on-chain
+- [x] Reputation API live (port 8600)
+- [ ] Indexer streaming + payload store (aset moat v9)
+- [ ] Verify kontrak di BscScan (butuh API key)
 - [ ] ZK privacy layer, HumanID, $VDX — Phase 2+
 
 Dokumen desain: `/root/FORVERDIX/` (protocol v8, grand vision, arsitektur) +

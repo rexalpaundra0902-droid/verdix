@@ -8,10 +8,21 @@
     "EconomicMemory": "0x8692F4Bbc7422139D4335AF01734bEbe99516900",
     "PaymentRouter": "0x21Ec45c09BEFAbA63539fd1dCfA0ad2CeDcB8662",
     "TaskEscrow": "0x1A51D8062f2C022bA12f46851411d87a47dF36D8",
-    "StressOracle": "0xb67b938F6e0592722aF87bc0e48A0DF7684FA6FD"
+    "StressOracle": "0xb67b938F6e0592722aF87bc0e48A0DF7684FA6FD",
+    "RiskGuardVault": "0x397170E0c1315654CfbB09902f564C1bd7B1358B"
   },
   "agents": {
-    "1": {"name": "smc-bot", "address": "0xf735f6C3844b8BbB34B25630f8De5a54a6cd4b86"},
-    "2": {"name": "reku", "address": "0x97a64CC90dACd93F83D6347be4719a585FbB9EA9"}
+    "1": {
+      "name": "smc-bot",
+      "address": "0xf735f6C3844b8BbB34B25630f8De5a54a6cd4b86"
+    },
+    "2": {
+      "name": "reku",
+      "address": "0x97a64CC90dACd93F83D6347be4719a585FbB9EA9"
+    }
+  },
+  "demo": {
+    "compliantTx": "0x5ab22b5db269b3b2dd3679fa2af69404d6d0ed1c684f8df79d96a39b532fbc2f",
+    "blockedTx": "0xcb7e5dd10be44df82dfec34f7c49f2fd30be0cd3c57b31b2b6e0a908d34e567d"
   }
 }
