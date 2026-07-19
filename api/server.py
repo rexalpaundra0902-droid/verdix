@@ -140,6 +140,10 @@ class Handler(BaseHTTPRequestHandler):
                         indent=2,
                     ),
                 )
+            elif parts == ["entries"]:
+                st = chain_state()
+                recent = st["entries"][-20:][::-1]
+                self._reply(200, json.dumps({"count": len(st["entries"]), "recent": recent}, indent=2))
             elif parts == ["agents"]:
                 st = chain_state()
                 agents = [
