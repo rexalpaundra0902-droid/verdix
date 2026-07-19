@@ -548,6 +548,19 @@
   .copyable{cursor:pointer;position:relative}
   .copyable:hover{color:#22c97f}
   .copyable.copied::after{content:'copied ✓';position:absolute;right:0;top:-1.4em;font:600 .68rem 'IBM Plex Mono',monospace;color:#22c97f}
+
+  #wModal{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center}
+  .wm-back{position:absolute;inset:0;background:rgba(4,6,10,.75);backdrop-filter:blur(4px)}
+  .wm-card{position:relative;width:min(360px,88vw);background:#0d1119;border:1px solid rgba(34,201,127,.25);
+    border-radius:16px;padding:20px;box-shadow:0 24px 80px rgba(0,0,0,.6)}
+  .wm-title{font-weight:700;font-size:1.05rem;margin-bottom:14px}
+  .wm-item{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;margin:6px 0;background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.08);border-radius:12px;color:#e8ecf4;font:600 .95rem 'Space Grotesk',sans-serif;
+    cursor:pointer;text-decoration:none;transition:.15s}
+  .wm-item:hover{border-color:#22c97f;background:rgba(34,201,127,.07)}
+  .wm-item img{width:26px;height:26px;border-radius:6px}
+  .wm-ext{margin-left:auto;color:#8a8f89}
+  .wm-note{margin-top:10px;font-size:.78rem;color:#8a8f89}
 </style>
 </head>
 <body>
@@ -1297,16 +1310,69 @@
 
 <script>
 (function(){
-  /* ---- Connect Wallet ---- */
+  /* ---- Connect Wallet: EIP-6963 multi-wallet picker ---- */
   var wb = document.getElementById('walletBtn');
-  function short(a){return a.slice(0,6)+'…'+a.slice(-4)}
-  function setConnected(a){ if(wb){wb.textContent='● '+short(a); wb.classList.add('connected');} }
-  if (wb) wb.addEventListener('click', function(){
-    if (!window.ethereum){ window.open('https://metamask.io','_blank'); return; }
-    ethereum.request({method:'eth_requestAccounts'}).then(function(acc){ if(acc && acc[0]) setConnected(acc[0]); }).catch(function(){});
+  var providers = [];  // {info:{name,icon,rdns}, provider}
+  window.addEventListener('eip6963:announceProvider', function(ev){
+    if (ev.detail && ev.detail.info && !providers.some(function(p){return p.info.rdns===ev.detail.info.rdns}))
+      providers.push(ev.detail);
   });
-  if (window.ethereum && ethereum.request) {
-    ethereum.request({method:'eth_accounts'}).then(function(acc){ if(acc && acc[0]) setConnected(acc[0]); }).catch(function(){});
+  window.dispatchEvent(new Event('eip6963:requestProvider'));
+  function short(a){return a.slice(0,6)+'…'+a.slice(-4)}
+  function setConnected(a, name){ if(wb){wb.textContent='● '+short(a); wb.title=(name||'')+' connected'; wb.classList.add('connected');} }
+  function connectWith(prov, name){
+    prov.request({method:'eth_requestAccounts'}).then(function(acc){
+      if (acc && acc[0]) setConnected(acc[0], name);
+      closeModal();
+    }).catch(function(){});
+  }
+  var DEEPLINKS = [
+    ['MetaMask',    'https://metamask.app.link/dapp/verdix.pages.dev'],
+    ['Trust Wallet','https://link.trustwallet.com/open_url?coin_id=20000714&url=https://verdix.pages.dev'],
+    ['OKX Wallet',  'https://www.okx.com/download'],
+    ['Bitget Wallet','https://web3.bitget.com/en/wallet-download']
+  ];
+  function closeModal(){ var m=document.getElementById('wModal'); if(m) m.remove(); }
+  function openModal(){
+    closeModal();
+    var m = document.createElement('div');
+    m.id='wModal';
+    m.innerHTML = '<div class="wm-back"></div><div class="wm-card"><div class="wm-title">Connect a wallet</div>'+
+      '<div class="wm-note" style="margin:0 0 10px">'+(providers.length? 'Detected in your browser:' : 'No wallet extension detected — open in a wallet app:')+'</div><div id="wmList"></div></div>';
+    document.body.appendChild(m);
+    var list = document.getElementById('wmList');
+    if (providers.length){
+      providers.forEach(function(p){
+        var b = document.createElement('button');
+        b.className='wm-item';
+        b.innerHTML = (p.info.icon? '<img src="'+p.info.icon+'" alt="">' : '')+'<span>'+p.info.name+'</span>';
+        b.onclick = function(){ connectWith(p.provider, p.info.name); };
+        list.appendChild(b);
+      });
+      if (window.ethereum && !providers.length) {}
+    } else if (window.ethereum) {
+      var b = document.createElement('button');
+      b.className='wm-item'; b.innerHTML='<span>Browser wallet</span>';
+      b.onclick = function(){ connectWith(window.ethereum, 'wallet'); };
+      list.appendChild(b);
+    } else {
+      DEEPLINKS.forEach(function(d){
+        var a = document.createElement('a');
+        a.className='wm-item'; a.href=d[1]; a.target='_blank'; a.rel='noopener';
+        a.innerHTML='<span>'+d[0]+'</span><span class="wm-ext">↗</span>';
+        list.appendChild(a);
+      });
+    }
+    m.querySelector('.wm-back').onclick = closeModal;
+  }
+  if (wb) wb.addEventListener('click', function(){
+    // 1 wallet terdeteksi → langsung connect; >1 → picker; 0 → deeplink/install
+    if (providers.length === 1) connectWith(providers[0].provider, providers[0].info.name);
+    else openModal();
+  });
+  var eager = providers[0] ? providers[0].provider : window.ethereum;
+  if (eager && eager.request) {
+    eager.request({method:'eth_accounts'}).then(function(acc){ if(acc && acc[0]) setConnected(acc[0]); }).catch(function(){});
   }
 
   /* ---- Click-to-copy alamat 0x ---- */
