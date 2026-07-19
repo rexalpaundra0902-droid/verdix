@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
 """Verdix Reputation API — Layer 4 output, baca langsung dari chain publik.
 
-Endpoint (read-only, stdlib only, cache 60s):
+Endpoint (read-only, cache 60s):
   GET /                → info + daftar endpoint
   GET /agents          → daftar agentId + Trust Score
   GET /agent/<id>      → Trust Score + breakdown komponen (JSON)
   GET /agent/<id>/cv   → Economic CV (markdown)
+  GET /memory/<hash>   → payload di balik dataHash on-chain, diambil dari
+                         Membase (Unibase DA) + verifikasi hash (moat v9:
+                         on-chain = bukti, payload = Membase)
+  GET /bitagent            → leaderboard Trust Score agent BitAgent (chain 97)
+  GET /bitagent/<handle>   → skor detail + verifikasi identity ERC-8004 on-chain
 
 Semua angka dihitung on-the-fly dari EconomicMemory + controlChangesOf di BSC
 testnet — tidak ada database; chain adalah sumber kebenarannya.
@@ -21,8 +26,16 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from bitagent.indexer import fetch_agents, score_agent  # noqa: E402
 from demo.export_entries import SEL_AGENT_COUNT, eth_call, get_entries, get_rotations  # noqa: E402
 from intel.trustscore import compute, economic_cv  # noqa: E402
+
+try:  # payload store butuh membase SDK (venv); tanpa itu endpoint /memory nonaktif
+    from payloads.membase_store import fetch_payload
+
+    HAS_MEMBASE = True
+except Exception:
+    HAS_MEMBASE = False
 
 RPC = os.environ.get("VERDIX_RPC", "https://bsc-testnet.bnbchain.org")
 MEMORY = os.environ.get("VERDIX_MEMORY", "0x8692F4Bbc7422139D4335AF01734bEbe99516900")
@@ -85,7 +98,9 @@ class Handler(BaseHTTPRequestHandler):
                         {
                             "service": "Verdix Reputation API",
                             "chain": {"rpc": RPC, "memory": MEMORY, "registry": REGISTRY},
-                            "endpoints": ["/agents", "/agent/<id>", "/agent/<id>/cv"],
+                            "endpoints": ["/agents", "/agent/<id>", "/agent/<id>/cv",
+                                          "/memory/<dataHash>", "/bitagent", "/bitagent/<handle>"],
+                            "membase": HAS_MEMBASE,
                         },
                         indent=2,
                     ),
@@ -97,6 +112,25 @@ class Handler(BaseHTTPRequestHandler):
                     for i in range(1, st["n_agents"] + 1)
                 ]
                 self._reply(200, json.dumps({"count": len(agents), "agents": agents}, indent=2))
+            elif parts[0] == "bitagent":
+                agents = cached("bitagent", lambda: fetch_agents(chain_id=97))
+                if len(parts) == 1:
+                    scored = sorted((score_agent(a) for a in agents), key=lambda x: -x["trustScore"])
+                    self._reply(200, json.dumps({"count": len(scored), "leaderboard": scored[:25]}, indent=2))
+                else:
+                    match = [a for a in agents if a.get("handle") == parts[1]]
+                    if not match:
+                        self._reply(404, json.dumps({"error": "unknown bitagent handle"}))
+                    else:
+                        self._reply(200, json.dumps(
+                            cached(f"ba:{parts[1]}", lambda: score_agent(match[0], check_onchain=True)),
+                            indent=2))
+            elif parts[0] == "memory" and len(parts) == 2 and parts[1].startswith("0x"):
+                if not HAS_MEMBASE:
+                    self._reply(503, json.dumps({"error": "membase not configured"}))
+                    return
+                res = cached(f"mem:{parts[1].lower()}", lambda: fetch_payload(parts[1]))
+                self._reply(200 if res.get("verified") else 404, json.dumps(res, indent=2, default=str))
             elif parts[0] == "agent" and len(parts) >= 2 and parts[1].isdigit():
                 agent_id = int(parts[1])
                 st = chain_state()

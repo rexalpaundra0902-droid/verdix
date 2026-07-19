@@ -1,0 +1,4 @@
+# Verdix integrations (Membase payload store, AIP agent service, Reputation API)
+# Membase SDK — pinned ke commit yang dites; API mereka masih pre-release
+membase @ git+https://github.com/unibaseio/membase.git
+requests>=2.31

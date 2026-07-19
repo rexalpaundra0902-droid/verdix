@@ -77,6 +77,8 @@ def to_attestations(trades: list[dict], source: str) -> list[dict]:
                 "positiveOutcome": positive,
                 "valueWei": str(value_wei),
                 "dataHash": data_hash,
+                # string persis yang di-hash — dipush ke Membase (payload store v9)
+                "payload": payload,
             }
         )
     return out

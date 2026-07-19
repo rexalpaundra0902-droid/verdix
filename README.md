@@ -1,78 +1,140 @@
-# Verdix — Economic Memory untuk AI Agent Economy
+# Verdix — Verifiable Economic Memory for the AI Agent Economy
 
 > ERC-8004 tells you WHO an agent is.
 > **Verdix tells you HOW that agent has actually behaved.**
 
-Phase 1 implementation dari VERDIX_PROTOCOL v8: identity + economic memory +
-verification tiers + trust intelligence, dogfooded oleh trading bot sendiri.
+Verdix is an **on-chain economic memory + trust intelligence layer** for AI
+agents, dogfooded by a real trading bot — built for the
+**BNB Hack × Unibase challenge: "On-Chain Immortal AI Agent"**.
 
-## Arsitektur
+An agent is *immortal* when its identity, memory, and track record outlive any
+single platform:
+
+- **Identity** — ERC-8004 NFT, registered in **two** registries (Verdix's own +
+  Unibase AIP Registry, token **#1700**, BSC testnet)
+- **Memory** — every economic action anchored on-chain as `dataHash`; full
+  payloads stored on **Membase (Unibase DA)** — publicly verifiable, platform-independent
+- **Track record** — Trust Score computed live from on-chain Economic Memory,
+  not from self-reported claims
+- **Constitution** — RiskGuardVault: an on-chain risk policy the agent
+  *cannot* override, no matter how smart it gets
+
+## Live deployments (BSC Testnet, chain 97)
+
+All contracts are **verified on BscScan** — see `deployments/bsc-testnet.json`:
+
+| Contract | Address |
+|---|---|
+| AgentRegistry (ERC-8004 surface) | `0x03E3701c98CFe457460BDe6b71d9b466CDC6cBe0` |
+| **EconomicMemory** (core asset) | `0x8692F4Bbc7422139D4335AF01734bEbe99516900` |
+| PaymentRouter (Tier-1 recorder) | `0x21Ec45c09BEFAbA63539fd1dCfA0ad2CeDcB8662` |
+| TaskEscrow (Tier-2/3 recorder) | `0x1A51D8062f2C022bA12f46851411d87a47dF36D8` |
+| StressOracle (Tier-4 recorder) | `0xb67b938F6e0592722aF87bc0e48A0DF7684FA6FD` |
+| **RiskGuardVault** (first app) | `0x397170E0c1315654CfbB09902f564C1bd7B1358B` |
+
+**Reputation API (live):** `http://194.233.93.155:8600`
+`/agents` · `/agent/1` · `/agent/1/cv` · `/memory/<dataHash>` · `/bitagent` · `/bitagent/<handle>`
+
+**On-chain proof of policy enforcement** (RiskGuardVault):
+- compliant action → [tx success](https://testnet.bscscan.com/tx/0x5ab22b5db269b3b2dd3679fa2af69404d6d0ed1c684f8df79d96a39b532fbc2f)
+- oversized action → [tx **Fail**: `ExceedsMaxTx`](https://testnet.bscscan.com/tx/0xcb7e5dd10be44df82dfec34f7c49f2fd30be0cd3c57b31b2b6e0a908d34e567d)
+
+## Architecture
 
 ```
-Layer 0  AgentRegistry    — ERC-8004 draft surface: agent = NFT ERC-721,
-                            register(agentURI), metadata k/v, operational wallet
-                            (signature consent). SETIAP perpindahan kontrol
-                            (transfer/wallet) tercatat → scorer men-discount
-                            history lama (anti "beli reputasi")
-Layer 2  EconomicMemory   — CORE ASSET: append-only log, HANYA recorder resmi
-                            yang bisa menulis (self-report tidak mungkin masuk,
-                            by construction)
-         Recorders:
-           PaymentRouter  — Tier 1: settlement adalah bukti (Class 1)
-           TaskEscrow     — Tier 2: escrow + bond 10% DUA SISI; dispute →
-                            arbitrator = Tier 3 (Class 2/3)
-           StressOracle   — Tier 4: observed behavior under stress (Class 4),
-                            bukti terlemah, bobot terendah
-Layer 3  intel/trustscore.py — Trust Intelligence off-chain:
-           f(success_rate·tier·recency, log-volume, counterparty-diversity
-             anti-farming (1-HHI), stress, dispute record) → Trust Score
-             + Economic CV
+                     ┌──────────────────────────────────────────────┐
+                     │  smc-bot: live 4H trading engine (dogfood)   │
+                     └──────────────┬───────────────────────────────┘
+                                    │ closed trades, tasks, payments
+                                    v
+   ON-CHAIN (BSC testnet) ──────────────────────────── OFF-CHAIN
+   AgentRegistry (ERC-8004)                            Membase / Unibase DA
+   EconomicMemory: append-only,                        full payloads keyed by
+     ONLY authorized recorders can        dataHash ──► dataHash, verifiable:
+     write (self-report impossible                     sha256/keccak(payload)
+     by construction):                                 == on-chain hash
+       PaymentRouter  (Tier 1: settlement = proof)
+       TaskEscrow     (Tier 2: two-sided bonds; Tier 3: arbitration)
+       StressOracle   (Tier 4: observed behavior under stress)
+   RiskGuardVault: on-chain risk constitution
+     (maxTx / daily cap / cooldown / whitelist / halt floor)
+                                    │
+                                    v
+   Trust Intelligence (intel/trustscore.py):
+     f(success·tier·recency, log-volume, counterparty-diversity anti-farming,
+       stress behavior, dispute record, control-change decay)
+     → Trust Score + Economic CV, served by the Reputation API
 ```
 
-Anti-farming (cost-of-forgery principle v8): satu entry Tier-2 palsu butuh
-lock payment + 2 bond + gas, dan pasangan counterparty eksklusif otomatis
-kena penalti diversity di scorer — biaya memalsukan selalu > Trust Score
-yang didapat.
+Key design decisions (see `docs/MOAT_V9_ADDENDUM.md`):
 
-## Jalankan
+- **Self-reports cannot enter memory** — only audited recorder contracts write,
+  and each records only outcomes it witnessed (settlement, escrow release, ruling).
+- **Anti-farming** — a fake Tier-2 entry requires locking payment + two bonds +
+  gas; exclusive counterparty pairs are down-weighted (1-HHI diversity).
+- **Anti reputation-buying** — ERC-8004 identity is a transferable NFT, so every
+  control change (transfer / wallet rotation) is logged on-chain and the scorer
+  decays pre-transfer history: a bought identity scores below a fresh one.
+- **On-chain = proofs, off-chain = payloads** — the chain stores evidence and
+  hashes (open, interoperable); full payloads live on Membase.
+
+## Unibase integration (the "immortal" loop)
+
+1. **Agent registered on AIP/BitAgent** — handle `verdix-smc-bot`, ERC-8004 NFT
+   #1700 in `0x8004A818...BD9e` (chain 97), job offering `market_signal_4h`.
+2. **Membase as the payload store** — every on-chain `dataHash` (12 backfilled:
+   8 dogfood trades + escrow/payment/vault payloads) resolves to a verifiable
+   payload: `GET /memory/<dataHash>` fetches from Membase and re-hashes.
+3. **Live agent service** (`aip_agent/service.py`) — polls the Unibase Gateway,
+   answers real 4H market-structure jobs (Binance data), attaches its live
+   Trust Score, and writes each served job back to Membase (`memory_ref` in the
+   result) — the agent's memory grows with every job, across platforms.
+4. **Trust Intelligence for the whole BitAgent ecosystem** —
+   `GET /bitagent` scores all chain-97 BitAgent agents (platform job stats +
+   on-chain ERC-8004 identity verification via `ownerOf`). Unibase provides
+   identity, memory, and payments; **Verdix adds the missing layer: verifiable
+   reputation.**
+
+## Run it yourself
 
 ```bash
-forge test                      # 22 test, termasuk skenario attack + fuzz
-python3 -m unittest intel.test_trustscore -v   # 11 test scorer
-bash demo/demo.sh [journal.db]  # end-to-end di anvil lokal:
-                                # deploy → register 2 agent → escrow task →
-                                # payment → dogfood trade bot SMC (read-only)
-                                # → export → Trust Score + Economic CV
+# contracts
+forge test                                   # 34 tests incl. attack scenarios + fuzz
+bash demo/demo.sh                            # full local demo on anvil
+
+# trust intelligence
+python3 -m unittest intel.test_trustscore -v # 11 tests incl. bought-identity decay
+
+# python env for Membase/AIP integrations
+python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+
+# services (systemd units in deploy notes)
+.venv/bin/python api/server.py               # Reputation API :8600
+.venv/bin/python aip_agent/service.py        # AIP gateway agent
+
+# end-to-end job through Unibase gateway
+# submit {"agent_id":"verdix-smc-bot","offering_id":"market_signal_4h", ...}
+# to POST gateway.aip.unibase.com/gateway/jobs/submit → result includes
+# regime/bias/key-levels + trust score + verifiable memory_ref
 ```
 
-## Live di BSC Testnet (chain 97)
+Secrets (wallet keys, JWT) live outside the repo (`/root/.verdix-keys/`) and are
+never committed. Testnet only — no real funds.
 
-Alamat kontrak + agent: `deployments/bsc-testnet.json`.
-Explorer: https://testnet.bscscan.com — Economic Memory berisi entries nyata
-(escrow, payment, dogfood 8 trade bot SMC).
+## Honest limitations
 
-**RiskGuardVault** (`src/RiskGuardVault.sol`) — aplikasi pertama di atas Verdix:
-vault manusia dikelola AI agent dengan konstitusi risk on-chain (maxTx, daily
-cap, cooldown, whitelist venue, halt floor). Demo on-chain: aksi compliant =
-status 1 + entry di Economic Memory; aksi melanggar = mined **Fail** — policy
-menolak, bukan prompt yang memohon. Tx hash di `deployments/bsc-testnet.json`.
+- Raw ERC-8183 event indexing is blocked today: every free BSC-testnet RPC
+  rejects `eth_getLogs` and Etherscan free tier does not cover chain-97 logs.
+  The BitAgent scorer therefore uses platform job stats + on-chain identity
+  checks, with the same scoring shape ready to switch to raw events once a paid
+  RPC is available.
+- Trust Intelligence weights are a documented starting point, tuned on dogfood
+  data — not a final formula.
+- Single arbitrator and full entry storage on-chain are MVP choices
+  (production path: arbitrator pool, event+merkle storage — documented).
 
-**Reputation API** (`api/server.py`, systemd `verdix-api`, port 8600) —
-`GET /agents`, `/agent/<id>`, `/agent/<id>/cv`; dihitung on-the-fly dari chain
-publik, tanpa database.
+## Design docs
 
-## Status
-
-- [x] Kontrak Phase 1 + test (34 forge test)
-- [x] Trust Intelligence v0 + anti-beli-reputasi (11 unit test)
-- [x] Dogfood: closed trades bot SMC → Class 4 attestations
-- [x] Deploy BSC testnet + data on-chain nyata
-- [x] RiskGuardVault (app #1) live + demo policy-block on-chain
-- [x] Reputation API live (port 8600)
-- [ ] Indexer streaming + payload store (aset moat v9)
-- [x] 6 kontrak verified di BscScan testnet (source terbaca publik)
-- [ ] ZK privacy layer, HumanID, $VDX — Phase 2+
-
-Dokumen desain: `/root/FORVERDIX/` (protocol v8, grand vision, arsitektur) +
-`docs/MOAT_V9_ADDENDUM.md` (reposisi moat: on-chain = bukti publik, payload
-off-chain + graph intelligence = aset proprietary; mitigasi identity transferable).
+- `docs/MOAT_V9_ADDENDUM.md` — moat repositioning & identity-transfer mitigation
+- `docs/UNIBASE_RECON.md` — integration recon + reverse-engineered auth path
+- `deployments/bsc-testnet.json` — all live addresses + demo tx hashes

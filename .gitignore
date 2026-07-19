@@ -22,3 +22,4 @@ broadcast/
 intel/__pycache__/
 __pycache__/
 deployments/out/
+.venv/
