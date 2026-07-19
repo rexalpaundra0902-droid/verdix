@@ -64,7 +64,7 @@ verified by anyone.
 > 🧠 memory: proofs on BSC + payloads on Membase
 > ⚖️ on-chain risk constitution it cannot override
 > 📊 live trust score from verified actions only
-> #BNBHack — repo: <GITHUB_URL>
+> #BNBHack — repo: https://github.com/rexalpaundra0902-droid/verdix
 
 ## Links
 
