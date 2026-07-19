@@ -26,6 +26,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from api import webui  # noqa: E402
 from bitagent.indexer import fetch_agents, score_agent  # noqa: E402
 from demo.export_entries import SEL_AGENT_COUNT, eth_call, get_entries, get_rotations  # noqa: E402
 from intel.trustscore import compute, economic_cv  # noqa: E402
@@ -126,6 +127,33 @@ class Handler(BaseHTTPRequestHandler):
                     for i in range(1, st["n_agents"] + 1)
                 ]
                 self._reply(200, json.dumps({"count": len(agents), "agents": agents}, indent=2))
+            elif parts[0] == "web":
+                st = chain_state()
+                if len(parts) == 1:
+                    v_agents = [agent_payload(i) for i in range(1, st["n_agents"] + 1)]
+                    agents = cached("bitagent", lambda: fetch_agents(chain_id=97))
+                    scored = sorted((score_agent(a) for a in agents), key=lambda x: -x["trustScore"])
+                    self._reply(200, webui.leaderboard_page(v_agents, scored), ctype="text/html")
+                elif parts[1] == "agent" and len(parts) == 3 and parts[2].isdigit():
+                    aid = int(parts[2])
+                    if not (1 <= aid <= st["n_agents"]):
+                        self._reply(404, webui.page("404", "<h1>Agent tidak ditemukan</h1>"), ctype="text/html")
+                    else:
+                        entries = [e for e in st["entries"]
+                                   if e["agentId"] == aid or e.get("counterpartyId") == aid]
+                        self._reply(200, webui.verdix_agent_page(
+                            agent_payload(aid), entries,
+                            "https://testnet.bscscan.com", MEMORY), ctype="text/html")
+                elif parts[1] == "bitagent" and len(parts) == 3:
+                    agents = cached("bitagent", lambda: fetch_agents(chain_id=97))
+                    match = [a for a in agents if a.get("handle") == parts[2]]
+                    if not match:
+                        self._reply(404, webui.page("404", "<h1>Agent tidak ditemukan</h1>"), ctype="text/html")
+                    else:
+                        b = cached(f"ba:{parts[2]}", lambda: score_agent(match[0], check_onchain=True))
+                        self._reply(200, webui.bitagent_page(b), ctype="text/html")
+                else:
+                    self._reply(404, webui.page("404", "<h1>404</h1>"), ctype="text/html")
             elif parts[0] == "bitagent":
                 agents = cached("bitagent", lambda: fetch_agents(chain_id=97))
                 if len(parts) == 1:
