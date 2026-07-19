@@ -40,6 +40,8 @@ except Exception:
 RPC = os.environ.get("VERDIX_RPC", "https://bsc-testnet.bnbchain.org")
 MEMORY = os.environ.get("VERDIX_MEMORY", "0x8692F4Bbc7422139D4335AF01734bEbe99516900")
 REGISTRY = os.environ.get("VERDIX_REGISTRY", "0x03E3701c98CFe457460BDe6b71d9b466CDC6cBe0")
+VDX_STAKING = os.environ.get("VERDIX_STAKING", "0xf3294C1cC9308DD507aeB9E4D4acc9D2b4062ccB")
+SEL_STAKED_OF = "0x11f1c8bf"  # stakedOf(uint256)
 PORT = int(os.environ.get("VERDIX_API_PORT", "8600"))
 CACHE_TTL = 60.0
 
@@ -66,11 +68,23 @@ def chain_state():
     return cached("chain", load)
 
 
+def vdx_staked(agent_id: int) -> float:
+    """Skin in the game (VDX staked utk agent) — ditampilkan apa adanya;
+    tidak mengubah formula Trust Score yang sudah dipublikasikan."""
+    try:
+        raw = eth_call(RPC, VDX_STAKING, SEL_STAKED_OF + format(agent_id, "064x"))
+        return int(raw, 16) / 1e18
+    except Exception:
+        return 0.0
+
+
 def agent_payload(agent_id: int) -> dict:
     st = chain_state()
     rot = st["rotations"].get(str(agent_id), [])
     c = compute(st["entries"], agent_id, control_changes=rot)
-    return {"agentId": agent_id, "trustScore": c.score(), **c.__dict__}
+    return {"agentId": agent_id, "trustScore": c.score(),
+            "vdxStaked": cached(f"stake:{agent_id}", lambda: vdx_staked(agent_id)),
+            **c.__dict__}
 
 
 class Handler(BaseHTTPRequestHandler):

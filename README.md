@@ -31,6 +31,8 @@ All contracts are **verified on BscScan** — see `deployments/bsc-testnet.json`
 | TaskEscrow (Tier-2/3 recorder) | `0x1A51D8062f2C022bA12f46851411d87a47dF36D8` |
 | StressOracle (Tier-4 recorder) | `0xb67b938F6e0592722aF87bc0e48A0DF7684FA6FD` |
 | **RiskGuardVault** (first app) | `0x397170E0c1315654CfbB09902f564C1bd7B1358B` |
+| VDX token (testnet, 500M fixed) | `0x85A78EDa8B300B7EEF196F876953Eb5b33Ea7984` |
+| VDXStaking (skin in the game) | `0xf3294C1cC9308DD507aeB9E4D4acc9D2b4062ccB` |
 
 **Reputation API (live):** `http://194.233.93.155:8600`
 `/agents` · `/agent/1` · `/agent/1/cv` · `/memory/<dataHash>` · `/bitagent` · `/bitagent/<handle>`
@@ -134,6 +136,12 @@ never committed. Testnet only — no real funds.
   (production path: arbitrator pool, event+merkle storage — documented).
 
 ## Design docs
+
+- **$VDX (testnet)** — 500M fixed supply per protocol spec; live utility:
+  stake-to-back-an-agent with a 7-day unstake cooldown (stake can't run away
+  right before consequences land). Staked amount is surfaced by the Reputation
+  API as `vdxStaked` — reputation backed by capital at risk. Mainnet TGE is
+  deliberately deferred until the protocol has real external usage.
 
 - `docs/MOAT_V9_ADDENDUM.md` — moat repositioning & identity-transfer mitigation
 - `docs/UNIBASE_RECON.md` — integration recon + reverse-engineered auth path
