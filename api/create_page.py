@@ -20,18 +20,18 @@ terverifikasi on-chain. BSC Testnet (chain 97).</p>
 
 <div class='card'><b>Step 1 — Register agent (ERC-8004)</b>
 <p class='sub'>Sekali saja per agent. Wallet yang register = controller agent.</p>
-<input id='uri' placeholder='https://nama-agent-mu.example/agent.json' style='width:100%;padding:8px;background:#0b0e14;border:1px solid #1c2230;border-radius:8px;color:#e6e9ef'>
+<input id='uri' placeholder='https://nama-agent-mu.example/agent.json'>
 <p><button onclick='registerAgent()'>Register Agent</button> <span id='regout' class='mono'></span></p>
 </div>
 
 <div class='card'><b>Step 2 — Create vault + policy</b>
 <div class='grid'>
-<div class='kv'><div class='k'>Agent ID</div><input id='aid' value='1' style='width:100%;padding:6px;background:#0b0e14;border:1px solid #1c2230;border-radius:8px;color:#e6e9ef'></div>
-<div class='kv'><div class='k'>Max per aksi (BNB)</div><input id='maxtx' value='0.005' style='width:100%;padding:6px;background:#0b0e14;border:1px solid #1c2230;border-radius:8px;color:#e6e9ef'></div>
-<div class='kv'><div class='k'>Cap harian (BNB)</div><input id='daily' value='0.01' style='width:100%;padding:6px;background:#0b0e14;border:1px solid #1c2230;border-radius:8px;color:#e6e9ef'></div>
-<div class='kv'><div class='k'>Cooldown (detik)</div><input id='cool' value='30' style='width:100%;padding:6px;background:#0b0e14;border:1px solid #1c2230;border-radius:8px;color:#e6e9ef'></div>
-<div class='kv'><div class='k'>Halt floor (BNB)</div><input id='floor' value='0.02' style='width:100%;padding:6px;background:#0b0e14;border:1px solid #1c2230;border-radius:8px;color:#e6e9ef'></div>
-<div class='kv'><div class='k'>Deposit awal (BNB)</div><input id='dep' value='0.05' style='width:100%;padding:6px;background:#0b0e14;border:1px solid #1c2230;border-radius:8px;color:#e6e9ef'></div>
+<div class='kv'><div class='k'>Agent ID</div><input id='aid' value='1'></div>
+<div class='kv'><div class='k'>Max per aksi (BNB)</div><input id='maxtx' value='0.005'></div>
+<div class='kv'><div class='k'>Cap harian (BNB)</div><input id='daily' value='0.01'></div>
+<div class='kv'><div class='k'>Cooldown (detik)</div><input id='cool' value='30'></div>
+<div class='kv'><div class='k'>Halt floor (BNB)</div><input id='floor' value='0.02'></div>
+<div class='kv'><div class='k'>Deposit awal (BNB)</div><input id='dep' value='0.05'></div>
 </div>
 <p><button onclick='createVault()'>Create Vault</button> <span id='out' class='mono'></span></p>
 </div>
@@ -43,7 +43,7 @@ dan withdraw lewat tab <i>Write Contract</i>. Agent-mu memanggil
 tercatat dan muncul di profil publik agent-mu di directory.</p>
 </div>
 
-<style>button{background:#7aa2ff;color:#0b0e14;font-weight:700;border:0;border-radius:8px;padding:9px 16px;cursor:pointer}button:hover{opacity:.9}</style>
+
 <script>
 const FACTORY='__FACTORY__', REGISTRY='__REGISTRY__';
 const pad=(h)=>h.replace('0x','').padStart(64,'0');

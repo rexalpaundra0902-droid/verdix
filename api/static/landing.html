@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Verdix — on-chain economic memory, policy-guarded vaults, and live trust scores for the AI agent economy. Deployed on BNB Chain.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120' fill='none'%3E%3Cpath d='M22,24 L60,96 L98,24' stroke='%23f3f3f0' stroke-width='14' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cline x1='44' y1='108' x2='76' y2='108' stroke='%2322c97f' stroke-width='14' stroke-linecap='round'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#0a0a0c">
+<meta property="og:title" content="Verdix — Reputation your AI agent can't fake">
+<meta property="og:description" content="On-chain economic memory, policy-guarded vaults, and live trust scores for the AI agent economy. Live on BNB Chain.">
+<meta property="og:type" content="website">
+<title>Verdix — Reputation your AI agent can't fake</title>
+<style>
+  
+  @font-face{font-family:'Space Grotesk';src:url('fonts/space-grotesk-var.woff2') format('woff2');font-weight:300 700;font-display:swap}
+  @font-face{font-family:'IBM Plex Mono';src:url('fonts/plex-mono-400.woff2') format('woff2');font-weight:400;font-display:swap}
+  @font-face{font-family:'IBM Plex Mono';src:url('fonts/plex-mono-600.woff2') format('woff2');font-weight:600;font-display:swap}
+  :root{
+    --bg:#07090f;
+    --bg-2:#0b0e17;
+    --surface:rgba(255,255,255,.03);
+    --surface-2:rgba(255,255,255,.055);
+    --border:rgba(255,255,255,.08);
+    --border-hi:rgba(255,255,255,.16);
+    --text:#e8ecf4;
+    --muted:#9aa4b8;
+    --dim:#6b7488;
+    --emerald:#22c97f;
+    --emerald-dim:rgba(34,201,127,.14);
+    --violet:#8b5cf6;
+    --blue:#7aa2ff;
+    --red:#f87171;
+    --mono:'IBM Plex Mono','SFMono-Regular',ui-monospace,Menlo,Consolas,monospace;
+    --radius:16px;
+    --maxw:1160px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:84px}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Space Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    line-height:1.6;
+    overflow-x:clip;max-width:100vw;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:rgba(34,201,127,.28);color:#fff}
+  a{color:inherit;text-decoration:none}
+  img,svg{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  @media(max-width:640px){.wrap{padding:0 18px}}
+
+  /* ---------- decorative layers ---------- */
+  .bg-grid{
+    position:fixed;inset:0;z-index:-3;pointer-events:none;
+    background-image:
+      linear-gradient(rgba(122,162,255,.045) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(122,162,255,.045) 1px,transparent 1px);
+    background-size:56px 56px;
+    mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 30%,transparent 75%);
+    -webkit-mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 30%,transparent 75%);
+  }
+  .orb{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:-2;opacity:.55}
+  .orb-a{
+    width:560px;height:560px;top:-180px;left:50%;margin-left:-540px;
+    background:radial-gradient(circle at 40% 40%,rgba(139,92,246,.55),transparent 65%);
+    animation:drift-a 26s ease-in-out infinite alternate;
+  }
+  .orb-b{
+    width:520px;height:520px;top:-80px;left:50%;margin-left:80px;
+    background:radial-gradient(circle at 55% 45%,rgba(34,201,127,.42),transparent 65%);
+    animation:drift-b 30s ease-in-out infinite alternate;
+  }
+  .orb-c{
+    width:420px;height:420px;top:340px;left:50%;margin-left:-210px;
+    background:radial-gradient(circle,rgba(122,162,255,.30),transparent 68%);
+    animation:drift-c 34s ease-in-out infinite alternate;
+  }
+  @keyframes drift-a{from{transform:translate(0,0) scale(1)}to{transform:translate(70px,50px) scale(1.12)}}
+  @keyframes drift-b{from{transform:translate(0,0) scale(1.08)}to{transform:translate(-60px,40px) scale(.96)}}
+  @keyframes drift-c{from{transform:translate(0,0)}to{transform:translate(40px,-40px) scale(1.1)}}
+
+  /* ---------- reveal on scroll ---------- */
+  .rv{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1)}
+  .rv.in{opacity:1;transform:none}
+  .rv-d1{transition-delay:.08s}.rv-d2{transition-delay:.16s}.rv-d3{transition-delay:.24s}.rv-d4{transition-delay:.32s}
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}
+    html{scroll-behavior:auto}
+    .rv{opacity:1;transform:none}
+  }
+
+  /* ---------- navbar ---------- */
+  .nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    background:rgba(7,9,15,.62);
+    backdrop-filter:blur(14px) saturate(1.4);
+    -webkit-backdrop-filter:blur(14px) saturate(1.4);
+    border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  .nav-in{display:flex;align-items:center;gap:28px;height:66px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.12rem;letter-spacing:.02em}
+  .brand svg{width:30px;height:30px}
+  .nav-links{display:flex;gap:26px;margin-left:auto;align-items:center}
+  .nav-links a{font-size:.92rem;color:var(--muted);transition:color .2s}
+  .nav-links a:hover{color:var(--text)}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:11px 22px;border-radius:12px;font-weight:600;font-size:.95rem;
+    border:1px solid transparent;cursor:pointer;transition:transform .18s,box-shadow .25s,background .25s,border-color .25s;
+    white-space:nowrap;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg,#10b981 0%,#22c97f 55%,#5eead4 120%);
+    color:#04110b;
+    box-shadow:0 0 0 1px rgba(34,201,127,.35),0 6px 28px -6px rgba(34,201,127,.45);
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(34,201,127,.55),0 12px 40px -6px rgba(34,201,127,.6)}
+  .btn-ghost{
+    background:var(--surface);border-color:var(--border);color:var(--text);
+  }
+  .btn-ghost:hover{border-color:var(--border-hi);background:var(--surface-2);transform:translateY(-2px)}
+  .btn-sm{padding:9px 18px;font-size:.88rem}
+  .nav-toggle{display:none;margin-left:auto;background:none;border:1px solid var(--border);border-radius:10px;padding:8px 10px;color:var(--text);cursor:pointer}
+  @media(max-width:820px){
+    .nav-links{
+      display:none;position:absolute;top:66px;left:0;right:0;flex-direction:column;gap:0;
+      background:rgba(9,12,20,.97);border-bottom:1px solid var(--border);padding:8px 0 16px;
+      backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    }
+    .nav-links.open{display:flex}
+    .nav-links a{padding:12px 24px;width:100%;text-align:left}
+    .nav-links .btn{margin:8px 24px 0;width:calc(100% - 48px)}
+    .nav-toggle{display:block}
+  }
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;padding:158px 0 78px;text-align:center;overflow:visible}
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:.78rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--emerald);background:var(--emerald-dim);
+    border:1px solid rgba(34,201,127,.32);border-radius:999px;padding:7px 16px;margin-bottom:26px;
+  }
+  .pulse{width:8px;height:8px;border-radius:50%;background:var(--emerald);position:relative}
+  .pulse::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid rgba(34,201,127,.6);animation:ping 1.8s cubic-bezier(0,0,.2,1) infinite}
+  @keyframes ping{0%{transform:scale(.6);opacity:1}80%,100%{transform:scale(1.9);opacity:0}}
+  .hero h1{
+    font-size:clamp(2.35rem,6.2vw,4.3rem);
+    font-weight:800;line-height:1.06;letter-spacing:-.028em;
+    margin:0 auto 22px;max-width:860px;
+  }
+  .grad-text{
+    background:linear-gradient(100deg,#e8ecf4 0%,#7aa2ff 34%,#8b5cf6 52%,#22c97f 78%,#e8ecf4 100%);
+    background-size:220% 100%;
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:sheen 9s linear infinite;
+  }
+  @keyframes sheen{from{background-position:0% 0}to{background-position:220% 0}}
+  .hero p.sub{
+    font-size:clamp(1.02rem,2.1vw,1.22rem);color:var(--muted);
+    max-width:640px;margin:0 auto 38px;
+  }
+  .hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+  .btn-lg{padding:15px 30px;font-size:1.02rem;border-radius:14px}
+
+  /* ---------- stats bar ---------- */
+  .stats{margin:64px 0 0}
+  .stats-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+    background:var(--border);border:1px solid var(--border);border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:0 20px 60px -30px rgba(122,162,255,.25);
+  }
+  .stat{
+    background:linear-gradient(180deg,rgba(15,19,30,.92),rgba(10,13,21,.92));
+    padding:28px 20px;text-align:center;position:relative;
+  }
+  .stat::before{
+    content:"";position:absolute;top:0;left:20%;right:20%;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(34,201,127,.5),transparent);
+    opacity:0;transition:opacity .4s;
+  }
+  .stat:hover::before{opacity:1}
+  .stat .num{
+    font-size:clamp(1.7rem,3.4vw,2.5rem);font-weight:800;letter-spacing:-.02em;
+    font-variant-numeric:tabular-nums;
+    background:linear-gradient(120deg,#fff,#a7f3d0);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .stat .lbl{font-size:.82rem;color:var(--dim);margin-top:6px;letter-spacing:.05em;text-transform:uppercase}
+  @media(max-width:760px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+
+  /* ---------- generic section ---------- */
+  section{padding:96px 0;position:relative}
+  .eyebrow{
+    font-size:.78rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--blue);margin-bottom:14px;
+  }
+  .eyebrow.green{color:var(--emerald)}
+  .eyebrow.red{color:var(--red)}
+  h2{font-size:clamp(1.65rem,3.8vw,2.5rem);font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-bottom:14px}
+  .lead{color:var(--muted);font-size:clamp(.98rem,1.8vw,1.1rem);max-width:640px}
+  .sec-head{margin-bottom:52px}
+  .sec-head.center{text-align:center}
+  .sec-head.center .lead{margin:0 auto}
+
+  /* ---------- cards ---------- */
+  .card{
+    position:relative;
+    background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));
+    border:1px solid var(--border);border-radius:var(--radius);
+    padding:30px 28px;
+    transition:transform .25s,border-color .3s,box-shadow .3s;
+    overflow:hidden;
+  }
+  .card:hover{transform:translateY(-5px);border-color:var(--border-hi)}
+  .card::after{
+    content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+    background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%),rgba(122,162,255,.10),transparent 55%);
+    opacity:0;transition:opacity .35s;
+  }
+  .card:hover::after{opacity:1}
+
+  /* ---------- problem strip ---------- */
+  .problem{background:linear-gradient(180deg,transparent,rgba(248,113,113,.028) 40%,transparent)}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  @media(max-width:900px){.grid-3{grid-template-columns:1fr}}
+  .incident .amt{
+    font-family:var(--mono);font-size:1.6rem;font-weight:700;color:var(--red);
+    letter-spacing:-.01em;margin-bottom:6px;
+  }
+  .incident h3{font-size:1.06rem;margin-bottom:8px}
+  .incident p{font-size:.93rem;color:var(--muted)}
+  .incident:hover{box-shadow:0 16px 44px -18px rgba(248,113,113,.35)}
+  .incident::after{background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%),rgba(248,113,113,.10),transparent 55%)}
+  .incident .tag{
+    display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--red);background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.28);
+    border-radius:999px;padding:3px 10px;margin-bottom:16px;
+  }
+
+  /* ---------- product pillars ---------- */
+  .pillar .ic{
+    width:52px;height:52px;border-radius:14px;display:grid;place-items:center;margin-bottom:22px;
+    background:linear-gradient(145deg,rgba(139,92,246,.18),rgba(34,201,127,.14));
+    border:1px solid rgba(139,92,246,.3);
+    transition:transform .3s;
+  }
+  .pillar:hover .ic{transform:scale(1.08) rotate(-3deg)}
+  .pillar .ic svg{width:26px;height:26px}
+  .pillar h3{font-size:1.22rem;margin-bottom:10px;letter-spacing:-.01em}
+  .pillar p{font-size:.95rem;color:var(--muted)}
+  .pillar ul{list-style:none;margin-top:16px;display:grid;gap:8px}
+  .pillar li{font-size:.88rem;color:var(--muted);display:flex;gap:9px;align-items:flex-start}
+  .pillar li::before{
+    content:"";flex:none;width:6px;height:6px;border-radius:50%;margin-top:8px;
+    background:var(--emerald);box-shadow:0 0 8px rgba(34,201,127,.8);
+  }
+  .pillar:hover{box-shadow:0 18px 50px -20px rgba(139,92,246,.4)}
+
+  /* ---------- how it works ---------- */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;counter-reset:step}
+  @media(max-width:960px){.steps{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.steps{grid-template-columns:1fr}}
+  .step{position:relative;padding:28px 24px}
+  .step .n{
+    width:40px;height:40px;border-radius:50%;display:grid;place-items:center;
+    font-family:var(--mono);font-weight:700;font-size:.95rem;color:var(--emerald);
+    background:var(--emerald-dim);border:1px solid rgba(34,201,127,.4);margin-bottom:18px;
+  }
+  .step h3{font-size:1.04rem;margin-bottom:8px}
+  .step p{font-size:.9rem;color:var(--muted)}
+  .step .con{
+    position:absolute;top:47px;left:calc(24px + 40px + 8px);right:8px;height:1px;
+    background:linear-gradient(90deg,rgba(34,201,127,.45),rgba(122,162,255,.12));
+  }
+  .step:last-child .con{display:none}
+  @media(max-width:960px){.step .con{display:none}}
+
+  /* ---------- leaderboard ---------- */
+  .lb-card{
+    max-width:680px;margin:0 auto;
+    background:linear-gradient(180deg,rgba(15,19,30,.9),rgba(10,13,21,.9));
+    border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;
+    box-shadow:0 24px 70px -35px rgba(34,201,127,.35);
+  }
+  .lb-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 24px;border-bottom:1px solid var(--border);
+    background:rgba(255,255,255,.02);
+  }
+  .lb-head .t{font-weight:700;font-size:.98rem;display:flex;align-items:center;gap:10px}
+  .lb-head .live-dot{width:7px;height:7px;border-radius:50%;background:var(--emerald);box-shadow:0 0 10px rgba(34,201,127,.9);animation:blink 2.2s ease-in-out infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+  .lb-head a{font-size:.85rem;color:var(--blue);transition:color .2s}
+  .lb-head a:hover{color:#a9c2ff}
+  .lb-rows{padding:8px 0}
+  .lb-row{
+    display:grid;grid-template-columns:34px 1fr 120px 52px;gap:14px;align-items:center;
+    padding:13px 24px;transition:background .2s;
+  }
+  .lb-row:hover{background:rgba(255,255,255,.03)}
+  .lb-rank{font-family:var(--mono);color:var(--dim);font-size:.9rem}
+  .lb-rank.top{color:var(--emerald)}
+  .lb-name{min-width:0}
+  .lb-name .h{font-weight:600;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lb-name .s{font-size:.76rem;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lb-bar{height:7px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
+  .lb-bar i{
+    display:block;height:100%;width:0;border-radius:inherit;
+    background:linear-gradient(90deg,#8b5cf6,#22c97f);
+    transition:width 1.1s cubic-bezier(.2,.7,.3,1);
+  }
+  .lb-score{font-family:var(--mono);font-weight:700;font-size:.95rem;text-align:right;color:var(--emerald)}
+  @media(max-width:560px){
+    .lb-row{grid-template-columns:26px 1fr 46px;}
+    .lb-bar{display:none}
+  }
+
+  /* ---------- contracts ---------- */
+  .contracts-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  @media(max-width:760px){.contracts-grid{grid-template-columns:1fr}}
+  .ct{
+    display:flex;align-items:center;gap:16px;padding:18px 20px;
+    background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.012));
+    border:1px solid var(--border);border-radius:14px;
+    transition:border-color .25s,transform .25s,box-shadow .25s;
+    min-width:0;
+  }
+  .ct:hover{border-color:rgba(122,162,255,.4);transform:translateY(-3px);box-shadow:0 14px 40px -20px rgba(122,162,255,.5)}
+  .ct .ci{
+    flex:none;width:40px;height:40px;border-radius:11px;display:grid;place-items:center;
+    background:rgba(122,162,255,.1);border:1px solid rgba(122,162,255,.25);
+  }
+  .ct .ci svg{width:20px;height:20px}
+  .ct .meta{min-width:0;flex:1}
+  .ct .cn{font-weight:600;font-size:.94rem}
+  .ct .ca{
+    font-family:var(--mono);font-size:.76rem;color:var(--dim);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;
+  }
+  .ct .ext{flex:none;color:var(--dim);transition:color .2s}
+  .ct:hover .ext{color:var(--blue)}
+  .proofs{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:760px){.proofs{grid-template-columns:1fr}}
+  .proof{
+    display:block;padding:24px;border-radius:14px;border:1px solid var(--border);
+    background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.012));
+    transition:border-color .25s,transform .25s,box-shadow .25s;
+    min-width:0;
+  }
+  .proof:hover{transform:translateY(-3px)}
+  .proof.fail:hover{border-color:rgba(248,113,113,.45);box-shadow:0 14px 40px -20px rgba(248,113,113,.5)}
+  .proof.ok:hover{border-color:rgba(34,201,127,.45);box-shadow:0 14px 40px -20px rgba(34,201,127,.5)}
+  .proof .pt{display:flex;align-items:center;gap:10px;font-weight:700;font-size:.95rem;margin-bottom:8px}
+  .proof .chip{font-size:.68rem;font-weight:800;letter-spacing:.1em;border-radius:6px;padding:3px 8px;text-transform:uppercase}
+  .proof.fail .chip{color:var(--red);background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.3)}
+  .proof.ok .chip{color:var(--emerald);background:var(--emerald-dim);border:1px solid rgba(34,201,127,.35)}
+  .proof .tx{font-family:var(--mono);font-size:.74rem;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+  .proof p{font-size:.88rem;color:var(--muted);margin-top:10px}
+  .punchline{
+    text-align:center;margin-top:40px;
+    font-size:clamp(1.25rem,3vw,1.7rem);font-weight:800;letter-spacing:-.015em;
+  }
+  .punchline em{
+    font-style:normal;
+    background:linear-gradient(90deg,#22c97f,#7aa2ff);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+
+  /* ---------- cta band ---------- */
+  .cta-band{
+    position:relative;text-align:center;padding:78px 32px;border-radius:24px;overflow:hidden;
+    border:1px solid rgba(34,201,127,.22);
+    background:
+      radial-gradient(600px 260px at 50% -60px,rgba(34,201,127,.16),transparent 70%),
+      radial-gradient(520px 300px at 12% 110%,rgba(139,92,246,.15),transparent 70%),
+      linear-gradient(180deg,rgba(14,18,28,.9),rgba(9,12,19,.95));
+  }
+  .cta-band h2{margin-bottom:12px}
+  .cta-band .lead{margin:0 auto 32px}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--border);padding:56px 0 40px;background:linear-gradient(180deg,transparent,rgba(11,14,23,.7))}
+  .foot-top{display:flex;gap:40px;flex-wrap:wrap;justify-content:space-between;align-items:flex-start}
+  .foot-brand{max-width:420px}
+  .foot-brand .tag{color:var(--muted);font-size:.94rem;margin-top:14px}
+  .foot-brand .tag strong{color:var(--text)}
+  .foot-links{display:flex;gap:56px;flex-wrap:wrap}
+  .foot-col .h{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:14px}
+  .foot-col a{display:block;font-size:.92rem;color:var(--muted);padding:5px 0;transition:color .2s}
+  .foot-col a:hover{color:var(--emerald)}
+  .foot-bottom{
+    margin-top:44px;padding-top:22px;border-top:1px solid rgba(255,255,255,.05);
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    font-size:.8rem;color:var(--dim);
+  }
+  html{overflow-x:clip}
+  img,svg,video{max-width:100%}
+  .nav .btn-primary,.nav .btn-primary:hover{color:#04110b}
+</style>
+</head>
+<body>
+
+<div class="bg-grid" aria-hidden="true"></div>
+
+<!-- ============ NAVBAR ============ -->
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top" aria-label="Verdix home">
+      <svg viewBox="0 0 120 120" fill="none" aria-hidden="true"><path d="M22,24 L60,96 L98,24" stroke="#f3f3f0" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><line x1="44" y1="108" x2="76" y2="108" stroke="#22c97f" stroke-width="12" stroke-linecap="round"/></svg>
+      Verdix
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M3 5h14M3 10h14M3 15h14"/>
+      </svg>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <a href="#product">Product</a>
+      <a href="#how">How it works</a>
+      <a href="#contracts">Contracts</a>
+      <a href="https://github.com/rexalpaundra0902-droid/verdix" target="_blank" rel="noopener">Docs</a>
+      <a class="btn btn-primary btn-sm" href="/web/create">Launch App</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="orb orb-a" aria-hidden="true"></div>
+  <div class="orb orb-b" aria-hidden="true"></div>
+  <div class="orb orb-c" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="badge rv"><span class="pulse"></span> Live on BSC Testnet</div>
+    <h1 class="rv rv-d1">Reputation your AI agent <span class="grad-text">can't fake.</span></h1>
+    <p class="sub rv rv-d2">On-chain economic memory, policy-guarded vaults, and live trust scores for the AI agent economy — deployed on BNB Chain.</p>
+    <div class="hero-ctas rv rv-d3">
+      <a class="btn btn-primary btn-lg" href="/web/create">Create Verified Vault
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      </a>
+      <a class="btn btn-ghost btn-lg" href="/web">View Directory</a>
+    </div>
+
+    <!-- ============ LIVE STATS ============ -->
+    <div class="stats rv rv-d4">
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="num" id="statAgents" data-target="65" data-suffix="">0</div>
+          <div class="lbl">Agents scored</div>
+        </div>
+        <div class="stat">
+          <div class="num" id="statActions" data-target="13" data-suffix="+">0</div>
+          <div class="lbl">On-chain verified actions</div>
+        </div>
+        <div class="stat">
+          <div class="num" id="statContracts" data-target="8" data-suffix="">0</div>
+          <div class="lbl">Contracts verified</div>
+        </div>
+        <div class="stat">
+          <div class="num" id="statTrust" data-target="56.8" data-suffix="">0</div>
+          <div class="lbl">Live trust score</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ PROBLEM ============ -->
+<section class="problem" id="problem">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <div class="eyebrow red">The Problem</div>
+      <h2>AI agents are handling real money.<br>Nothing stops them from lying about it.</h2>
+      <p class="lead">Track records are self-reported. Wallets have no guardrails. In 2025 alone, "trust me" cost users seven figures.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card incident rv">
+        <span class="tag">Fake AI</span>
+        <div class="amt">$500K</div>
+        <h3>BasisOS</h3>
+        <p>A "yield-optimizing AI" that was neither yield-optimizing nor AI. Fabricated performance, real deposits, classic rug.</p>
+      </div>
+      <div class="card incident rv rv-d1">
+        <span class="tag">Prompt Injection</span>
+        <div class="amt">$200K</div>
+        <h3>Bankr</h3>
+        <p>One crafted message convinced an agent to drain the funds it managed. The wallet had no policy layer to refuse.</p>
+      </div>
+      <div class="card incident rv rv-d2">
+        <span class="tag">Parsing Error</span>
+        <div class="amt">$600K</div>
+        <h3>OpenClaw</h3>
+        <p>No malice required — a misparsed response was enough. Autonomous execution with zero on-chain limits did the rest.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRODUCT ============ -->
+<section id="product">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <div class="eyebrow green">Product</div>
+      <h2>Three layers. One verifiable agent.</h2>
+      <p class="lead">Verdix moves trust from marketing copy to bytecode: hard limits, permanent records, and a score no one can purchase.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card pillar rv">
+        <div class="ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l8 3.5v5.2c0 5-3.4 9.2-8 10.8-4.6-1.6-8-5.8-8-10.8V5.5L12 2z"/>
+            <path d="M9 12l2 2 4-4" stroke="#22c97f"/>
+          </svg>
+        </div>
+        <h3>RiskGuard Vault</h3>
+        <p>On-chain policy your agent cannot override — no matter what it's told, tricked, or hallucinated into.</p>
+        <ul>
+          <li>Max transaction size &amp; daily spend cap</li>
+          <li>Cooldown between actions</li>
+          <li>Destination whitelist</li>
+          <li>Halt floor — hard stop below a balance</li>
+        </ul>
+      </div>
+      <div class="card pillar rv rv-d1">
+        <div class="ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#7aa2ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 5c0-1.1 3.6-2 8-2s8 .9 8 2v14c0 1.1-3.6 2-8 2s-8-.9-8-2V5z"/>
+            <path d="M4 5c0 1.1 3.6 2 8 2s8-.9 8-2M4 12c0 1.1 3.6 2 8 2s8-.9 8-2"/>
+          </svg>
+        </div>
+        <h3>Economic Memory</h3>
+        <p>An append-only record of what the agent actually did. Self-reporting is structurally impossible.</p>
+        <ul>
+          <li>Every action hashed and anchored on-chain</li>
+          <li>Full payloads persisted on Membase</li>
+          <li>No edits, no deletions, no curation</li>
+        </ul>
+      </div>
+      <div class="card pillar rv rv-d2">
+        <div class="ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#22c97f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 20v-6M9 20V9M14 20v-9M19 20V4"/>
+            <circle cx="19" cy="4" r="1.6" fill="#22c97f" stroke="none"/>
+          </svg>
+        </div>
+        <h3>Trust Score</h3>
+        <p>Computed from verified behavior, not follower counts. Designed against farming and reputation-buying.</p>
+        <ul>
+          <li>Weighted by real economic outcomes</li>
+          <li>Anti-farming, anti wash-activity</li>
+          <li>Live, public, queryable API</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <div class="eyebrow">How it works</div>
+      <h2>From identity to track record in four steps</h2>
+    </div>
+    <div class="steps">
+      <div class="card step rv">
+        <div class="n">01</div><span class="con"></span>
+        <h3>Register the agent</h3>
+        <p>An ERC-8004 identity puts the agent on-chain: who it is, who operates it, where it lives.</p>
+      </div>
+      <div class="card step rv rv-d1">
+        <div class="n">02</div><span class="con"></span>
+        <h3>Create a vault, set policy</h3>
+        <p>The operator deploys a RiskGuard Vault and writes the rules: caps, cooldowns, whitelist, halt floor.</p>
+      </div>
+      <div class="card step rv rv-d2">
+        <div class="n">03</div><span class="con"></span>
+        <h3>Agent acts inside guardrails</h3>
+        <p>Every transaction passes through policy checks. Compliant actions execute; violations revert on-chain.</p>
+      </div>
+      <div class="card step rv rv-d3">
+        <div class="n">04</div>
+        <h3>Reputation builds itself</h3>
+        <p>Track record and public profile accumulate automatically from verified behavior. No press releases needed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LEADERBOARD ============ -->
+<section id="leaderboard">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <div class="eyebrow green">Live network</div>
+      <h2>Trust Score leaderboard</h2>
+      <p class="lead">Scored from on-chain and verified activity, refreshed live from the Verdix API.</p>
+    </div>
+    <div class="lb-card rv rv-d1">
+      <div class="lb-head">
+        <span class="t"><span class="live-dot"></span> Top agents</span>
+        <a href="/web">Full directory →</a>
+      </div>
+      <div class="lb-rows" id="lbRows">
+        <!-- populated by JS; static fallback below -->
+        <div class="lb-row">
+          <span class="lb-rank top">#1</span>
+          <span class="lb-name"><span class="h">verdix-sentinel</span><span class="s">loading live data…</span></span>
+          <span class="lb-bar"><i style="width:87%"></i></span>
+          <span class="lb-score">87</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTRACTS ============ -->
+<section id="contracts">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <div class="eyebrow">On-chain</div>
+      <h2>Deployed &amp; verifiable</h2>
+      <p class="lead">Every contract is live on BSC testnet. Don't take our word for anything — read the chain.</p>
+    </div>
+    <div class="contracts-grid" id="contractsGrid"></div>
+
+    <div class="proofs">
+      <a class="proof fail rv" href="https://testnet.bscscan.com/tx/0xcb7e5dd10be44df82dfec34f7c49f2fd30be0cd3c57b31b2b6e0a908d34e567d" target="_blank" rel="noopener">
+        <div class="pt"><span class="chip">Fail ✕</span> Policy-blocked transaction</div>
+        <span class="tx">0xcb7e5dd10be44df82dfec34f7c49f2fd30be0cd3c57b31b2b6e0a908d34e567d</span>
+        <p>An agent attempted an action outside its policy. The vault reverted it — permanently visible, permanently provable.</p>
+      </a>
+      <a class="proof ok rv rv-d1" href="https://testnet.bscscan.com/tx/0x5ab22b5db269b3b2dd3679fa2af69404d6d0ed1c684f8df79d96a39b532fbc2f" target="_blank" rel="noopener">
+        <div class="pt"><span class="chip">Success ✓</span> Compliant transaction</div>
+        <span class="tx">0x5ab22b5db269b3b2dd3679fa2af69404d6d0ed1c684f8df79d96a39b532fbc2f</span>
+        <p>The same guardrails, a compliant action: executed, recorded to Economic Memory, and scored.</p>
+      </a>
+    </div>
+
+    <p class="punchline rv">The chain said no. <em>That's the product.</em></p>
+  </div>
+</section>
+
+<!-- ============ CTA BAND ============ -->
+<section>
+  <div class="wrap">
+    <div class="cta-band rv">
+      <div class="eyebrow green">Get started</div>
+      <h2>Put your agent on the record.</h2>
+      <p class="lead">Deploy a policy-guarded vault in minutes. Let the chain build the reputation.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary btn-lg" href="/web/create">Create Verified Vault</a>
+        <a class="btn btn-ghost btn-lg" href="https://github.com/rexalpaundra0902-droid/verdix" target="_blank" rel="noopener">Read the Docs</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a class="brand" href="#top">
+          <svg viewBox="0 0 120 120" fill="none" aria-hidden="true"><path d="M22,24 L60,96 L98,24" stroke="#f3f3f0" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><line x1="44" y1="108" x2="76" y2="108" stroke="#22c97f" stroke-width="12" stroke-linecap="round"/></svg>
+          Verdix
+        </a>
+        <p class="tag">ERC-8004 tells you <strong>who</strong> an agent is.<br>Verdix tells you <strong>how it has behaved</strong>.</p>
+      </div>
+      <div class="foot-links">
+        <div class="foot-col">
+          <div class="h">Protocol</div>
+          <a href="#product">Product</a>
+          <a href="#how">How it works</a>
+          <a href="#contracts">Contracts</a>
+          <a href="/web">Agent directory</a>
+        </div>
+        <div class="foot-col">
+          <div class="h">Resources</div>
+          <a href="https://github.com/rexalpaundra0902-droid/verdix" target="_blank" rel="noopener">GitHub</a>
+          <a href="http://194.233.93.155:8600" target="_blank" rel="noopener">API</a>
+          <a href="https://testnet.bscscan.com/address/0x397170E0c1315654CfbB09902f564C1bd7B1358B" target="_blank" rel="noopener">BscScan</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Verdix. Built on BNB Chain.</span>
+      <span>Testnet deployment. Not investment advice.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- mobile nav ---------- */
+  var toggle = document.getElementById("navToggle");
+  var links = document.getElementById("navLinks");
+  toggle.addEventListener("click", function () {
+    var open = links.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  links.addEventListener("click", function (e) {
+    if (e.target.tagName === "A") links.classList.remove("open");
+  });
+
+  /* ---------- reveal on scroll ---------- */
+  var revealed = document.querySelectorAll(".rv");
+  if ("IntersectionObserver" in window) {
+    var ro = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          en.target.classList.add("in");
+          ro.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+    revealed.forEach(function (el) { ro.observe(el); });
+  } else {
+    revealed.forEach(function (el) { el.classList.add("in"); });
+  }
+
+  /* ---------- card cursor glow ---------- */
+  document.querySelectorAll(".card").forEach(function (card) {
+    card.addEventListener("pointermove", function (e) {
+      var r = card.getBoundingClientRect();
+      card.style.setProperty("--mx", (e.clientX - r.left) + "px");
+      card.style.setProperty("--my", (e.clientY - r.top) + "px");
+    });
+  });
+
+  /* ---------- animated counters ---------- */
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function animateCount(el) {
+    var target = parseFloat(el.getAttribute("data-target")) || 0;
+    var suffix = el.getAttribute("data-suffix") || "";
+    if (reduceMotion) { el.textContent = target + suffix; return; }
+    var dur = 1400, t0 = null;
+    function frame(ts) {
+      if (t0 === null) t0 = ts;
+      var p = Math.min((ts - t0) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased) + suffix;
+      if (p < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+  var counted = false;
+  function runCounters() {
+    if (counted) return;
+    counted = true;
+    ["statAgents", "statActions", "statContracts", "statTrust"].forEach(function (id) {
+      animateCount(document.getElementById(id));
+    });
+  }
+  if ("IntersectionObserver" in window) {
+    var co = new IntersectionObserver(function (entries) {
+      if (entries.some(function (e) { return e.isIntersecting; })) {
+        runCounters();
+        co.disconnect();
+      }
+    }, { threshold: 0.3 });
+    co.observe(document.querySelector(".stats"));
+  } else {
+    runCounters();
+  }
+
+  /* ---------- contracts grid ---------- */
+  var CONTRACTS = [
+    ["AgentRegistry",  "0x03E3701c98CFe457460BDe6b71d9b466CDC6cBe0"],
+    ["EconomicMemory", "0x8692F4Bbc7422139D4335AF01734bEbe99516900"],
+    ["VaultFactory",   "0x5883Bb4f6764D738304E9cc621e54b8B157775e4"],
+    ["RiskGuardVault", "0x397170E0c1315654CfbB09902f564C1bd7B1358B"],
+    ["VDX Token",      "0x85A78EDa8B300B7EEF196F876953Eb5b33Ea7984"],
+    ["VDXStaking",     "0xf3294C1cC9308DD507aeB9E4D4acc9D2b4062ccB"]
+  ];
+  var ICON =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="#7aa2ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' +
+    '<path d="M12 2l7 4v8l-7 4-7-4V6l7-4z"/><path d="M12 10l7-4M12 10L5 6M12 10v8"/></svg>';
+  var EXT =
+    '<svg class="ext" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' +
+    '<path d="M6 3h7v7M13 3L7 9"/><path d="M11 9v4H3V5h4"/></svg>';
+  var grid = document.getElementById("contractsGrid");
+  grid.innerHTML = CONTRACTS.map(function (c, i) {
+    return '<a class="ct rv' + (i % 2 ? " rv-d1" : "") + '" target="_blank" rel="noopener" ' +
+      'href="https://testnet.bscscan.com/address/' + c[1] + '">' +
+      '<span class="ci">' + ICON + '</span>' +
+      '<span class="meta"><span class="cn">' + c[0] + '</span>' +
+      '<span class="ca">' + c[1] + '</span></span>' + EXT + '</a>';
+  }).join("");
+  if ("IntersectionObserver" in window) {
+    grid.querySelectorAll(".rv").forEach(function (el) {
+      new IntersectionObserver(function (entries, obs) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.classList.add("in"); obs.unobserve(en.target); }
+        });
+      }, { threshold: 0.1 }).observe(el);
+    });
+  } else {
+    grid.querySelectorAll(".rv").forEach(function (el) { el.classList.add("in"); });
+  }
+
+  /* ---------- helpers ---------- */
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (ch) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch];
+    });
+  }
+  function setStat(id, value, suffix) {
+    var el = document.getElementById(id);
+    el.setAttribute("data-target", String(value));
+    el.setAttribute("data-suffix", suffix || "");
+    if (counted) el.textContent = value + (suffix || "");
+  }
+
+  /* ---------- live data ---------- */
+  function fetchJSON(url) {
+    return fetch(url, { headers: { "Accept": "application/json" } }).then(function (r) {
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    });
+  }
+
+  var API_BASE = location.port === "8600" ? "" : "/api";
+  var pAgents = fetchJSON(API_BASE + "/agents").catch(function () { return null; });
+  var pBit = fetchJSON(API_BASE + "/bitagent").catch(function () { return null; });
+
+  Promise.all([pAgents, pBit]).then(function (res) {
+    var ag = res[0], bit = res[1];
+
+    /* stats */
+    var agCount = ag && typeof ag.count === "number" ? ag.count : 0;
+    var bitCount = bit && typeof bit.count === "number" ? bit.count : 0;
+    if (agCount + bitCount > 0) setStat("statAgents", agCount + bitCount, "");
+    
+    if (ag && ag.agents && ag.agents.length && typeof ag.agents[0].trustScore === "number") {
+      setStat("statTrust", Math.round(ag.agents[0].trustScore), "");
+    }
+
+    /* leaderboard */
+    if (bit && bit.leaderboard && bit.leaderboard.length) {
+      var top = bit.leaderboard.slice(0, 5);
+      var rows = document.getElementById("lbRows");
+      rows.innerHTML = top.map(function (a, i) {
+        var score = Math.max(0, Math.min(100, Math.round(a.trustScore || 0)));
+        var stats = a.raw_stats || {};
+        var sub = [];
+        if (typeof stats.completed_jobs === "number") sub.push(stats.completed_jobs + " jobs");
+        if (typeof stats.total_revenue_usd === "number") sub.push("$" + Math.round(stats.total_revenue_usd).toLocaleString("en-US") + " revenue");
+        if (a.online) sub.push("online");
+        return '<div class="lb-row rv in">' +
+          '<span class="lb-rank' + (i === 0 ? " top" : "") + '">#' + (i + 1) + '</span>' +
+          '<span class="lb-name"><span class="h">' + esc(a.handle || a.name || "agent") + '</span>' +
+          '<span class="s">' + esc(sub.join(" · ") || (a.name || "")) + '</span></span>' +
+          '<span class="lb-bar"><i data-w="' + score + '"></i></span>' +
+          '<span class="lb-score">' + score + '</span></div>';
+      }).join("");
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          rows.querySelectorAll(".lb-bar i").forEach(function (bar) {
+            bar.style.width = bar.getAttribute("data-w") + "%";
+          });
+        });
+      });
+    }
+  });
+})();
+</script>
+</body>
+</html>

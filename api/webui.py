@@ -14,37 +14,63 @@ import html
 CSS = """
 :root{color-scheme:dark}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#0b0e14;color:#e6e9ef;font:15px/1.6 system-ui,-apple-system,sans-serif;padding:24px;max-width:960px;margin:0 auto}
-a{color:#7aa2ff;text-decoration:none}a:hover{text-decoration:underline}
-h1{font-size:26px;margin-bottom:4px}h2{font-size:18px;margin:24px 0 10px}
+body{background:#07090f;color:#e8ecf4;font:15px/1.65 system-ui,-apple-system,sans-serif;padding:28px 20px;max-width:1000px;margin:0 auto;position:relative}
+body::before{content:'';position:fixed;inset:0;z-index:-1;background:
+ radial-gradient(600px 400px at 85% -10%,rgba(139,92,246,.16),transparent 60%),
+ radial-gradient(700px 500px at -10% 20%,rgba(52,211,153,.10),transparent 60%),
+ linear-gradient(rgba(122,162,255,.035) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(122,162,255,.035) 1px,transparent 1px);
+ background-size:auto,auto,44px 44px,44px 44px}
+a{color:#7aa2ff;text-decoration:none;transition:.2s}a:hover{color:#a5c0ff}
+h1{font-size:clamp(24px,4vw,32px);font-weight:800;margin-bottom:4px;
+ background:linear-gradient(90deg,#e8ecf4,#34d399 55%,#7aa2ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:18px;margin:26px 0 10px;color:#cdd6e4}
 .sub{color:#8b93a7;margin-bottom:20px}
-.badge{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:600}
-.b-ok{background:#123524;color:#4ade80}.b-warn{background:#3a2a12;color:#fbbf24}.b-dim{background:#1c2230;color:#8b93a7}
+.badge{display:inline-block;padding:3px 12px;border-radius:99px;font-size:12px;font-weight:700;letter-spacing:.02em}
+.b-ok{background:rgba(52,211,153,.12);color:#34d399;border:1px solid rgba(52,211,153,.35)}
+.b-warn{background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.3)}
+.b-dim{background:#161b28;color:#8b93a7;border:1px solid #202839}
 table{width:100%;border-collapse:collapse;margin-top:8px}
-th{color:#8b93a7;text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.05em;padding:8px 10px;border-bottom:1px solid #1c2230}
-td{padding:9px 10px;border-bottom:1px solid #141926}
-tr:hover td{background:#10141f}
-.score{font-weight:700;font-variant-numeric:tabular-nums}
-.big{font-size:44px;font-weight:800;line-height:1.1}
-.card{background:#10141f;border:1px solid #1c2230;border-radius:12px;padding:18px;margin:12px 0}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-.kv .k{color:#8b93a7;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
-.kv .v{font-size:17px;font-weight:600;margin-top:2px;word-break:break-all}
-.bar{height:8px;background:#1c2230;border-radius:99px;overflow:hidden;margin-top:4px}
-.bar>div{height:100%;background:linear-gradient(90deg,#4ade80,#7aa2ff)}
-.mono{font-family:ui-monospace,monospace;font-size:13px}
-.foot{color:#5b6172;font-size:12px;margin-top:28px}
+th{color:#8b93a7;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.08em;padding:9px 12px;border-bottom:1px solid #1b2232}
+td{padding:11px 12px;border-bottom:1px solid #121826}
+tr{transition:.15s}tr:hover td{background:rgba(122,162,255,.05)}
+.score{font-weight:800;font-variant-numeric:tabular-nums}
+.big{font-size:clamp(36px,6vw,52px);font-weight:900;line-height:1.05;
+ background:linear-gradient(120deg,#34d399,#7aa2ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.card{background:rgba(16,21,33,.72);border:1px solid #1b2232;border-radius:16px;padding:20px;margin:14px 0;
+ backdrop-filter:blur(8px);box-shadow:0 0 0 1px rgba(122,162,255,.03),0 8px 32px rgba(0,0,0,.35);transition:.25s}
+.card:hover{border-color:rgba(52,211,153,.35);box-shadow:0 0 24px rgba(52,211,153,.07),0 8px 32px rgba(0,0,0,.35)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.kv .k{color:#8b93a7;font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+.kv .v{font-size:17px;font-weight:700;margin-top:2px;word-break:break-all}
+.bar{height:8px;background:#161b28;border-radius:99px;overflow:hidden;margin-top:5px}
+.bar>div{height:100%;background:linear-gradient(90deg,#34d399,#7aa2ff);box-shadow:0 0 10px rgba(52,211,153,.5)}
+.mono{font-family:ui-monospace,SFMono-Regular,monospace;font-size:13px}
+.foot{color:#5b6172;font-size:12px;margin-top:30px;border-top:1px solid #121826;padding-top:14px}
 .tblwrap{overflow-x:auto}
+button{background:linear-gradient(90deg,#34d399,#4f8df9);color:#06121c;font-weight:800;border:0;border-radius:10px;
+ padding:10px 18px;cursor:pointer;transition:.2s;box-shadow:0 0 18px rgba(52,211,153,.25)}
+button:hover{transform:translateY(-1px);box-shadow:0 0 26px rgba(52,211,153,.45)}
+input{width:100%;padding:9px 10px;background:#0a0e18;border:1px solid #1b2232;border-radius:9px;color:#e8ecf4;transition:.2s}
+input:focus{outline:none;border-color:#34d399;box-shadow:0 0 0 3px rgba(52,211,153,.12)}
 """
+
+
+NAV = ("<nav style='display:flex;gap:18px;align-items:center;margin-bottom:26px;font-weight:600'>"
+       "<a href='/' style='font-weight:900;font-size:17px;letter-spacing:.02em'>"
+       "<span style='color:#34d399'>◆</span> VERDIX</a>"
+       "<span style='flex:1'></span>"
+       "<a href='/web'>Directory</a><a href='/web/create'>Launch App</a>"
+       "<a href='https://github.com/rexalpaundra0902-droid/verdix'>GitHub</a></nav>")
 
 
 def page(title: str, body: str) -> str:
     return (f"<!doctype html><html><head><meta charset='utf-8'>"
             f"<meta name='viewport' content='width=device-width,initial-scale=1'>"
             f"<title>{html.escape(title)}</title><style>{CSS}</style></head>"
-            f"<body>{body}<p class='foot'>Verdix — verifiable economic memory for AI agents · "
-            f"data dihitung live dari BSC testnet &amp; Membase · "
-            f"<a href='https://github.com/rexalpaundra0902-droid/verdix'>source</a></p></body></html>")
+            f"<body>{NAV}{body}<p class='foot'>Verdix — verifiable economic memory for AI agents · "
+            f"live data from BSC testnet &amp; Membase · "
+            f"<a href='https://github.com/rexalpaundra0902-droid/verdix'>source</a> · testnet only, not investment advice</p></body></html>")
 
 
 def score_badge(s: float) -> str:
