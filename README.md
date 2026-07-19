@@ -142,6 +142,9 @@ never committed. Testnet only — no real funds.
   right before consequences land). Staked amount is surfaced by the Reputation
   API as `vdxStaked` — reputation backed by capital at risk. Mainnet TGE is
   deliberately deferred until the protocol has real external usage.
+  ⚠️ Deliberate design, read before staking: third-party stake is a permanent
+  *vouch* — only the agent's controller can ever withdraw it; and each new
+  unstake request re-locks the whole pending amount (cooldown extends).
 
 - `docs/MOAT_V9_ADDENDUM.md` — moat repositioning & identity-transfer mitigation
 - `docs/UNIBASE_RECON.md` — integration recon + reverse-engineered auth path

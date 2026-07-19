@@ -12,6 +12,14 @@ import {AgentRegistry} from "./AgentRegistry.sol";
 ///         membaca stakedOf() sebagai komponen "skin in the game" — reputasi
 ///         yang ditopang modal yang bisa hangus lebih mahal untuk dipalsukan
 ///         (cost-of-forgery, konsisten spec v8).
+///
+/// @dev DUA KONSEKUENSI DESAIN YANG DISENGAJA — pahami sebelum stake:
+///      1. Stake dari pihak ketiga = BACKING PERMANEN (vouching), bukan
+///         deposito: yang bisa menarik hanya controller agent tersebut.
+///         Jangan stake untuk agent yang tidak kamu percayai controllernya.
+///      2. requestUnstake baru me-reset unlockAt untuk SELURUH pending —
+///         request tambahan memperpanjang kunci pending sebelumnya (anti
+///         gaming; unstake dicicil = cooldown ikut mundur).
 contract VDXStaking {
     using SafeERC20 for IERC20;
 
