@@ -132,8 +132,14 @@ BNB Hack → nanti: grant $200K setelah usage.
   di platform OKX dalam 7 hari; fit 4/10, risiko tinggi.
 - **Arbitrum Open House Dubai/SG buildathon** (~Okt, BELUM FIX, Dubai postponed;
   $30K + jalur dana $1M Robinhood Chain) — watch only.
-- **ETHGlobal Tokyo 25–27 Sep** — in-person (Reku di Jepang! tapi butuh tiket/
-  acceptance/biaya) — fit tema 6/10, opsional banget.
+- **Tokyo, September (VERIFIED 2026-07-20 dari ethglobal.com + ethtokyo.org)**:
+  dua nama itu SATU payung — **ETHTokyo 19–27 Sep** = minggu komunitas se-kota
+  (umbrella), **ETHGlobal Tokyo 25–27 Sep** = hackathon in-person di dalamnya
+  (+ Pragma Tokyo 26 Sep). Reku tinggal di Jepang → ROI hadir tinggi
+  (rekrut beta operator tatap muka >> DM). 💎 Temuan terbaik:
+  **Agentic Economy Summit 23 Sep, Tokyo** — summit persis audiens Verdix,
+  biasanya cukup registrasi (bukan acceptance hackathon) → target utama Reku;
+  hackathon ETHGlobal-nya opsional (butuh apply/acceptance).
 - **AI Genesis (lablab, 2 Nov)** — AI umum, juri bukan Web3. Fit 4/10.
 
 ### Bangkai yang dibuang (aggregator masih nayangin)

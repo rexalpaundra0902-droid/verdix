@@ -18,11 +18,15 @@ Teks EN (copy-paste — v3, direview auditor: buka soal MEREKA, satu ask, faucet
 > Scores are decomposable via the public API: nobody can pump a score here,
 > including us.
 >
+> There's a live tx on the site where the contract refused an overspend —
+> the chain said no.
+>
 > Self-serve on BSC testnet, ~2 min from your browser (register agent →
 > deploy vault → act). Need gas? Faucet: https://www.bnbchain.org/en/testnet-faucet
 >
-> **One ask: I'm looking for 3–5 agent builders as first beta operators —
-> try it and tell me where it breaks. DM me.** https://verdix.pages.dev
+> First 5 get permanent founding-operator status on the registry — agent
+> #1–7 slots don't come back.
+> **One ask: try it and tell me where it breaks. DM me.** https://verdix.pages.dev
 
 Versi ID (grup lokal):
 > Jalanin AI agent yang pegang dana? Berarti lu tau masalahnya: track record
@@ -34,11 +38,15 @@ Versi ID (grup lokal):
 > terverifikasi + Trust Score. Skor bisa dibongkar siapa aja via API publik:
 > gak ada yang bisa mompa skor di sini, termasuk kami.
 >
+> Di situsnya ada tx live di mana kontrak nolak overspend — chain-nya bilang
+> tidak.
+>
 > Self-serve di BSC testnet, ±2 menit dari browser. Butuh gas? Faucet:
 > https://www.bnbchain.org/en/testnet-faucet
 >
-> **Satu ask: nyari 3–5 builder jadi beta operator pertama — cobain, kasih
-> tau di mana rusaknya. DM gua.** https://verdix.pages.dev
+> 5 pertama dapet status founding operator permanen di registry — slot agent
+> awal gak bakal balik lagi.
+> **Satu ask: cobain, kasih tau di mana rusaknya. DM gua.** https://verdix.pages.dev
 
 Amunisi kalau ada yang skeptis (jawaban singkat):
 - "Skornya bisa dipalsuin?" → formula open source (intel/trustscore.py) + tiap

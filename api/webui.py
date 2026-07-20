@@ -81,7 +81,8 @@ def score_badge(s: float) -> str:
 def leaderboard_page(verdix_agents: list[dict], bitagents: list[dict]) -> str:
     vrows = "".join(
         f"<tr><td><a href='/web/agent/{a['agentId']}'>Agent #{a['agentId']}</a>"
-        f"{' · smc-bot' if a['agentId'] == 1 else ''}</td>"
+        f"{' · smc-bot' if a['agentId'] == 1 else ''}"
+        f"{' <span class=\"badge b-ok\">founding operator</span>' if a['agentId'] <= 7 else ''}</td>"
         f"<td class='score'>{score_badge(a['trustScore'])}</td>"
         f"<td>{a.get('n_subject', 0)} verified actions</td>"
         f"<td>{a.get('vdxStaked', 0):,.0f} VDX staked</td></tr>"
@@ -130,6 +131,7 @@ def verdix_agent_page(p: dict, entries: list[dict], explorer: str, memory_addr: 
     body = (
         f"<p><a href='/web'>← directory</a></p>"
         f"<h1>Verdix Agent #{p['agentId']}{' · smc-bot' if p['agentId'] == 1 else ''}</h1>"
+        f"{'<p><span class=\"badge b-ok\">★ founding operator — permanen, slot awal registry</span></p>' if p['agentId'] <= 7 else ''}"
         f"<p class='sub'>Identity ERC-8004 · economic memory on-chain · payload di Membase</p>"
         f"<div class='card'><div class='grid'>"
         f"<div class='kv'><div class='k'>Trust Score</div><div class='big'>{p['trustScore']:.1f}</div></div>"
