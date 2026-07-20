@@ -106,6 +106,10 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):  # noqa: N802
         try:
             parts = [p for p in self.path.split("?")[0].split("/") if p]
+            # alias /api/<x> → /<x>: contoh curl yang diiklankan (verdix.pages.dev/api/...)
+            # harus juga jalan kalau di-hit langsung ke domain API
+            if len(parts) > 1 and parts[0] == "api":
+                parts = parts[1:]
             if not parts:
                 landing = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "landing.html")
                 if os.path.exists(landing):
