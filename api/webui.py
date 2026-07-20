@@ -167,6 +167,28 @@ I18N = {
  "Agent #1's live profile": ["profil live Agent #1","1 号代理的实时档案","Agent #1のライブプロフィール","에이전트 #1 라이브 프로필","el perfil en vivo del Agente #1","живом профиле Агента №1"],
  ": score, components, and the full entry log.": [": skor, komponen, dan log entry lengkap.","：评分、组件与完整条目日志。","：スコア、構成要素、全エントリログ。",": 점수, 구성요소, 전체 엔트리 로그.",": puntuación, componentes y el registro completo.",": рейтинг, компоненты и полный журнал записей."],
  "Both transactions are real. Click them — don't take our word for it.": ["Dua-duanya transaksi nyata. Klik aja — jangan percaya kata kami.","两笔交易都是真的。点开看 — 别只听我们说。","2つのトランザクションは本物。クリックして確かめて — 我々の言葉を信じるな。","두 거래 모두 실제입니다. 클릭해보세요 — 우리 말만 믿지 마세요.","Ambas transacciones son reales. Haz clic: no nos creas a nosotros.","Обе транзакции настоящие. Кликните — не верьте нам на слово."],
+ "Verdix API — live endpoints": ["Verdix API — endpoint live","Verdix API — 实时端点","Verdix API — ライブエンドポイント","Verdix API — 라이브 엔드포인트","API de Verdix: endpoints en vivo","Verdix API — живые эндпоинты"],
+ "Public, free, no key required. Everything this site shows is computed from these endpoints — same data, machine-readable.":
+   ["Publik, gratis, tanpa API key. Semua yang situs ini tampilkan dihitung dari endpoint ini — data sama, machine-readable.",
+    "公开、免费、无需密钥。本站显示的一切都来自这些端点 — 同样的数据，机器可读。",
+    "公開・無料・キー不要。このサイトの表示はすべてこれらのエンドポイントから — 同じデータを機械可読で。",
+    "공개, 무료, 키 불필요. 이 사이트의 모든 표시는 이 엔드포인트에서 계산됩니다 — 같은 데이터, 기계 판독형.",
+    "Pública, gratuita, sin clave. Todo lo que muestra este sitio se calcula desde estos endpoints: mismos datos, legibles por máquina.",
+    "Публичный, бесплатный, без ключа. Всё на этом сайте считается из этих эндпоинтов — те же данные, машиночитаемо."],
+ "Endpoint": ["Endpoint","端点","エンドポイント","엔드포인트","Endpoint","Эндпоинт"],
+ "What it returns": ["Apa yang dikembalikan","返回内容","返すもの","반환 내용","Qué devuelve","Что возвращает"],
+ "Try": ["Coba","试试","試す","시도","Probar","Попробовать"],
+ "All Verdix-native agents with Trust Score, verified actions, and stake.": ["Semua agent Verdix-native dgn Trust Score, aksi terverifikasi, dan stake.","所有 Verdix 原生代理及其 Trust Score、已验证操作与质押。","全Verdixネイティブエージェント：Trust Score・検証済みアクション・ステーク。","모든 Verdix 네이티브 에이전트: Trust Score, 검증 액션, 스테이크.","Todos los agentes nativos con Trust Score, acciones verificadas y stake.","Все Verdix-агенты: Trust Score, действия, стейк."],
+ "Full score breakdown for one agent — every formula component, raw.": ["Rincian skor lengkap satu agent — semua komponen formula, mentah.","单个代理的完整评分拆解 — 每个公式组件的原始值。","1エージェントのスコア全内訳 — 全構成要素を生値で。","한 에이전트의 전체 점수 분해 — 모든 공식 구성요소 원값.","Desglose completo de un agente: cada componente de la fórmula, en bruto.","Полная разбивка рейтинга агента — все компоненты формулы."],
+ "The agent's Economic CV in markdown — its track record as a document.": ["Economic CV agent dalam markdown — track record-nya sebagai dokumen.","代理的 Economic CV（markdown）— 以文档形式呈现的业绩。","エージェントのEconomic CV（markdown）— 実績を文書として。","에이전트의 Economic CV(마크다운) — 문서 형태의 실적.","El Economic CV del agente en markdown: su historial como documento.","Economic CV агента в markdown — послужной список документом."],
+ "Latest Economic Memory entries recorded on-chain.": ["Entry Economic Memory terbaru yang tercatat on-chain.","链上最新的 Economic Memory 条目。","オンチェーン記録の最新Economic Memoryエントリ。","온체인에 기록된 최신 Economic Memory 엔트리.","Últimas entradas de Economic Memory registradas on-chain.","Свежие записи Economic Memory из блокчейна."],
+ "The verified payload behind an on-chain dataHash, fetched from Membase.": ["Payload terverifikasi di balik dataHash on-chain, diambil dari Membase.","链上 dataHash 背后的已验证数据，取自 Membase。","オンチェーンdataHashの裏の検証済みペイロード（Membaseから）。","온체인 dataHash 뒤의 검증된 페이로드(Membase에서).","El payload verificado tras un dataHash on-chain, desde Membase.","Проверенные данные за ончейн-dataHash из Membase."],
+ "Trust-score leaderboard of the BitAgent ecosystem (63+ agents).": ["Leaderboard trust-score ekosistem BitAgent (63+ agent).","BitAgent 生态的信任评分排行（63+ 代理）。","BitAgentエコシステムのスコアリーダーボード（63+）。","BitAgent 생태계 신뢰 점수 리더보드(63+ 에이전트).","Clasificación de confianza del ecosistema BitAgent (63+ agentes).","Рейтинг доверия экосистемы BitAgent (63+ агентов)."],
+ "Score detail + on-chain identity check for one BitAgent agent.": ["Detail skor + cek identity on-chain satu agent BitAgent.","单个 BitAgent 代理的评分详情与链上身份核验。","BitAgentエージェント1件のスコア詳細＋オンチェーンID検証。","BitAgent 에이전트 하나의 점수 상세 + 온체인 신원 확인.","Detalle de puntuación + verificación de identidad on-chain de un agente BitAgent.","Детали рейтинга + ончейн-проверка личности агента BitAgent."],
+ "Quick start": ["Mulai cepat","快速开始","クイックスタート","빠른 시작","Inicio rápido","Быстрый старт"],
+ "Base URL works on both domains:": ["Base URL jalan di dua domain:","两个域名都可用：","ベースURLは両ドメインで有効：","베이스 URL은 두 도메인 모두 작동:","La URL base funciona en ambos dominios:","Базовый URL работает на обоих доменах:"],
+ "The scoring formula is open source —": ["Formula skornya open source —","评分公式开源 —","スコア式はオープンソース —","점수 공식은 오픈소스 —","La fórmula de puntuación es de código abierto:","Формула рейтинга открыта —"],
+ "read intel/trustscore.py": ["baca intel/trustscore.py","阅读 intel/trustscore.py","intel/trustscore.pyを読む","intel/trustscore.py 읽기","lee intel/trustscore.py","читайте intel/trustscore.py"],
  "Manage Vault": ["Kelola Vault","管理金库","ボールト管理","볼트 관리","Gestionar bóveda","Управление хранилищем"],
  "Your non-custodial vault on BSC Testnet. State is read straight from the chain — the controls below enforce on-chain policy; your agent can never break it.":
    ["Vault non-custodial-mu di BSC Testnet. State dibaca langsung dari chain — kontrol di bawah menegakkan policy on-chain; agent-mu gak akan pernah bisa melanggarnya.",
@@ -316,6 +338,7 @@ input{width:100%;padding:9px 10px;background:#0a0e18;border:1px solid #1b2232;bo
 input:focus{outline:none;border-color:#34d399;box-shadow:0 0 0 3px rgba(52,211,153,.12)}
 .lang-sel{background:#0a0e18;border:1px solid #1b2232;color:#8b93a7;border-radius:8px;padding:5px 8px;font:600 12px ui-monospace,monospace;cursor:pointer}
 .lang-sel:focus{outline:none;border-color:#34d399}
+.code{background:#0a0e18;border:1px solid #1b2232;border-radius:10px;padding:14px;overflow-x:auto;font-family:ui-monospace,monospace;font-size:12.5px;color:#a5c0ff;white-space:pre;line-height:1.5;margin-top:8px}
 .topnav{display:flex;gap:18px;row-gap:8px;align-items:center;margin-bottom:26px;font-weight:600;flex-wrap:wrap}
 @media(max-width:480px){.topnav{gap:12px}}
 .guide{margin:10px 0 0 18px;display:grid;gap:9px}
@@ -437,3 +460,35 @@ def bitagent_page(b: dict) -> str:
         f"<h2>Score components</h2><div class='card'><div class='grid'>{_component_bars(comp)}</div></div>"
         f"<p class='sub'>Source: {html.escape(b['source'])} · <a href='/bitagent/{html.escape(str(b['handle']))}'>raw JSON</a></p>")
     return page(f"{b['handle']} — Verdix Trust", body)
+
+
+def api_docs_page() -> str:
+    base = "https://verdix.pages.dev/api"
+    eps = [
+        ("GET /agents", "All Verdix-native agents with Trust Score, verified actions, and stake.", f"{base}/agents"),
+        ("GET /agent/&lt;id&gt;", "Full score breakdown for one agent — every formula component, raw.", f"{base}/agent/1"),
+        ("GET /agent/&lt;id&gt;/cv", "The agent's Economic CV in markdown — its track record as a document.", f"{base}/agent/1/cv"),
+        ("GET /entries", "Latest Economic Memory entries recorded on-chain.", f"{base}/entries"),
+        ("GET /memory/&lt;dataHash&gt;", "The verified payload behind an on-chain dataHash, fetched from Membase.", None),
+        ("GET /bitagent", "Trust-score leaderboard of the BitAgent ecosystem (63+ agents).", f"{base}/bitagent"),
+        ("GET /bitagent/&lt;handle&gt;", "Score detail + on-chain identity check for one BitAgent agent.", None),
+    ]
+    rows = "".join(
+        f"<tr><td class='mono'>{ep}</td><td>{desc}</td>"
+        + ("<td><a href='%s' target='_blank' rel='noopener'>Open live →</a></td>" % url if url else "<td>—</td>")
+        + "</tr>"
+        for ep, desc, url in eps)
+    body = (
+        "<p><a href='/web'>← directory</a></p>"
+        "<h1>Verdix API — live endpoints</h1>"
+        "<p class='sub'>Public, free, no key required. Everything this site shows is computed from these endpoints — same data, machine-readable.</p>"
+        f"<div class='tblwrap'><table><tr><th>Endpoint</th><th>What it returns</th><th>Try</th></tr>{rows}</table></div>"
+        "<div class='card' style='margin-top:18px'><b>Quick start</b>"
+        "<pre class='code'>curl https://verdix.pages.dev/api/agent/1\n"
+        "# → trustScore + every raw component (success_rate, counterparty_diversity,\n"
+        "#   stress_behavior, dispute record, VDX staked …) — decompose the score yourself</pre>"
+        "<p class='sub' style='margin-top:8px'>Base URL works on both domains: "
+        "<span class='mono'>verdix.pages.dev/api/…</span> · <span class='mono'>verdix-api.kilatlab.com/api/…</span></p>"
+        "<p class='sub'>The scoring formula is open source — "
+        "<a href='https://github.com/rexalpaundra0902-droid/verdix/blob/HEAD/intel/trustscore.py' target='_blank' rel='noopener'>read intel/trustscore.py</a>.</p></div>")
+    return page("Verdix API", body)

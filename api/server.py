@@ -178,16 +178,29 @@ class Handler(BaseHTTPRequestHandler):
                 self._reply(200, json.dumps({"count": len(st["entries"]), "recent": recent}, indent=2))
             elif parts == ["agents"]:
                 st = chain_state()
-                agents = [
-                    {"agentId": i, "trustScore": agent_payload(i)["trustScore"]}
-                    for i in range(1, st["n_agents"] + 1)
-                ]
+                names = {1: "smc-bot", 2: "reku"}
+                agents = []
+                for i in range(1, st["n_agents"] + 1):
+                    p = agent_payload(i)
+                    agents.append({
+                        "agentId": i,
+                        "name": names.get(i, f"agent-{i}"),
+                        "trustScore": p["trustScore"],
+                        "verifiedActions": p["n_subject"],
+                        "vdxStaked": p["vdxStaked"],
+                        "foundingOperator": i <= 7,
+                        "profile": f"https://verdix.pages.dev/web/agent/{i}",
+                        "detail": f"https://verdix.pages.dev/api/agent/{i}",
+                    })
                 self._reply(200, json.dumps({"count": len(agents), "agents": agents}, indent=2))
             elif parts[0] == "web":
                 if len(parts) == 2 and parts[1] == "create":
                     from api.create_page import create_page
 
                     self._reply(200, create_page(webui.page), ctype="text/html")
+                    return
+                if len(parts) == 2 and parts[1] == "api":
+                    self._reply(200, webui.api_docs_page(), ctype="text/html")
                     return
                 if len(parts) == 3 and parts[1] == "vault" and parts[2].startswith("0x") and len(parts[2]) == 42:
                     from api.vault_page import vault_page
