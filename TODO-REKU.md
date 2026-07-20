@@ -123,6 +123,16 @@ Cek perlakuan pajak grant crypto utk residen Jepang (grant USD/token = income?
 timing pengakuan? NTA Jepang ketat soal crypto) — konsul akuntan/pajak lokal
 SEBELUM pencairan pertama, jangan pas telat.
 
+## 🗓 AGENDA DISKUSI (bukan aksi) — Robinhood Chain di Phase 3
+Roadmap publik janji "Robinhood Chain deploy" tapi belum pernah dibahas bareng
+= utang janji-tanpa-rencana. Duduk bareng kapan-kapan, putuskan salah satu:
+(a) bikin rencananya beneran (faucet→deploy→API multi-chain, ±1 hari kerja),
+(b) turunkan dari roadmap publik sampai ada rencana,
+(c) ganti wording jadi lebih longgar ("multi-chain expansion").
+Konteks asal: chain trading AI-native L2 Arbitrum, $1jt builder pool via
+Open House (~Okt, belum fix), faucet nunggu klik Reku. Jangan diputuskan
+sendirian oleh gua — ini komitmen publik.
+
 ## 7. Domain sendiri — RENCANA REKU minggu depan (±27 Jul)
 - **Daftar via Cloudflare Registrar** (dash.cloudflare.com → Domain Registration):
   harga at-cost tanpa markup, dan DNS langsung nyatu sama akun CF yang udah
