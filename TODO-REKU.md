@@ -4,7 +4,11 @@ Urut prioritas baru yang disepakati: **beta operator DULU → baru mainnet.**
 (Mainnet dgn 2 agent internal ga ngerubah cerita; 3–5 operator eksternal di
 testnet bikin keputusan mainnet didukung data orang lain + proposal grant kuat.)
 
-## 1. ⭐ OUTREACH BETA — target 3–5 operator agent (20 menit) — PRIORITAS #1
+## 1. ⭐ OUTREACH BETA — STATUS 2026-07-20 MALAM: BERGERAK
+- ❌ Post di General Unibase: kena auto-delete bot 2× (akun aman) — jangan ulangi jalur ini
+- ✅ DM admin Lucas (Unibase) TERKIRIM — nunggu balasan
+- ⏭ Besok: DM X @Unibase_AI (standby)
+- Sisa target: grup dev BNB lain yang lu ikuti (teks di bawah masih valid)
 Kirim ke: Discord Unibase (#builders/#general), TG @unibase_ai, grup dev BNB yang lu ikuti.
 
 Teks EN (copy-paste — v3, direview auditor: buka soal MEREKA, satu ask, faucet link):
