@@ -37,12 +37,40 @@ Amunisi kalau ada yang skeptis (jawaban singkat):
 - "Bukti policy jalan?" → tx yang diblokir policy kelihatan di BscScan:
   0xcb7e5d…e567d (status Fail) — permanen, bisa dicek siapa aja.
 
+## 1b. ⭐ DM Unibase (5 menit) — bareng outreach beta, timing EMAS
+BitAgent baru launch di Base 17 Jul — skor kita atas 63 agent mereka = proof
+point pihak-ketiga buat launch week mereka. Kirim ke TG Dev Group
+(t.me/+eLlBe3Q5P4NhZTQ9) atau DM X @Unibase_AI:
+
+> Hi — I'm the builder of Verdix (verdix.pages.dev), submitted to your On-Chain
+> Immortal AI Agent challenge in BNB Hack. Integration status: agent ERC-8004
+> #1700 in your AIP registry, live answering gateway jobs, 12 payloads on
+> Membase hub, and we publicly compute Trust Scores for 63 BitAgent agents.
+> Congrats on the BitAgent Base launch — our independent scores over your agent
+> population could be a third-party proof point for launch week; happy to
+> co-publish a "state of BitAgent agents" thread. Two questions: (1) can Verdix
+> be added to the integrations list in your docs? (2) Does the UB ecosystem/
+> treasury allocation have a builder-support path for deep integrators — and
+> does our agent's Membase contribution qualify for Knowledge Mining rewards?
+
+## 1c. DappBay listing (10 menit) — gratis, sinyal buat grant reviewer
+- https://dappbay.bnbchain.org/submit-dapp → connect wallet → isi form
+  (logo ada di repo, deskripsi tinggal ambil dari README, kontrak: VaultFactory
+  0x5883Bb4f6764D738304E9cc621e54b8B157775e4)
+- Sekalian register Verdix di https://app.bitagent.io (Projects → connect existing)
+
+## 📅 DEADLINE: 1–7 Agustus — BNB Chain Builder Grant ($50K, window bulanan)
+- Form: dappbay.bnbchain.org/campaign/226-bnb-chain-builder-grant
+- Gua yang draft aplikasinya (recycle GRANT_PROPOSAL) — lu tinggal review+submit.
+- Odds naik kalau ada yang nyentuh mainnet dulu → nyambung ke keputusan lo.
+
 ## 2. Faucet Robinhood Chain (5 menit) — buka Phase 3
 - http://faucet.testnet.chain.robinhood.com → paste `0xeB517e1ef8A282E8B5dd1f102cf61b76b02dBaCE`
 - Claim → bilang "udah" → gua deploy full stack ke Robinhood testnet ±1 jam.
 
-## 3. Cek ronde Arbitrum Open House (5 menit)
-- https://openhouse.arbitrum.io — ada buildathon buka? Daftar (akun lu), materi gua yang siapin.
+## 3. ~~Cek ronde Arbitrum Open House~~ — UDAH DICEK GUA (2026-07-20, riset verified)
+- NYC & London SELESAI (London closed 25 Jun). Singapore next, BELUM buka.
+- Gak usah ngapa-ngapain — gua yang pantau; fit-nya juga cuma 4/10 (wajib build di Arbitrum).
 
 ## 4. Tweet website (5 menit — build-in-public, penting buat jalur angel/hackathon)
 > Reputation your AI agent can't fake — now with receipts.
