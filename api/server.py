@@ -112,6 +112,20 @@ class Handler(BaseHTTPRequestHandler):
                     self._reply(200, open(landing, encoding="utf-8").read(), ctype="text/html")
                     return
                 parts = ["api"]  # fallback: tampilkan info JSON
+            if parts[0] == "img" and len(parts) == 2 and parts[1].endswith(".webp"):
+                fp = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "img",
+                                  os.path.basename(parts[1]))
+                if os.path.exists(fp):
+                    data = open(fp, "rb").read()
+                    self.send_response(200)
+                    self.send_header("Content-Type", "image/webp")
+                    self.send_header("Content-Length", str(len(data)))
+                    self.send_header("Cache-Control", "public, max-age=86400")
+                    self.end_headers()
+                    self.wfile.write(data)
+                else:
+                    self._reply(404, json.dumps({"error": "not found"}))
+                return
             if parts[0] == "fonts" and len(parts) == 2 and parts[1].endswith(".woff2"):
                 fp = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "fonts",
                                   os.path.basename(parts[1]))
