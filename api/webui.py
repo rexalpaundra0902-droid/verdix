@@ -96,8 +96,8 @@ def leaderboard_page(verdix_agents: list[dict], bitagents: list[dict]) -> str:
         for b in bitagents)
     body = (
         "<h1>Verdix Trust Directory</h1>"
-        "<p class='sub'>Skor kepercayaan AI agent — dihitung dari bukti, bukan klaim. "
-        "Economic memory on-chain (BSC testnet) + payload terverifikasi di Membase. "
+        "<p class='sub'>Trust scores for AI agents — computed from proofs, not claims. "
+        "On-chain economic memory (BSC testnet) + verified payloads on Membase. "
         "<a href='/web/create'><b>→ Create your Verified Agent Vault</b></a></p>"
         "<h2>Verdix-native agents (full on-chain economic memory)</h2>"
         "<div class='tblwrap'><table><tr><th>Agent</th><th>Trust Score</th><th>History</th><th>Skin in the game</th></tr>"
@@ -131,19 +131,19 @@ def verdix_agent_page(p: dict, entries: list[dict], explorer: str, memory_addr: 
     body = (
         f"<p><a href='/web'>← directory</a></p>"
         f"<h1>Verdix Agent #{p['agentId']}{' · smc-bot' if p['agentId'] == 1 else ''}</h1>"
-        f"{'<p><span class=\"badge b-ok\">★ founding operator — permanen, slot awal registry</span></p>' if p['agentId'] <= 7 else ''}"
-        f"<p class='sub'>Identity ERC-8004 · economic memory on-chain · payload di Membase</p>"
+        f"{'<p><span class=\"badge b-ok\">★ founding operator — permanent, original registry slot</span></p>' if p['agentId'] <= 7 else ''}"
+        f"<p class='sub'>Identity ERC-8004 · economic memory on-chain · payloads on Membase</p>"
         f"<div class='card'><div class='grid'>"
         f"<div class='kv'><div class='k'>Trust Score</div><div class='big'>{p['trustScore']:.1f}</div></div>"
         f"<div class='kv'><div class='k'>Verified actions</div><div class='v'>{p['n_subject']}</div></div>"
         f"<div class='kv'><div class='k'>VDX staked</div><div class='v'>{p.get('vdxStaked', 0):,.0f}</div></div>"
-        f"<div class='kv'><div class='k'>Kalah dispute</div><div class='v'>{p['disputes_against']}</div></div>"
-        f"<div class='kv'><div class='k'>Perpindahan kontrol</div><div class='v'>{p['n_control_changes']}</div></div>"
+        f"<div class='kv'><div class='k'>Disputes lost</div><div class='v'>{p['disputes_against']}</div></div>"
+        f"<div class='kv'><div class='k'>Control changes</div><div class='v'>{p['n_control_changes']}</div></div>"
         f"</div></div>"
-        f"<h2>Komponen skor</h2><div class='card'><div class='grid'>{_component_bars(comp)}</div></div>"
-        f"<h2>Economic memory (15 terakhir)</h2>"
-        f"<div class='tblwrap'><table><tr><th>Entry</th><th>Class/Tier</th><th>Outcome</th><th>Payload (verifikasi)</th></tr>{ent_rows}</table></div>"
-        f"<p class='sub' style='margin-top:12px'>Verifikasi mandiri: "
+        f"<h2>Score components</h2><div class='card'><div class='grid'>{_component_bars(comp)}</div></div>"
+        f"<h2>Economic memory (last 15)</h2>"
+        f"<div class='tblwrap'><table><tr><th>Entry</th><th>Class/Tier</th><th>Outcome</th><th>Payload (verify)</th></tr>{ent_rows}</table></div>"
+        f"<p class='sub' style='margin-top:12px'>Verify it yourself: "
         f"<a href='{explorer}/address/{memory_addr}#readContract'>EconomicMemory di BscScan</a> · "
         f"<a href='/agent/{p['agentId']}'>raw JSON</a> · <a href='/agent/{p['agentId']}/cv'>Economic CV</a></p>")
     return page(f"Verdix Agent #{p['agentId']}", body)
@@ -153,7 +153,7 @@ def bitagent_page(b: dict) -> str:
     comp = b["components"]
     onchain = b.get("identity_verified_onchain")
     ver = ("<span class='badge b-ok'>identity verified on-chain ✓</span>" if onchain
-           else "<span class='badge b-warn'>identity belum terverifikasi on-chain</span>")
+           else "<span class='badge b-warn'>identity not yet verified on-chain</span>")
     body = (
         f"<p><a href='/web'>← directory</a></p>"
         f"<h1>{html.escape(str(b['name'] or b['handle']))}</h1>"
@@ -164,6 +164,6 @@ def bitagent_page(b: dict) -> str:
         f"<div class='kv'><div class='k'>Revenue</div><div class='v'>${b['raw_stats']['total_revenue_usd']:.4f}</div></div>"
         f"<div class='kv'><div class='k'>Status</div><div class='v'>{'online' if b.get('online') else 'offline'}</div></div>"
         f"</div><p style='margin-top:10px'>{ver}</p></div>"
-        f"<h2>Komponen skor</h2><div class='card'><div class='grid'>{_component_bars(comp)}</div></div>"
-        f"<p class='sub'>Sumber: {html.escape(b['source'])} · <a href='/bitagent/{html.escape(str(b['handle']))}'>raw JSON</a></p>")
+        f"<h2>Score components</h2><div class='card'><div class='grid'>{_component_bars(comp)}</div></div>"
+        f"<p class='sub'>Source: {html.escape(b['source'])} · <a href='/bitagent/{html.escape(str(b['handle']))}'>raw JSON</a></p>")
     return page(f"{b['handle']} — Verdix Trust", body)

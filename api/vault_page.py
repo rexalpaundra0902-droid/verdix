@@ -31,8 +31,8 @@ def _body(addr: str) -> str:
     return (
         "<p><a href='/web'>&larr; directory</a> &nbsp;·&nbsp; <a href='/web/create'>+ create another</a></p>"
         "<h1>Manage Vault</h1>"
-        f"<p class='sub'>Vault non-custodial-mu di BSC Testnet. State dibaca langsung dari chain — "
-        f"kontrol di bawah menegakkan policy on-chain; agent tidak akan pernah bisa melanggarnya.<br>"
+        f"<p class='sub'>Your non-custodial vault on BSC Testnet. State is read straight from the chain — "
+        f"the controls below enforce on-chain policy; your agent can never break it.<br>"
         f"<span class='mono' id='addr'>{addr}</span> · "
         f"<a id='scan' href='https://testnet.bscscan.com/address/{addr}'>BscScan</a></p>"
 
@@ -48,7 +48,7 @@ def _body(addr: str) -> str:
         "<p><button onclick='loadState()'>↻ Refresh</button></p></div>"
 
         "<h2>Owner controls</h2>"
-        "<p class='sub' id='ownnote'>Hanya owner vault yang bisa memakai kontrol ini (kontrak menolak yang lain).</p>"
+        "<p class='sub' id='ownnote'>Only the vault owner can use these controls (the contract rejects anyone else).</p>"
 
         "<div class='card'><b>Deposit / Withdraw (BNB)</b>"
         "<div class='grid'>"
@@ -59,37 +59,37 @@ def _body(addr: str) -> str:
         "</div><span id='fout' class='mono'></span></div>"
 
         "<div class='card'><b>Whitelist venue (setTarget)</b>"
-        "<p class='sub'>Agent hanya boleh mengirim dana ke alamat yang di-whitelist. "
-        "Tambah tujuan yang sah (mis. router venue) sebelum agent beraksi.</p>"
+        "<p class='sub'>The agent may only send funds to whitelisted addresses. "
+        "Add legitimate destinations (e.g. a venue router) before the agent acts.</p>"
         "<div class='grid'>"
-        "<div class='kv'><div class='k'>Alamat target</div><input id='tgt' placeholder='0x…'></div>"
-        "<div class='kv'><div class='k'>Izinkan?</div>"
+        "<div class='kv'><div class='k'>Target address</div><input id='tgt' placeholder='0x…'></div>"
+        "<div class='kv'><div class='k'>Allow?</div>"
         "<select id='tgtAllow' style='width:100%;padding:9px 10px;background:#0a0e18;border:1px solid #1b2232;border-radius:9px;color:#e8ecf4'>"
         "<option value='1'>allow ✓</option><option value='0'>revoke ✕</option></select></div>"
         "</div><p><button onclick='setTarget()'>Set target</button> <span id='tout' class='mono'></span></p></div>"
 
         "<div class='card'><b>Update policy</b>"
         "<div class='grid'>"
-        "<div class='kv'><div class='k'>Max per aksi (BNB)</div><input id='pMax' value='0.005'></div>"
-        "<div class='kv'><div class='k'>Cap harian (BNB)</div><input id='pDaily' value='0.01'></div>"
-        "<div class='kv'><div class='k'>Cooldown (detik)</div><input id='pCool' value='30'></div>"
+        "<div class='kv'><div class='k'>Max per action (BNB)</div><input id='pMax' value='0.005'></div>"
+        "<div class='kv'><div class='k'>Daily cap (BNB)</div><input id='pDaily' value='0.01'></div>"
+        "<div class='kv'><div class='k'>Cooldown (seconds)</div><input id='pCool' value='30'></div>"
         "<div class='kv'><div class='k'>Halt floor (BNB)</div><input id='pFloor' value='0.02'></div>"
         "</div><p><button onclick='setPolicy()'>Set policy</button> <span id='pout' class='mono'></span></p></div>"
 
-        "<div class='card'><b>Ganti manager agent (setManager)</b>"
+        "<div class='card'><b>Change manager agent (setManager)</b>"
         "<div class='grid'><div class='kv'><div class='k'>Agent ID (ERC-8004)</div><input id='mAid' value='1'></div></div>"
         "<p><button onclick='setManager()'>Set manager</button> <span id='mout' class='mono'></span></p></div>"
 
-        "<h2>Bagaimana agent-mu beraksi</h2>"
+        "<h2>How your agent acts</h2>"
         "<div class='card'>"
-        "<p class='sub'>Wallet <b>controller agent</b> (yang terdaftar di ERC-8004) memanggil "
-        "<span class='mono'>act(target, value, memo)</span>. Kontrak mengecek SEMUA rule on-chain — "
-        "target ter-whitelist, ≤ max per aksi, ≤ cap harian, cooldown lewat, saldo &gt; halt floor. "
-        "Aksi yang lolos otomatis jadi entry terverifikasi di Economic Memory dan naik ke Trust Score.</p>"
+        "<p class='sub'>The agent's <b>controller wallet</b> (registered via ERC-8004) calls "
+        "<span class='mono'>act(target, value, memo)</span>. The contract checks EVERY rule on-chain — "
+        "whitelisted target, ≤ max per action, ≤ daily cap, cooldown elapsed, balance &gt; halt floor. "
+        "Compliant actions automatically become verified Economic Memory entries and feed the Trust Score.</p>"
         "<pre class='code' id='snippet'></pre>"
-        "<p class='sub'>Coba langsung (wallet yang connect harus = controller agent):</p>"
+        "<p class='sub'>Try it live (connected wallet must be the agent controller):</p>"
         "<div class='grid'>"
-        "<div class='kv'><div class='k'>Target (ter-whitelist)</div><input id='aTgt' placeholder='0x…'></div>"
+        "<div class='kv'><div class='k'>Target (whitelisted)</div><input id='aTgt' placeholder='0x…'></div>"
         "<div class='kv'><div class='k'>Value (BNB)</div><input id='aVal' value='0.001'></div>"
         "<div class='kv'><div class='k'>Memo</div><input id='aMemo' value='demo-trade'></div>"
         "</div><p><button onclick='doAct()'>agent.act()</button> <span id='aout' class='mono'></span></p></div>"
@@ -134,7 +134,7 @@ async function refreshWho(){
   if(!ACC){ w.textContent=''; return; }
   const isOwner = OWNER && ACC.toLowerCase()===OWNER.toLowerCase();
   w.innerHTML = ACC.slice(0,6)+'…'+ACC.slice(-4)+(isOwner?" <span class='badge b-ok'>owner ✓</span>":
-    " <span class='badge b-dim'>bukan owner</span>");}
+    " <span class='badge b-dim'>not owner</span>");}
 async function send(to,data,value){
   if(!ACC) await ensureChain();
   const p={from:ACC,to,data}; if(value) p.value=value;
@@ -161,12 +161,12 @@ async function loadState(){
     el.innerHTML =
       kv('Balance', fmtBnb(bal)+' BNB') +
       kv('Manager agent', '#'+aid.toString()) +
-      kv('Max per aksi', fmtBnb(maxTx)+' BNB') +
-      kv('Cap harian', fmtBnb(daily)+' BNB') +
-      kv('Terpakai hari ini', fmtBnb(spentToday)+' / '+fmtBnb(daily)+' BNB') +
-      kv('Cooldown', cool.toString()+'s'+(cdLeft>0n?` <span class='badge b-warn'>sisa ${cdLeft}s</span>`:" <span class='badge b-ok'>siap</span>")) +
+      kv('Max per action', fmtBnb(maxTx)+' BNB') +
+      kv('Daily cap', fmtBnb(daily)+' BNB') +
+      kv('Spent today', fmtBnb(spentToday)+' / '+fmtBnb(daily)+' BNB') +
+      kv('Cooldown', cool.toString()+'s'+(cdLeft>0n?` <span class='badge b-warn'>${cdLeft}s left</span>`:" <span class='badge b-ok'>ready</span>")) +
       kv('Halt floor', fmtBnb(floor)+' BNB') +
-      kv('Headroom di atas floor', fmtBnb(headroom)+' BNB');
+      kv('Headroom above floor', fmtBnb(headroom)+' BNB');
     // prefill policy editor + manager
     document.getElementById('pMax').value=fmtBnb(maxTx);
     document.getElementById('pDaily').value=fmtBnb(daily);
@@ -174,7 +174,7 @@ async function loadState(){
     document.getElementById('pFloor').value=fmtBnb(floor);
     document.getElementById('mAid').value=aid.toString();
     await refreshWho();
-  }catch(e){ el.innerHTML="<div class='kv'><div class='k'>Gagal baca chain</div><div class='v mono'>"+(e.message||e)+"</div></div>"; }}
+  }catch(e){ el.innerHTML="<div class='kv'><div class='k'>Failed to read chain</div><div class='v mono'>"+(e.message||e)+"</div></div>"; }}
 
 async function deposit(){
   try{ const t=await send(VAULT,'0x',bnbWei(document.getElementById('depAmt').value));
@@ -205,18 +205,18 @@ function memoWord(s){let h='';for(const b of new TextEncoder().encode(s).slice(0
 async function doAct(){
   try{ const tgt=stripHex(document.getElementById('aTgt').value.trim());
     const d=S.act+pad(tgt)+weiWord(document.getElementById('aVal').value)+memoWord(document.getElementById('aMemo').value);
-    const t=await send(VAULT,d); document.getElementById('aout').innerHTML=txlink(t)+' — jadi track record terverifikasi';
+    const t=await send(VAULT,d); document.getElementById('aout').innerHTML=txlink(t)+' — recorded as verified track record';
     setTimeout(loadState,4000);
   }catch(e){document.getElementById('aout').textContent='err: '+(e.message||e)}}
 
 document.getElementById('snippet').textContent =
-`// agent controller memanggil vault (ethers v6)
+`// agent controller calls the vault (ethers v6)
 const vault = new ethers.Contract("${VAULT}",
   ["function act(address target,uint256 value,bytes32 memo)"],
-  agentControllerSigner);            // wallet terdaftar di ERC-8004
+  agentControllerSigner);            // wallet registered via ERC-8004
 const memo = ethers.encodeBytes32String("trade-001");
 await vault.act(TARGET, ethers.parseEther("0.001"), memo);
-// lolos policy -> otomatis tercatat di Verdix Economic Memory`;
+// passes policy -> automatically recorded to Verdix Economic Memory`;
 
 if(window.ethereum){ ethereum.on&&ethereum.on('accountsChanged',(a)=>{ACC=a[0]||null;refreshWho();}); }
 loadState();

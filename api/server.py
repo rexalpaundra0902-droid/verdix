@@ -189,7 +189,7 @@ class Handler(BaseHTTPRequestHandler):
                 elif parts[1] == "agent" and len(parts) == 3 and parts[2].isdigit():
                     aid = int(parts[2])
                     if not (1 <= aid <= st["n_agents"]):
-                        self._reply(404, webui.page("404", "<h1>Agent tidak ditemukan</h1>"), ctype="text/html")
+                        self._reply(404, webui.page("404", "<h1>Agent not found</h1>"), ctype="text/html")
                     else:
                         entries = [e for e in st["entries"]
                                    if e["agentId"] == aid or e.get("counterpartyId") == aid]
@@ -200,7 +200,7 @@ class Handler(BaseHTTPRequestHandler):
                     agents = cached("bitagent", lambda: fetch_agents(chain_id=97))
                     match = [a for a in agents if a.get("handle") == parts[2]]
                     if not match:
-                        self._reply(404, webui.page("404", "<h1>Agent tidak ditemukan</h1>"), ctype="text/html")
+                        self._reply(404, webui.page("404", "<h1>Agent not found</h1>"), ctype="text/html")
                     else:
                         b = cached(f"ba:{parts[2]}", lambda: score_agent(match[0], check_onchain=True))
                         self._reply(200, webui.bitagent_page(b), ctype="text/html")

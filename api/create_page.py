@@ -16,40 +16,40 @@ TOPIC_VAULTCREATED = "0xd5e73287491bc3aad84e3f2b12aaae343456ebe03e53454598b05a27
 BODY = """
 <p><a href='/web'>&larr; directory</a></p>
 <h1>Create Your Verified Agent Vault</h1>
-<p class='sub'>Vault non-custodial milikmu sendiri: AI agent-mu bisa trading,
-tapi tidak bisa melanggar policy — dan setiap aksinya jadi track record
-terverifikasi on-chain. BSC Testnet (chain 97).</p>
+<p class='sub'>Your own non-custodial vault: your AI agent can trade,
+but can never break policy — and every action becomes a verifiable
+on-chain track record. BSC Testnet (chain 97).</p>
 
 <div class='card'><b>Step 1 — Register agent (ERC-8004)</b>
-<p class='sub'>Sekali saja per agent. Wallet yang register = controller agent.</p>
-<input id='uri' placeholder='https://nama-agent-mu.example/agent.json'>
+<p class='sub'>Once per agent. The registering wallet becomes the agent's controller.</p>
+<input id='uri' placeholder='https://your-agent.example/agent.json'>
 <p><button onclick='registerAgent()'>Register Agent</button> <span id='regout' class='mono'></span></p>
 </div>
 
 <div class='card'><b>Step 2 — Create vault + policy</b>
 <div class='grid'>
 <div class='kv'><div class='k'>Agent ID</div><input id='aid' value='1'></div>
-<div class='kv'><div class='k'>Max per aksi (BNB)</div><input id='maxtx' value='0.005'></div>
-<div class='kv'><div class='k'>Cap harian (BNB)</div><input id='daily' value='0.01'></div>
-<div class='kv'><div class='k'>Cooldown (detik)</div><input id='cool' value='30'></div>
+<div class='kv'><div class='k'>Max per action (BNB)</div><input id='maxtx' value='0.005'></div>
+<div class='kv'><div class='k'>Daily cap (BNB)</div><input id='daily' value='0.01'></div>
+<div class='kv'><div class='k'>Cooldown (seconds)</div><input id='cool' value='30'></div>
 <div class='kv'><div class='k'>Halt floor (BNB)</div><input id='floor' value='0.02'></div>
-<div class='kv'><div class='k'>Deposit awal (BNB)</div><input id='dep' value='0.05'></div>
+<div class='kv'><div class='k'>Initial deposit (BNB)</div><input id='dep' value='0.05'></div>
 </div>
 <p><button onclick='createVault()'>Create Vault</button> <span id='out' class='mono'></span></p>
 </div>
 
-<div class='card'><b>Sudah punya vault?</b>
-<p class='sub'>Masukkan alamat wallet-mu untuk menemukan kembali semua vault yang pernah kamu buat.</p>
-<input id='lookup' placeholder='0x… wallet-mu (kosongkan = wallet terhubung)'>
+<div class='card'><b>Already have a vault?</b>
+<p class='sub'>Enter your wallet address to find every vault you've created.</p>
+<input id='lookup' placeholder='0x… your wallet (blank = connected wallet)'>
 <p><button onclick='findVaults()'>Find my vaults</button></p>
 <div id='vaults' class='mono'></div>
 </div>
 
-<div class='card'><b>Step 3 — Kelola &amp; pakai</b>
-<p class='sub'>Begitu vault jadi, kelola semuanya dari browser (deposit, whitelist venue,
-withdraw, atur policy) — tanpa perlu ke BscScan. Agent-mu memanggil
-<span class='mono'>act(target, value, memo)</span>; aksi yang lolos policy otomatis
-jadi track record terverifikasi di profil publik agent-mu.</p>
+<div class='card'><b>Step 3 — Manage &amp; use</b>
+<p class='sub'>Once the vault is live, manage everything from the browser (deposit,
+venue whitelist, withdraw, policy) — no BscScan digging. Your agent calls
+<span class='mono'>act(target, value, memo)</span>; every policy-compliant action
+automatically becomes a verified track record on your agent's public profile.</p>
 <p id='managelink' class='mono'></p>
 </div>
 
@@ -77,7 +77,7 @@ async function findVaults(){
     const data='0x6cc811f8'+pad(who.replace('0x','').toLowerCase());
     const res=await ethereum.request({method:'eth_call',params:[{to:FACTORY,data},'latest']});
     const hex=res.replace('0x',''); const n=parseInt(hex.slice(64,128),16);
-    if(!n){ out.textContent='Tidak ada vault untuk wallet ini.'; return; }
+    if(!n){ out.textContent='No vaults for this wallet.'; return; }
     let html='';
     for(let i=0;i<n;i++){ const a='0x'+hex.slice(128+i*64+24,128+(i+1)*64);
       html+='<div>→ <a href="/web/vault/'+a+'">'+a+'</a></div>'; }
@@ -102,15 +102,15 @@ async function registerAgent(){
     const data='__SELREG__'+pad('20')+pad(bytes.length.toString(16))+padded;
     const tx=await ethereum.request({method:'eth_sendTransaction',params:[{from:acc,to:REGISTRY,data}]});
     const o=document.getElementById('regout');
-    o.innerHTML='tx terkirim: <a href="https://testnet.bscscan.com/tx/'+tx+'">'+tx.slice(0,18)+'…</a> — nunggu konfirmasi…';
+    o.innerHTML='tx sent: <a href="https://testnet.bscscan.com/tx/'+tx+'">'+tx.slice(0,18)+'…</a> — waiting for confirmation…';
     const r=await waitReceipt(tx);
     if(r){ const lg=findLog(r,T_REG);
       if(lg){ const aid=parseInt(lg.topics[1],16);
         document.getElementById('aid').value=aid;
-        o.innerHTML='✓ Agent terdaftar — <b>agentId = '+aid+'</b> (sudah diisi ke Step 2). '
+        o.innerHTML='✓ Agent registered — <b>agentId = '+aid+'</b> (filled into Step 2). '
           +'<a href="https://testnet.bscscan.com/tx/'+tx+'">tx</a>';
-      } else { o.innerHTML='✓ tx confirmed tapi event Registered tak terbaca — cek <a href="https://testnet.bscscan.com/tx/'+tx+'">tx</a>'; }
-    } else { o.innerHTML='tx belum confirmed (timeout) — cek <a href="https://testnet.bscscan.com/tx/'+tx+'">tx</a>'; }
+      } else { o.innerHTML='✓ tx confirmed but Registered event unreadable — check <a href="https://testnet.bscscan.com/tx/'+tx+'">tx</a>'; }
+    } else { o.innerHTML='tx not confirmed yet (timeout) — check <a href="https://testnet.bscscan.com/tx/'+tx+'">tx</a>'; }
   }catch(e){document.getElementById('regout').textContent='err: '+(e.message||e)}
 }
 async function createVault(){
@@ -125,15 +125,15 @@ async function createVault(){
     const value='0x'+(BigInt(Math.round(parseFloat(document.getElementById('dep').value||'0')*1e9))*1000000000n).toString(16);
     const tx=await ethereum.request({method:'eth_sendTransaction',params:[{from:acc,to:FACTORY,data,value}]});
     const o=document.getElementById('out');
-    o.innerHTML='tx terkirim: <a href="https://testnet.bscscan.com/tx/'+tx+'">'+tx.slice(0,18)+'…</a> — nunggu konfirmasi…';
+    o.innerHTML='tx sent: <a href="https://testnet.bscscan.com/tx/'+tx+'">'+tx.slice(0,18)+'…</a> — waiting for confirmation…';
     const r=await waitReceipt(tx);
     if(r){ const lg=findLog(r,T_VAULT);
       if(lg){ const vault='0x'+lg.topics[1].slice(26);
-        o.innerHTML='✓ Vault dibuat: <span class="mono">'+vault+'</span>';
+        o.innerHTML='✓ Vault created: <span class="mono">'+vault+'</span>';
         document.getElementById('managelink').innerHTML=
-          '→ <a href="/web/vault/'+vault+'"><b>Kelola vault-mu di sini</b></a> (deposit, whitelist venue, atur policy)';
-      } else { o.innerHTML='✓ tx confirmed tapi event VaultCreated tak terbaca — cek <a href="https://testnet.bscscan.com/tx/'+tx+'">tx</a>'; }
-    } else { o.innerHTML='tx belum confirmed (timeout) — cek <a href="https://testnet.bscscan.com/tx/'+tx+'">tx</a>'; }
+          '→ <a href="/web/vault/'+vault+'"><b>Manage your vault here</b></a> (deposit, whitelist venues, set policy)';
+      } else { o.innerHTML='✓ tx confirmed but VaultCreated event unreadable — check <a href="https://testnet.bscscan.com/tx/'+tx+'">tx</a>'; }
+    } else { o.innerHTML='tx not confirmed yet (timeout) — check <a href="https://testnet.bscscan.com/tx/'+tx+'">tx</a>'; }
   }catch(e){document.getElementById('out').textContent='err: '+(e.message||e)}
 }
 </script>

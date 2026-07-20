@@ -137,7 +137,7 @@ BNB Hack → nanti: grant $200K setelah usage.
   (umbrella), **ETHGlobal Tokyo 25–27 Sep** = hackathon in-person di dalamnya
   (+ Pragma Tokyo 26 Sep). Reku tinggal di Jepang → ROI hadir tinggi
   (rekrut beta operator tatap muka >> DM). 💎 Temuan terbaik:
-  **Agentic Economy Summit 23 Sep, Tokyo** — summit persis audiens Verdix,
+  **Agentic Summit 23 Sep, Tokyo** (nama resmi; penyelenggara Fracton Ventures × Nyx Foundation, bagian ETHTokyo Week — diverifikasi Reku dari pengumuman resmi) — summit persis audiens Verdix,
   biasanya cukup registrasi (bukan acceptance hackathon) → target utama Reku;
   hackathon ETHGlobal-nya opsional (butuh apply/acceptance).
 - **AI Genesis (lablab, 2 Nov)** — AI umum, juri bukan Web3. Fit 4/10.
