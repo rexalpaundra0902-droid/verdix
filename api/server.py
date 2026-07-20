@@ -130,13 +130,13 @@ class Handler(BaseHTTPRequestHandler):
                 else:
                     self._reply(404, json.dumps({"error": "not found"}))
                 return
-            if parts[0] == "img" and len(parts) == 2 and parts[1].endswith(".webp"):
+            if parts[0] == "img" and len(parts) == 2 and parts[1].endswith((".webp", ".png")):
                 fp = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "img",
                                   os.path.basename(parts[1]))
                 if os.path.exists(fp):
                     data = open(fp, "rb").read()
                     self.send_response(200)
-                    self.send_header("Content-Type", "image/webp")
+                    self.send_header("Content-Type", "image/png" if fp.endswith(".png") else "image/webp")
                     self.send_header("Content-Length", str(len(data)))
                     self.send_header("Cache-Control", "public, max-age=86400")
                     self.end_headers()
