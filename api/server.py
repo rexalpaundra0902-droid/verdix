@@ -157,6 +157,11 @@ class Handler(BaseHTTPRequestHandler):
 
                     self._reply(200, create_page(webui.page), ctype="text/html")
                     return
+                if len(parts) == 3 and parts[1] == "vault" and parts[2].startswith("0x") and len(parts[2]) == 42:
+                    from api.vault_page import vault_page
+
+                    self._reply(200, vault_page(webui.page, parts[2]), ctype="text/html")
+                    return
                 st = chain_state()
                 if len(parts) == 1:
                     v_agents = [agent_payload(i) for i in range(1, st["n_agents"] + 1)]
