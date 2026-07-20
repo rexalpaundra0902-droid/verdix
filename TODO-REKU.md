@@ -7,32 +7,44 @@ testnet bikin keputusan mainnet didukung data orang lain + proposal grant kuat.)
 ## 1. ⭐ OUTREACH BETA — target 3–5 operator agent (20 menit) — PRIORITAS #1
 Kirim ke: Discord Unibase (#builders/#general), TG @unibase_ai, grup dev BNB yang lu ikuti.
 
-Teks EN (copy-paste — versi baru, pakai semua upgrade 20 Jul):
-> Give your AI agent an on-chain track record it can't fake.
-> **Verdix** = policy-guarded, non-custodial vaults for AI agents: max tx, daily
-> cap, cooldown, halt floor — enforced by the contract, not by promises.
-> Every compliant action becomes verifiable reputation + a public profile.
+Teks EN (copy-paste — v3, direview auditor: buka soal MEREKA, satu ask, faucet link):
+> Running an AI agent that touches funds? Then you know the problem: nobody
+> fully believes your track record, because you're the one reporting it.
 >
-> ✅ Self-serve: register agent + deploy vault from the browser in ~2 min
-> ✅ Manage everything from the web app (no BscScan digging needed)
-> ✅ Trust Score you can decompose yourself — every component is on the public API
-> ✅ 9 verified contracts on BSC testnet — read the chain, not our claims
+> I built **Verdix** so the chain reports it instead. Give your agent a
+> non-custodial vault with hard rules — max tx, daily cap, cooldown, halt
+> floor, enforced by the contract, not by promises — and every compliant
+> action becomes a public, verifiable track record + Trust Score.
+> Scores are decomposable via the public API: nobody can pump a score here,
+> including us.
 >
-> Free for beta operators — looking for 3–5 agent builders; your feedback
-> shapes the scoring weights. https://verdix.pages.dev — DM me!
+> Self-serve on BSC testnet, ~2 min from your browser (register agent →
+> deploy vault → act). Need gas? Faucet: https://www.bnbchain.org/en/testnet-faucet
+>
+> **One ask: I'm looking for 3–5 agent builders as first beta operators —
+> try it and tell me where it breaks. DM me.** https://verdix.pages.dev
 
 Versi ID (grup lokal):
-> Kasih AI agent-mu track record on-chain yang gak bisa dipalsuin.
-> **Verdix** = vault non-custodial berpolicy (max tx, cap harian, cooldown, halt
-> floor — dipaksa kontrak, bukan janji). Tiap aksi patuh = reputasi terverifikasi.
-> Self-serve dari browser ±2 menit, kelola semua dari web app, skor bisa
-> dibongkar sendiri lewat API publik, 9 kontrak verified di BSC testnet.
-> Gratis buat beta — nyari 3–5 builder. https://verdix.pages.dev
+> Jalanin AI agent yang pegang dana? Berarti lu tau masalahnya: track record
+> lu gak sepenuhnya dipercaya orang, karena yang lapor ya lu sendiri.
+>
+> Gua bikin **Verdix** biar chain yang lapor. Kasih agent-mu vault
+> non-custodial dengan aturan keras (max tx, cap harian, cooldown, halt floor
+> — dipaksa kontrak, bukan janji) — tiap aksi patuh jadi track record publik
+> terverifikasi + Trust Score. Skor bisa dibongkar siapa aja via API publik:
+> gak ada yang bisa mompa skor di sini, termasuk kami.
+>
+> Self-serve di BSC testnet, ±2 menit dari browser. Butuh gas? Faucet:
+> https://www.bnbchain.org/en/testnet-faucet
+>
+> **Satu ask: nyari 3–5 builder jadi beta operator pertama — cobain, kasih
+> tau di mana rusaknya. DM gua.** https://verdix.pages.dev
 
 Amunisi kalau ada yang skeptis (jawaban singkat):
 - "Skornya bisa dipalsuin?" → formula open source (intel/trustscore.py) + tiap
-  komponen bisa di-query API publik; bahkan agent kita sendiri keliatan
-  diversity 0.0 karena baru 1 counterparty — sistemnya jujur ke diri sendiri.
+  komponen bisa di-query API publik. Contoh kejujurannya: agent kami sendiri
+  kelihatan diversity 0.0 (baru 1 counterparty) dan itu kami biarkan tampil —
+  artinya skor lu di sini gak bisa dipompa siapa pun, termasuk kami.
 - "Custodial?" → Tidak. Vault milik wallet lu, Verdix gak pernah pegang kunci.
 - "Bukti policy jalan?" → tx yang diblokir policy kelihatan di BscScan:
   0xcb7e5d…e567d (status Fail) — permanen, bisa dicek siapa aja.

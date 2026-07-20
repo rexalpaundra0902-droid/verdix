@@ -104,5 +104,51 @@ Minggu ini: DM Unibase (draft siap) + DappBay submit + register di
 app.bitagent.io → **1–7 Agu: apply Builder Grant $50K** → ongoing: amplifikasi
 BNB Hack → nanti: grant $200K setelah usage.
 
-## BAGIAN 3 — Hackathon aktif (deadline ≤ Okt 2026)
-(menyusul — riset jalan)
+## BAGIAN 3 — Hackathon aktif (verified 2026-07-20; aggregator banyak bangkai)
+
+### Top 2 pick
+**1. ETHOnline 2026 (ETHGlobal) — deadline 13 Sep 2026, event 4–16 Sep, online async**
+- Track "Extend Open Source / Ship a Feature" = EKSPLISIT boleh bawa produk
+  existing lalu di-extend → Verdix gak perlu pura-pura baru. Fit 9/10.
+- Butuh: daftar + stake ETH refundable; tunggu daftar sponsor (~Agu) → pilih
+  1-2 integrasi sponsor dikerjakan DI window event; video demo 3 mnt framing
+  ERC-8004. Effort riil: beberapa hari di September.
+- ethglobal.com/events/ethonline2026
+
+**2. BNB Hack — challenge APRO "AI Agent Data Verifiability" (rolling s/d Des)**
+- Payung sama dgn submission Unibase kita; $526K pool sponsor; tema APRO
+  hampir 1:1 dgn economic memory kita. Nol redeploy (kontrak udah di BSC).
+- ⚠️ WAJIB CEK DULU: boleh gak 1 proyek masuk 2 challenge (rules per-challenge,
+  gak eksplisit). Kalau dilarang → fallback di bawah.
+- Reframe: feed APRO Oracle sbg sumber data terverifikasi ke economic memory.
+
+### Kandidat lain (fallback / quick win)
+- **Agentic Commerce (Prava×OpenAI, Devfolio)** — deadline 2 Agu, $65K, sprint
+  48 jam, wajib integrasi Prava (trust layer utk agen belanja). Fit 6/10.
+- **KeeperHub "Agents Onchain" (DoraHacks)** — deadline 13 Agu, $5K+bounty,
+  kompetisi kecil solo-friendly; RiskGuardVault + KeeperHub = cerita
+  policy-enforced execution. Fit 7/10.
+- **OKX.AI Genesis** — deadline 27 Jul, $100K, tapi wajib listing ASP approved
+  di platform OKX dalam 7 hari; fit 4/10, risiko tinggi.
+- **Arbitrum Open House Dubai/SG buildathon** (~Okt, BELUM FIX, Dubai postponed;
+  $30K + jalur dana $1M Robinhood Chain) — watch only.
+- **ETHGlobal Tokyo 25–27 Sep** — in-person (Reku di Jepang! tapi butuh tiket/
+  acceptance/biaya) — fit tema 6/10, opsional banget.
+- **AI Genesis (lablab, 2 Nov)** — AI umum, juri bukan Web3. Fit 4/10.
+
+### Bangkai yang dibuang (aggregator masih nayangin)
+Solana x402 ($135K — closed Nov 2025), ETHGlobal Open Agents (selesai Mei),
+Arbitrum London (selesai Jun), Chainlink Convergence (winners Mar), Encode
+(in-person London), Virtuals/ElizaOS (nihil event aktif).
+
+---
+
+## SINTESIS AKHIR — kalender aksi
+- **Minggu ini**: outreach beta + DM Unibase + DappBay (aksi Reku, teks siap)
+- **27 Jul**: (skip OKX — risiko listing gak sepadan)
+- **1–7 Agu**: apply BNB Builder Grant $50K (gua draft, Reku submit)
+- **2 Agu / 13 Agu**: Prava / KeeperHub = opsional quick-win kalau ada tenaga
+- **Agustus**: cek rules APRO multi-entry → submit kalau boleh; daftar ETHOnline
+- **4–16 Sep**: kerjakan ETHOnline (extend track)
+- **Pasca-beta-operator**: keputusan mainnet → Base deploy → Base Builder Grant
+- **Rolling**: ChainGPT Builder tier (santai); EF ESP monitor; MVB via BNB Hack
