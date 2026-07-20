@@ -110,9 +110,18 @@ point pihak-ketiga buat launch week mereka. Kirim ke TG Dev Group
 ## 5. Verifikasi angka prize Unibase (5 menit)
 - "$100K × top 5" BELUM terverifikasi dari kanal resmi — cek Discord/TG/form.
 
-## 6. Keputusan grant BNB (nunggu lu, 5 poin — §6 GRANT_PROPOSAL.md)
-angka buka $50K vs $60K · budget audit-prep · mainnet go/no-go (SESUDAH beta
-operator, sesuai urutan baru) · commit 10–12 mgg · lisensi + entitas/KYC.
+## 6. ✅ Keputusan grant BNB — TERKUNCI 2026-07-20
+$60K buka · security review $9K line item (M3) · mainnet GO sbg M5 (sesudah
+review) · 16 minggu front-loaded · MIT · penandatangan individu (+tanya BNB
+eligibility). Draft final di docs/GRANT_PROPOSAL.md.
+⚠️ CATATAN INTERNAL (jangan masuk proposal): mainnet M5 = komitmen BERSYARAT —
+dieksekusi kalau grant cair; kalau pas M5 tiba belum ada satu pun operator
+eksternal, re-evaluasi dulu sebelum deploy.
+
+## 6b. 💴 PAJAK — sebelum milestone pertama cair
+Cek perlakuan pajak grant crypto utk residen Jepang (grant USD/token = income?
+timing pengakuan? NTA Jepang ketat soal crypto) — konsul akuntan/pajak lokal
+SEBELUM pencairan pertama, jangan pas telat.
 
 ## 7. Domain sendiri — RENCANA REKU minggu depan (±27 Jul)
 - **Daftar via Cloudflare Registrar** (dash.cloudflare.com → Domain Registration):
