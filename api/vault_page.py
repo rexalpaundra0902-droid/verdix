@@ -174,6 +174,7 @@ async function loadState(){
     document.getElementById('pFloor').value=fmtBnb(floor);
     document.getElementById('mAid').value=aid.toString();
     await refreshWho();
+    window.__vdxI18nApply&&window.__vdxI18nApply();
   }catch(e){ el.innerHTML="<div class='kv'><div class='k'>Failed to read chain</div><div class='v mono'>"+(e.message||e)+"</div></div>"; }}
 
 async function deposit(){
