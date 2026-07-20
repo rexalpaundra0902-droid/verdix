@@ -1222,14 +1222,30 @@
       setStat("statTrust", ag.agents[0].trustScore.toFixed(1), "");
     }
 
-    /* leaderboard */
-    if (bit && bit.leaderboard && bit.leaderboard.length) {
-      var top = bit.leaderboard.slice(0, 5);
+    /* leaderboard — gabung Verdix-native + BitAgent, sort by skor (jangan
+       ganti daftar dgn BitAgent doang: bot kita sendiri harus tampil) */
+    var VNAMES = {1: 'smc-bot', 2: 'reku'};
+    var combined = [];
+    if (ag && ag.agents) ag.agents.forEach(function (a) {
+      if (typeof a.trustScore !== 'number') return;
+      combined.push({
+        handle: (VNAMES[a.agentId] ? VNAMES[a.agentId] + ' · ' : '') + 'Agent #' + a.agentId,
+        trustScore: a.trustScore,
+        raw_stats: {},
+        _verdix: true,
+        _founding: a.agentId <= 7
+      });
+    });
+    if (bit && bit.leaderboard) combined = combined.concat(bit.leaderboard);
+    combined.sort(function (x, y) { return (y.trustScore || 0) - (x.trustScore || 0); });
+    if (combined.length) {
+      var top = combined.slice(0, 7);
       var rows = document.getElementById("lbRows");
       rows.innerHTML = top.map(function (a, i) {
         var score = Math.max(0, Math.min(100, Math.round(a.trustScore || 0)));
         var stats = a.raw_stats || {};
         var sub = [];
+        if (a._verdix) { sub.push("Verdix-native · on-chain memory"); if (a._founding) sub.push("founding slot"); }
         if (typeof stats.completed_jobs === "number") sub.push(stats.completed_jobs + " jobs");
         if (typeof stats.total_revenue_usd === "number") sub.push("$" + Math.round(stats.total_revenue_usd).toLocaleString("en-US") + " revenue");
         if (a.online) sub.push("online");
