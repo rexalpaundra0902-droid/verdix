@@ -27,3 +27,7 @@ watch/.state.json
 watch/.pulse_state.json
 watch/.dogfood_state.json
 watch/*.log
+
+# internal working notes — never publish
+TODO-*.md
+*.internal.md
