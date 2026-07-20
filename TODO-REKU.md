@@ -73,11 +73,15 @@ point pihak-ketiga buat launch week mereka. Kirim ke TG Dev Group
 > treasury allocation have a builder-support path for deep integrators — and
 > does our agent's Membase contribution qualify for Knowledge Mining rewards?
 
-## 1c. DappBay listing (10 menit) — gratis, sinyal buat grant reviewer
-- https://dappbay.bnbchain.org/submit-dapp → connect wallet → isi form
-  (logo ada di repo, deskripsi tinggal ambil dari README, kontrak: VaultFactory
-  0x5883Bb4f6764D738304E9cc621e54b8B157775e4)
-- Sekalian register Verdix di https://app.bitagent.io (Projects → connect existing)
+## ⛔ BLOCKED — DappBay listing (nunggu jawaban support / mainnet)
+- Status 2026-07-20: submit ke-blok (form mainnet-oriented; BSC/opBNB/Greenfield).
+  Nunggu jawaban support BNB Chain (Discord) ATAU deployment mainnet.
+- Persiapan DONE dari sisi gua: README udah listing-ready (blok "Listing info"
+  copy-paste: one-liner, kategori, logo URL, kontrak; IP mentah dibersihkan) +
+  logo publik https://verdix.pages.dev/img/verdix-logo-512.png
+- Begitu kebuka: semua bahan tinggal comot dari blok Listing info di README.
+- Yang MASIH bisa jalan sekarang: register Verdix di https://app.bitagent.io
+  (Projects → connect existing) — gak tergantung DappBay.
 
 ## 📅 DEADLINE: 1–7 Agustus — BNB Chain Builder Grant ($50K, window bulanan)
 - Form: dappbay.bnbchain.org/campaign/226-bnb-chain-builder-grant
