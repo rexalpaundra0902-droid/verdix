@@ -123,15 +123,22 @@ Cek perlakuan pajak grant crypto utk residen Jepang (grant USD/token = income?
 timing pengakuan? NTA Jepang ketat soal crypto) — konsul akuntan/pajak lokal
 SEBELUM pencairan pertama, jangan pas telat.
 
-## 🗓 AGENDA DISKUSI (bukan aksi) — Robinhood Chain di Phase 3
-Roadmap publik janji "Robinhood Chain deploy" tapi belum pernah dibahas bareng
-= utang janji-tanpa-rencana. Duduk bareng kapan-kapan, putuskan salah satu:
-(a) bikin rencananya beneran (faucet→deploy→API multi-chain, ±1 hari kerja),
-(b) turunkan dari roadmap publik sampai ada rencana,
-(c) ganti wording jadi lebih longgar ("multi-chain expansion").
-Konteks asal: chain trading AI-native L2 Arbitrum, $1jt builder pool via
-Open House (~Okt, belum fix), faucet nunggu klik Reku. Jangan diputuskan
-sendirian oleh gua — ini komitmen publik.
+## 🗓 AGENDA 8 AGUSTUS — bedah penuh Robinhood Chain (setelah grant BNB masuk)
+KEPUTUSAN 2026-07-20 (opsi c dieksekusi): wording roadmap publik dilunakkan jadi
+"Robinhood Chain (RWA trading L2) — under evaluation" — nama tetap (ambisi+SEO),
+verb jujur, utang janji lunas. Evaluasi naik-turunnya wording = sesi 8 Agu.
+
+Kenapa fit-nya nyata (jangan dibuang): chain trading buatan broker, sebentar
+lagi ada agent trading tokenized stocks 24/7 pegang duit riil = persis profil
+pengguna Verdix; angle unik Reku = trader yang bangun trust infra; mainnet umur
+seminggu = first-mover kebuka; $1jt dev pool = jalur funding nyata.
+
+Agenda sesi 8 Agu (SATU sesi khusus):
+1. Apa yang dibutuhin buat deploy penuh (bytecode sama; API/scorer perlu param
+   multi-chain — sekarang hardcode chain 97; faucet nunggu klik Reku)
+2. Jalur masuk $1jt dev pool (via Arbitrum Open House? langsung?)
+3. Muat gak di 16 minggu TANPA ganggu milestone BNB
+→ Kalau "ya" semua: wording naik jadi komitmen DENGAN rencana di belakangnya.
 
 ## 7. Domain sendiri — RENCANA REKU minggu depan (±27 Jul)
 - **Daftar via Cloudflare Registrar** (dash.cloudflare.com → Domain Registration):
