@@ -20,6 +20,8 @@ BODY = """
 but can never break policy — and every action becomes a verifiable
 on-chain track record. BSC Testnet (chain 97).</p>
 
+<p class='sub'>No wallet extension? <a href='#' onclick='return vdxWC()'>Connect with WalletConnect (QR) →</a> <span id='wcout' class='mono'></span></p>
+
 <div class='card'><b>Step 1 — Register agent (ERC-8004)</b>
 <p class='sub'>Once per agent. The registering wallet becomes the agent's controller.</p>
 <input id='uri' placeholder='https://your-agent.example/agent.json'>
@@ -87,10 +89,24 @@ async function findVaults(){
 // BNB → wei word (presisi via gwei bulat, cukup utk testnet)
 const weiWord=(bnb)=>pad((BigInt(Math.round(parseFloat(bnb||'0')*1e9))*1000000000n).toString(16));
 async function ensureChain(){
+  if(window.__wcActive){ const a=await ethereum.request({method:'eth_accounts'}); return a[0]; }
   await ethereum.request({method:'wallet_addEthereumChain',params:[{chainId:'0x61',chainName:'BSC Testnet',rpcUrls:['https://bsc-testnet.bnbchain.org'],nativeCurrency:{name:'tBNB',symbol:'tBNB',decimals:18},blockExplorerUrls:['https://testnet.bscscan.com']}]}).catch(()=>{});
   await ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:'0x61'}]});
   const [acc]=await ethereum.request({method:'eth_requestAccounts'});
   return acc;
+}
+var WC_ID='7c12df52e56bc45ac133a89fc1b3787d';
+function vdxWC(){
+  var o=document.getElementById('wcout'); o.textContent='loading…';
+  var go=function(){ window.__vdxWC(WC_ID).then(function(p){
+      window.ethereum=p; window.__wcActive=1;
+      var a=p.accounts&&p.accounts[0];
+      o.textContent=a?('connected: '+a.slice(0,6)+'…'+a.slice(-4)):'connected';
+    }).catch(function(e){o.textContent='err: '+(e.message||e)}); };
+  if(window.__vdxWC){go();return false;}
+  var s=document.createElement('script'); s.src='/js/wc.js'; s.onload=go;
+  s.onerror=function(){o.textContent='failed to load WalletConnect'};
+  document.head.appendChild(s); return false;
 }
 async function registerAgent(){
   try{

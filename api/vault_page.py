@@ -39,6 +39,8 @@ def _body(addr: str) -> str:
         "<div class='card'>"
         "<button onclick='connect()'>Connect wallet</button> "
         "<span id='who' class='mono'></span>"
+        "<p class='sub' style='margin:10px 0 0'>No wallet extension? "
+        "<a href='#' onclick='return vdxWC()'>Connect with WalletConnect (QR) →</a></p>"
         "</div>"
 
         "<h2>Live state</h2>"
@@ -121,11 +123,23 @@ const call=(data)=>rpc('eth_call',[{to:VAULT,data},'latest']);
 const balOf=(a)=>rpc('eth_getBalance',[a,'latest']);
 
 async function ensureChain(){
+  if(window.__wcActive){ const ac=await ethereum.request({method:'eth_accounts'}); ACC=ac[0]; return ACC; }
   await ethereum.request({method:'wallet_addEthereumChain',params:[{chainId:'0x61',chainName:'BSC Testnet',
     rpcUrls:['https://bsc-testnet.bnbchain.org'],nativeCurrency:{name:'tBNB',symbol:'tBNB',decimals:18},
     blockExplorerUrls:['https://testnet.bscscan.com']}]}).catch(()=>{});
   await ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:'0x61'}]});
   const [a]=await ethereum.request({method:'eth_requestAccounts'}); ACC=a; return a;}
+var WC_ID='7c12df52e56bc45ac133a89fc1b3787d';
+function vdxWC(){
+  var go=function(){ window.__vdxWC(WC_ID).then(function(p){
+      window.ethereum=p; window.__wcActive=1; ACC=p.accounts&&p.accounts[0]||null;
+      refreshWho();
+    }).catch(function(e){ document.getElementById('who').textContent='err: '+(e.message||e); }); };
+  if(window.__vdxWC){go();return false;}
+  var s=document.createElement('script'); s.src='/js/wc.js'; s.onload=go;
+  s.onerror=function(){document.getElementById('who').textContent='failed to load WalletConnect'};
+  document.head.appendChild(s); return false;
+}
 async function connect(){
   try{ await ensureChain(); await refreshWho(); }
   catch(e){ document.getElementById('who').textContent='err: '+(e.message||e); }}

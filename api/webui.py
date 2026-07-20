@@ -99,6 +99,8 @@ I18N = {
     "BSC 테스트넷의 논커스터디얼 볼트. 상태는 체인에서 직접 읽습니다 — 아래 컨트롤이 온체인 정책을 강제하며 에이전트는 절대 어길 수 없습니다.",
     "Tu bóveda no custodial en BSC Testnet. El estado se lee directo de la cadena; los controles de abajo aplican la política on-chain y tu agente nunca puede romperla.",
     "Ваше некастодиальное хранилище в тестнете BSC. Состояние читается прямо из блокчейна — контролы ниже применяют ончейн-политику; агент не может её нарушить."],
+ "No wallet extension?": ["Gak punya wallet extension?","没有钱包插件？","ウォレット拡張なし？","지갑 확장 프로그램이 없나요?","¿Sin extensión de wallet?","Нет расширения кошелька?"],
+ "Connect with WalletConnect (QR) →": ["Hubungkan via WalletConnect (QR) →","用 WalletConnect 连接（扫码）→","WalletConnectで接続（QR）→","WalletConnect로 연결(QR) →","Conectar con WalletConnect (QR) →","Подключить через WalletConnect (QR) →"],
  "Connect wallet": ["Hubungkan wallet","连接钱包","ウォレット接続","지갑 연결","Conectar wallet","Подключить кошелёк"],
  "Live state": ["State live","实时状态","ライブ状態","실시간 상태","Estado en vivo","Живое состояние"],
  "Loading…": ["Memuat…","加载中…","読み込み中…","로딩 중…","Cargando…","Загрузка…"],

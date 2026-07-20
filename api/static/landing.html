@@ -1405,6 +1405,19 @@
     ['Bitget Wallet','https://web3.bitget.com/en/wallet-download']
   ];
   function closeModal(){ var m=document.getElementById('wModal'); if(m) m.remove(); }
+  var WC_ID='7c12df52e56bc45ac133a89fc1b3787d';
+  function loadWC(){ return new Promise(function(res,rej){
+    if (window.__vdxWC) return res();
+    var s=document.createElement('script'); s.src='js/wc.js';
+    s.onload=function(){res()}; s.onerror=rej; document.head.appendChild(s);
+  });}
+  function connectWC(){
+    closeModal();
+    loadWC().then(function(){ return window.__vdxWC(WC_ID); }).then(function(p){
+      if (p && p.accounts && p.accounts[0]) setConnected(p.accounts[0]);
+    }).catch(function(){});
+  }
+
   function openModal(){
     closeModal();
     var m = document.createElement('div');
@@ -1435,6 +1448,11 @@
         list.appendChild(a);
       });
     }
+    var wcb = document.createElement('button');
+    wcb.className='wm-item';
+    wcb.innerHTML='<span>WalletConnect · scan QR</span><span class="wm-ext">📱</span>';
+    wcb.onclick = connectWC;
+    list.appendChild(wcb);
     m.querySelector('.wm-back').onclick = closeModal;
   }
   if (wb) wb.addEventListener('click', function(){
