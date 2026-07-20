@@ -95,6 +95,21 @@ class Handler(BaseHTTPRequestHandler):
         pass
 
     def _reply(self, code: int, body: str, ctype: str = "application/json"):
+        # Content negotiation: endpoint JSON dibuka BROWSER (Accept: text/html)
+        # → bungkus viewer manusiawi; curl/script tetap dapat JSON mentah.
+        if (ctype == "application/json" and code == 200
+                and "text/html" in self.headers.get("Accept", "")):
+            import html as _h
+            path = self.path.split("?")[0]
+            body_html = (
+                "<p><a href='/web/api'>← API docs</a></p>"
+                f"<h1 class='mono' style='font-size:1.3rem'>GET {_h.escape(path)}</h1>"
+                "<p class='sub'>Machine-readable API response — scripts and curl get this exact JSON, raw.</p>"
+                f"<pre class='code'>{_h.escape(body)}</pre>"
+                "<p class='sub' style='margin-top:12px'>Human view: <a href='/web'>directory</a> · "
+                "<a href='/web/agent/1'>agent profile</a> · <a href='/web/api'>all endpoints</a></p>")
+            body = webui.page("Verdix API", body_html)
+            ctype = "text/html"
         data = body.encode()
         self.send_response(code)
         self.send_header("Content-Type", f"{ctype}; charset=utf-8")
