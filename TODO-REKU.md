@@ -106,9 +106,24 @@ point pihak-ketiga buat launch week mereka. Kirim ke TG Dev Group
 angka buka $50K vs $60K · budget audit-prep · mainnet go/no-go (SESUDAH beta
 operator, sesuai urutan baru) · commit 10–12 mgg · lisensi + entitas/KYC.
 
-## 7. Opsional / kapan sempat
+## 7. Domain sendiri — RENCANA REKU minggu depan (±27 Jul)
+- **Daftar via Cloudflare Registrar** (dash.cloudflare.com → Domain Registration):
+  harga at-cost tanpa markup, dan DNS langsung nyatu sama akun CF yang udah
+  dipakai deploy Pages — nol migrasi.
+- Kandidat dicek ketersediaan pas beli: verdix.xyz / verdix.io / verdix.ai
+  (.ai paling mahal ±$70-90/thn; .xyz paling murah ±$10; .io ±$40).
+  ⚠️ verdix.com kemungkinan kepakai/premium — cek dulu, jangan dipaksa.
+- Begitu kebeli, bilang gua — sisanya gua yang kerjain (±30 mnt):
+  (1) custom domain di Pages project verdix → website jadi verdix.xyz,
+  (2) subdomain api.verdix.xyz → ganti verdix-api.kilatlab.com (lepas total
+      dari kilatlab) + TLS + update proxy functions & nginx,
+  (3) update semua link internal (landing, /web, README, TODO teks outreach),
+  (4) redirect verdix.pages.dev tetap hidup (link lama gak mati).
+- Kalau outreach udah kekirim SEBELUM domain ada: gak masalah, pages.dev
+  tetap jalan selamanya — domain tinggal nambah di atasnya.
+
+## 8. Opsional / kapan sempat
 - WalletConnect Project ID (gratis, cloud.walletconnect.com) → gua integrasikan.
-- Domain sendiri (verdix.xyz dll) → deploy tinggal satu perintah.
 
 ## Yang JALAN SENDIRI (nggak usah dipikirin)
 - Bot testnet → daily pulse 07:10 → Economic Memory & Membase nambah tiap hari
