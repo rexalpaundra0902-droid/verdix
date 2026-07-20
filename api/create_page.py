@@ -22,6 +22,36 @@ on-chain track record. BSC Testnet (chain 97).</p>
 
 <p class='sub'>No wallet extension? <a href='#' onclick='return vdxWC()'>Connect with WalletConnect (QR) →</a> <span id='wcout' class='mono'></span></p>
 
+<div class='card'><b>How to use — zero to verified agent in ~5 minutes</b>
+<ol class='guide'>
+<li>Prepare a wallet — a browser extension (MetaMask etc.) or your phone via the WalletConnect (QR) link above. Gas uses free test BNB: <a href='https://www.bnbchain.org/en/testnet-faucet' target='_blank' rel='noopener'>faucet</a></li>
+<li>Register your agent (Step 1). The URI is optional metadata — a URL describing your agent; it can stay empty. The wallet that registers becomes the agent's controller, and your agent ID appears automatically.</li>
+<li>Create the vault (Step 2). Every field is a hard rule the contract will enforce:
+<ul class='guide-defs'>
+<li>Max per action — the most the agent may spend in a single transaction.</li>
+<li>Daily cap — total spend allowed per rolling 24-hour window.</li>
+<li>Cooldown — minimum seconds the agent must wait between actions.</li>
+<li>Halt floor — if an action would drop the balance below this, it is blocked.</li>
+<li>Initial deposit — BNB you fund the vault with now; you can deposit or withdraw any time later.</li>
+</ul></li>
+<li>Open your vault page (the link appears right after creation) and whitelist at least one target address — the agent can ONLY send funds to whitelisted destinations, so without this step it cannot act at all.</li>
+<li>Let your agent act: the controller wallet calls act(target, value, memo) — a ready-to-paste code snippet is on your vault page. Compliant actions execute; violations revert on-chain.</li>
+<li>Watch the reputation build: every compliant action lands in Economic Memory and updates your agent's public profile and Trust Score automatically. No reports to write.</li>
+</ol>
+<p class='sub' style='margin:12px 0 0'>Stuck? <a href='https://github.com/rexalpaundra0902-droid/verdix/issues' target='_blank' rel='noopener'>Open an issue</a> — beta operators get direct support.</p>
+</div>
+
+<div class='card'><b>See it with real numbers — this exact example is live on-chain</b>
+<p class='sub'>A vault with policy: max 0.005 BNB per action · 0.01 daily cap · 30s cooldown · 0.02 halt floor. Two actions, two outcomes:</p>
+<div class='tblwrap'><table>
+<tr><th>The agent tries</th><th>The chain answers</th><th>Proof</th></tr>
+<tr><td>send 0.004 BNB to a whitelisted venue — inside every limit</td><td>✅ executed, recorded to Economic Memory, scored</td><td><a href='https://testnet.bscscan.com/tx/0x5ab22b5db269b3b2dd3679fa2af69404d6d0ed1c684f8df79d96a39b532fbc2f' target='_blank' rel='noopener'>tx ↗</a></td></tr>
+<tr><td>send 0.006 BNB — just 20% over the 0.005 max</td><td>❌ reverted: ExceedsMaxTx — permanently visible failure</td><td><a href='https://testnet.bscscan.com/tx/0xcb7e5dd10be44df82dfec34f7c49f2fd30be0cd3c57b31b2b6e0a908d34e567d' target='_blank' rel='noopener'>tx ↗</a></td></tr>
+</table></div>
+<p class='sub' style='margin:10px 0 0'>Every ✅ updates the agent's public profile automatically — see the result on <a href='/web/agent/1'>Agent #1's live profile</a>: score, components, and the full entry log.</p>
+<p class='sub'>Both transactions are real. Click them — don't take our word for it.</p>
+</div>
+
 <div class='card'><b>Step 1 — Register agent (ERC-8004)</b>
 <p class='sub'>Once per agent. The registering wallet becomes the agent's controller.</p>
 <input id='uri' placeholder='https://your-agent.example/agent.json'>

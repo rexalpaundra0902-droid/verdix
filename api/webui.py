@@ -91,6 +91,82 @@ I18N = {
     "; 정책을 준수한 모든 액션은 자동으로 공개 프로필의 검증된 실적이 됩니다.",
     "; cada acción conforme se convierte automáticamente en historial verificado en el perfil público.",
     "; каждое соответствующее действие автоматически становится проверенной записью в публичном профиле."],
+ "How to use — zero to verified agent in ~5 minutes": ["Cara pakai — dari nol ke agent terverifikasi ±5 menit","使用指南 — 5 分钟从零到验证代理","使い方 — ゼロから検証済みエージェントまで約5分","사용법 — 5분 만에 검증된 에이전트로","Cómo usarlo: de cero a agente verificado en ~5 minutos","Как пользоваться — от нуля до верифицированного агента за ~5 минут"],
+ "Prepare a wallet — a browser extension (MetaMask etc.) or your phone via the WalletConnect (QR) link above. Gas uses free test BNB:":
+   ["Siapkan wallet — extension browser (MetaMask dll.) atau HP via link WalletConnect (QR) di atas. Gas pakai test BNB gratis:",
+    "准备钱包 — 浏览器插件（MetaMask 等）或通过上方 WalletConnect（扫码）用手机。Gas 用免费测试 BNB：",
+    "ウォレットを用意 — ブラウザ拡張（MetaMask等）か、上のWalletConnect（QR）でスマホから。ガスは無料のテストBNB：",
+    "지갑 준비 — 브라우저 확장(MetaMask 등) 또는 위의 WalletConnect(QR)로 휴대폰 사용. 가스는 무료 테스트 BNB:",
+    "Prepara una wallet: extensión de navegador (MetaMask, etc.) o tu móvil vía el enlace WalletConnect (QR) de arriba. El gas usa BNB de prueba gratis:",
+    "Подготовьте кошелёк — расширение браузера (MetaMask и т.п.) или телефон через WalletConnect (QR) выше. Газ — бесплатный тестовый BNB:"],
+ "faucet": ["faucet","水龙头","フォーセット","파우셋","faucet","кран"],
+ "Register your agent (Step 1). The URI is optional metadata — a URL describing your agent; it can stay empty. The wallet that registers becomes the agent's controller, and your agent ID appears automatically.":
+   ["Daftarkan agent-mu (Step 1). URI itu metadata opsional — URL deskripsi agent-mu; boleh dikosongin. Wallet yang mendaftar jadi controller, dan agent ID muncul otomatis.",
+    "注册你的代理（第 1 步）。URI 是可选元数据 — 描述代理的 URL，可留空。注册的钱包成为控制者，代理 ID 自动显示。",
+    "エージェントを登録（ステップ1）。URIは任意のメタデータ — エージェント説明のURLで、空でもOK。登録したウォレットがコントローラーになり、エージェントIDが自動表示される。",
+    "에이전트 등록(1단계). URI는 선택 메타데이터 — 에이전트 설명 URL이며 비워도 됩니다. 등록한 지갑이 컨트롤러가 되고 에이전트 ID가 자동 표시됩니다.",
+    "Registra tu agente (Paso 1). El URI es metadato opcional (una URL que describe tu agente); puede quedar vacío. La wallet que registra se convierte en el controlador y tu ID de agente aparece automáticamente.",
+    "Зарегистрируйте агента (Шаг 1). URI — необязательные метаданные (URL с описанием агента), можно оставить пустым. Кошелёк регистрации становится контроллером, ID агента появится автоматически."],
+ "Create the vault (Step 2). Every field is a hard rule the contract will enforce:":
+   ["Buat vault-nya (Step 2). Tiap field adalah aturan keras yang bakal dipaksa kontrak:",
+    "创建金库（第 2 步）。每个字段都是合约将强制执行的硬规则：",
+    "ボールトを作成（ステップ2）。各フィールドはコントラクトが強制するハードルール：",
+    "볼트 생성(2단계). 모든 필드는 컨트랙트가 강제하는 하드 룰입니다:",
+    "Crea la bóveda (Paso 2). Cada campo es una regla dura que el contrato hará cumplir:",
+    "Создайте хранилище (Шаг 2). Каждое поле — жёсткое правило, которое контракт будет применять:"],
+ "Max per action — the most the agent may spend in a single transaction.":
+   ["Max per aksi — maksimal yang boleh dibelanjakan agent dalam satu transaksi.","单笔上限 — 代理单笔交易可花费的最大额度。","1アクション上限 — 1トランザクションで使える最大額。","액션당 최대 — 한 거래에서 쓸 수 있는 최대 금액.","Máx. por acción: lo máximo que el agente puede gastar en una sola transacción.","Макс. на действие — максимум, который агент может потратить за одну транзакцию."],
+ "Daily cap — total spend allowed per rolling 24-hour window.":
+   ["Cap harian — total belanja yang diizinkan per jendela 24 jam.","每日上限 — 24 小时窗口内允许的总花费。","1日上限 — 24時間ウィンドウで許される合計支出。","일일 한도 — 24시간 윈도우당 허용 총 지출.","Tope diario: gasto total permitido por ventana de 24 horas.","Дневной лимит — общий расход за 24-часовое окно."],
+ "Cooldown — minimum seconds the agent must wait between actions.":
+   ["Cooldown — jeda minimal (detik) antar aksi agent.","冷却 — 代理两次操作之间必须等待的最少秒数。","クールダウン — アクション間に待つべき最小秒数。","쿨다운 — 액션 사이 최소 대기 초.","Enfriamiento: segundos mínimos entre acciones.","Пауза — минимальные секунды между действиями."],
+ "Halt floor — if an action would drop the balance below this, it is blocked.":
+   ["Halt floor — kalau aksi bikin saldo turun di bawah angka ini, aksi diblokir.","止损底线 — 若操作使余额低于此值则被拦截。","ホルトフロア — 残高がこれを下回るアクションはブロック。","홀트 플로어 — 잔고가 이 값 아래로 떨어지는 액션은 차단.","Suelo de parada: si una acción dejara el saldo por debajo, se bloquea.","Нижний порог — действие, опускающее баланс ниже, блокируется."],
+ "Initial deposit — BNB you fund the vault with now; you can deposit or withdraw any time later.":
+   ["Deposit awal — BNB yang lu setor sekarang; bisa nambah/narik kapan pun nanti.","初始存款 — 现在注入金库的 BNB；之后可随时存取。","初回デポジット — いま入金するBNB。あとからいつでも入出金可。","초기 예치금 — 지금 넣는 BNB; 나중에 언제든 입출금 가능.","Depósito inicial: BNB con que fondeas la bóveda ahora; puedes depositar o retirar cuando quieras.","Начальный депозит — BNB, которым вы пополняете хранилище сейчас; позже можно пополнять и выводить."],
+ "Open your vault page (the link appears right after creation) and whitelist at least one target address — the agent can ONLY send funds to whitelisted destinations, so without this step it cannot act at all.":
+   ["Buka halaman vault-mu (link muncul setelah create) dan whitelist minimal satu alamat target — agent CUMA bisa kirim dana ke tujuan yang di-whitelist; tanpa langkah ini dia gak bisa beraksi sama sekali.",
+    "打开你的金库页面（创建后立即出现链接），并至少将一个目标地址加入白名单 — 代理只能向白名单地址转账，跳过这步它完全无法行动。",
+    "ボールトページを開き（作成直後にリンク表示）、最低1つのターゲットをホワイトリストへ — エージェントはWL先にしか送金できず、これを飛ばすと一切行動できない。",
+    "볼트 페이지를 열고(생성 직후 링크 표시) 최소 하나의 대상 주소를 화이트리스트에 — 에이전트는 화이트리스트 주소로만 송금 가능하며, 이 단계 없이는 아예 행동할 수 없습니다.",
+    "Abre la página de tu bóveda (el enlace aparece tras crearla) y pon al menos una dirección en la lista blanca: el agente SOLO puede enviar a destinos en lista blanca; sin este paso no puede actuar.",
+    "Откройте страницу хранилища (ссылка появится сразу после создания) и добавьте хотя бы один адрес в белый список — агент может отправлять средства ТОЛЬКО на адреса из списка; без этого он вообще не сможет действовать."],
+ "Let your agent act: the controller wallet calls act(target, value, memo) — a ready-to-paste code snippet is on your vault page. Compliant actions execute; violations revert on-chain.":
+   ["Biarkan agent-mu beraksi: wallet controller memanggil act(target, value, memo) — snippet siap-tempel ada di halaman vault. Aksi patuh dieksekusi; pelanggaran di-revert on-chain.",
+    "让代理开始行动：控制者钱包调用 act(target, value, memo) — 金库页面有现成代码片段。合规执行；违规链上回滚。",
+    "エージェントを動かす：コントローラーウォレットが act(target, value, memo) を呼ぶ — コピペ用スニペットはボールトページに。準拠は実行、違反はオンチェーンでリバート。",
+    "에이전트를 작동시키세요: 컨트롤러 지갑이 act(target, value, memo)를 호출 — 붙여넣기용 스니펫이 볼트 페이지에 있습니다. 준수는 실행, 위반은 온체인 리버트.",
+    "Deja actuar a tu agente: la wallet controladora llama a act(target, value, memo); hay un snippet listo en la página de la bóveda. Lo conforme se ejecuta; las violaciones se revierten on-chain.",
+    "Пусть агент действует: кошелёк-контроллер вызывает act(target, value, memo) — готовый сниппет есть на странице хранилища. Соответствующее исполняется; нарушения откатываются."],
+ "Watch the reputation build: every compliant action lands in Economic Memory and updates your agent's public profile and Trust Score automatically. No reports to write.":
+   ["Tinggal lihat reputasinya kebangun: tiap aksi patuh masuk Economic Memory dan meng-update profil publik + Trust Score agent-mu otomatis. Gak ada laporan yang perlu ditulis.",
+    "看着声誉自动累积：每个合规操作进入 Economic Memory，自动更新代理的公开档案和 Trust Score。无需写任何报告。",
+    "評判が積み上がるのを見守る：準拠アクションはEconomic Memoryに入り、公開プロフィールとTrust Scoreを自動更新。レポート作成は不要。",
+    "평판이 쌓이는 걸 지켜보세요: 준수 액션마다 Economic Memory에 기록되고 공개 프로필과 Trust Score가 자동 갱신됩니다. 보고서 쓸 필요 없음.",
+    "Mira crecer la reputación: cada acción conforme entra en Economic Memory y actualiza el perfil público y el Trust Score automáticamente. Sin informes que escribir.",
+    "Смотрите, как строится репутация: каждое действие попадает в Economic Memory и автоматически обновляет публичный профиль и Trust Score. Никаких отчётов."],
+ "Stuck? ": ["Mentok? ","卡住了？","詰まった？","막혔나요? ","¿Atascado? ","Застряли? "],
+ "Open an issue": ["Buka issue","提交 issue","Issueを開く","이슈 열기","Abre un issue","Откройте issue"],
+ "— beta operators get direct support.": ["— beta operator dapat dukungan langsung.","— 测试版运营者可获得直接支持。","— ベータオペレーターは直接サポートが受けられる。","— 베타 운영자는 직접 지원을 받습니다.","— los operadores beta reciben soporte directo.","— бета-операторы получают прямую поддержку."],
+ "See it with real numbers — this exact example is live on-chain": ["Lihat dengan angka riil — contoh ini beneran live di chain","看真实数字 — 这个例子就在链上","実数で見る — この例は実際にオンチェーンにある","실제 숫자로 보기 — 이 예시는 온체인에 실재합니다","Míralo con números reales: este ejemplo está vivo en la cadena","Смотрите на реальных цифрах — этот пример живёт в блокчейне"],
+ "A vault with policy: max 0.005 BNB per action · 0.01 daily cap · 30s cooldown · 0.02 halt floor. Two actions, two outcomes:":
+   ["Vault dengan policy: max 0.005 BNB per aksi · cap harian 0.01 · cooldown 30 detik · halt floor 0.02. Dua aksi, dua hasil:",
+    "策略为：单笔最多 0.005 BNB · 每日上限 0.01 · 冷却 30 秒 · 止损底线 0.02。两个操作，两种结果：",
+    "ポリシー：1アクション最大0.005 BNB · 日次上限0.01 · クールダウン30秒 · フロア0.02。2つのアクション、2つの結果：",
+    "정책: 액션당 최대 0.005 BNB · 일일 한도 0.01 · 쿨다운 30초 · 홀트 플로어 0.02. 두 액션, 두 결과:",
+    "Una bóveda con política: máx. 0.005 BNB por acción · tope diario 0.01 · enfriamiento 30s · suelo 0.02. Dos acciones, dos resultados:",
+    "Хранилище с политикой: макс. 0.005 BNB на действие · дневной лимит 0.01 · пауза 30с · порог 0.02. Два действия — два исхода:"],
+ "The agent tries": ["Agent mencoba","代理尝试","エージェントの試み","에이전트의 시도","El agente intenta","Агент пытается"],
+ "The chain answers": ["Jawaban chain","链的回应","チェーンの回答","체인의 응답","La cadena responde","Ответ блокчейна"],
+ "Proof": ["Bukti","证据","証拠","증거","Prueba","Доказательство"],
+ "send 0.004 BNB to a whitelisted venue — inside every limit": ["kirim 0.004 BNB ke venue ter-whitelist — di dalam semua batas","向白名单地址转 0.004 BNB — 全部在限额内","WL先へ0.004 BNB送金 — 全ルール内","화이트리스트 주소로 0.004 BNB 전송 — 모든 한도 내","enviar 0.004 BNB a un destino en lista blanca, dentro de todos los límites","отправить 0.004 BNB на адрес из белого списка — в рамках всех лимитов"],
+ "✅ executed, recorded to Economic Memory, scored": ["✅ dieksekusi, tercatat di Economic Memory, dinilai","✅ 已执行，记入 Economic Memory 并计分","✅ 実行され、Economic Memoryに記録、スコア化","✅ 실행됨, Economic Memory에 기록, 점수화","✅ ejecutada, registrada en Economic Memory y puntuada","✅ исполнено, записано в Economic Memory, оценено"],
+ "send 0.006 BNB — just 20% over the 0.005 max": ["kirim 0.006 BNB — cuma lewat 20% dari max 0.005","转 0.006 BNB — 仅超出 0.005 上限 20%","0.006 BNB送金 — 上限0.005をわずか20%超過","0.006 BNB 전송 — 최대 0.005를 딱 20% 초과","enviar 0.006 BNB: solo un 20% sobre el máx. de 0.005","отправить 0.006 BNB — всего на 20% выше максимума 0.005"],
+ "❌ reverted: ExceedsMaxTx — permanently visible failure": ["❌ di-revert: ExceedsMaxTx — kegagalan yang terlihat permanen","❌ 已回滚：ExceedsMaxTx — 永久可见的失败","❌ リバート：ExceedsMaxTx — 永久に見える失敗","❌ 리버트됨: ExceedsMaxTx — 영구히 보이는 실패","❌ revertida: ExceedsMaxTx, un fallo visible para siempre","❌ откат: ExceedsMaxTx — навсегда видимый отказ"],
+ "Every ✅ updates the agent's public profile automatically — see the result on": ["Tiap ✅ meng-update profil publik agent otomatis — lihat hasilnya di","每个 ✅ 都会自动更新代理的公开档案 — 结果见","✅のたびに公開プロフィールが自動更新 — 結果はこちら：","모든 ✅는 에이전트 공개 프로필을 자동 갱신 — 결과 보기:","Cada ✅ actualiza el perfil público automáticamente; mira el resultado en","Каждый ✅ автоматически обновляет публичный профиль — результат смотрите на"],
+ "Agent #1's live profile": ["profil live Agent #1","1 号代理的实时档案","Agent #1のライブプロフィール","에이전트 #1 라이브 프로필","el perfil en vivo del Agente #1","живом профиле Агента №1"],
+ ": score, components, and the full entry log.": [": skor, komponen, dan log entry lengkap.","：评分、组件与完整条目日志。","：スコア、構成要素、全エントリログ。",": 점수, 구성요소, 전체 엔트리 로그.",": puntuación, componentes y el registro completo.",": рейтинг, компоненты и полный журнал записей."],
+ "Both transactions are real. Click them — don't take our word for it.": ["Dua-duanya transaksi nyata. Klik aja — jangan percaya kata kami.","两笔交易都是真的。点开看 — 别只听我们说。","2つのトランザクションは本物。クリックして確かめて — 我々の言葉を信じるな。","두 거래 모두 실제입니다. 클릭해보세요 — 우리 말만 믿지 마세요.","Ambas transacciones son reales. Haz clic: no nos creas a nosotros.","Обе транзакции настоящие. Кликните — не верьте нам на слово."],
  "Manage Vault": ["Kelola Vault","管理金库","ボールト管理","볼트 관리","Gestionar bóveda","Управление хранилищем"],
  "Your non-custodial vault on BSC Testnet. State is read straight from the chain — the controls below enforce on-chain policy; your agent can never break it.":
    ["Vault non-custodial-mu di BSC Testnet. State dibaca langsung dari chain — kontrol di bawah menegakkan policy on-chain; agent-mu gak akan pernah bisa melanggarnya.",
@@ -240,10 +316,16 @@ input{width:100%;padding:9px 10px;background:#0a0e18;border:1px solid #1b2232;bo
 input:focus{outline:none;border-color:#34d399;box-shadow:0 0 0 3px rgba(52,211,153,.12)}
 .lang-sel{background:#0a0e18;border:1px solid #1b2232;color:#8b93a7;border-radius:8px;padding:5px 8px;font:600 12px ui-monospace,monospace;cursor:pointer}
 .lang-sel:focus{outline:none;border-color:#34d399}
+.topnav{display:flex;gap:18px;row-gap:8px;align-items:center;margin-bottom:26px;font-weight:600;flex-wrap:wrap}
+@media(max-width:480px){.topnav{gap:12px}}
+.guide{margin:10px 0 0 18px;display:grid;gap:9px}
+.guide>li{color:#cdd6e4;font-size:.94rem;line-height:1.6}
+.guide-defs{margin:6px 0 0 16px;display:grid;gap:4px}
+.guide-defs li{color:#8b93a7;font-size:.88rem}
 """
 
 
-NAV = ("<nav style='display:flex;gap:18px;align-items:center;margin-bottom:26px;font-weight:600'>"
+NAV = ("<nav class='topnav'>"
        "<a href='/' style='font-weight:900;font-size:17px;letter-spacing:.02em'>"
        "<span style='color:#34d399'>◆</span> VERDIX</a>"
        "<span style='flex:1'></span>"
