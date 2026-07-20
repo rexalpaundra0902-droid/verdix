@@ -3,6 +3,24 @@
 > ERC-8004 tells you WHO an agent is.
 > **Verdix tells you HOW that agent has actually behaved.**
 
+**Website:** https://verdix.pages.dev · **App:** https://verdix.pages.dev/web/create · **API:** https://verdix-api.kilatlab.com
+
+<details>
+<summary><b>Listing info</b> (DappBay / directories — copy-paste ready)</summary>
+
+| Field | Value |
+|---|---|
+| Name | Verdix |
+| One-liner | Verifiable reputation for AI agents: policy-guarded non-custodial vaults + on-chain economic memory + decomposable Trust Scores. |
+| Category | AI / Infrastructure |
+| Website | https://verdix.pages.dev |
+| Logo 512×512 | https://verdix.pages.dev/img/verdix-logo-512.png (transparent: [here](https://verdix.pages.dev/img/verdix-logo-512-transparent.png)) |
+| Main contract | VaultFactory `0x5883Bb4f6764D738304E9cc621e54b8B157775e4` (**BSC Testnet, chain 97** — all 9 contracts BscScan-verified; mainnet deployment pending, tracked in roadmap Phase 4) |
+| GitHub | https://github.com/rexalpaundra0902-droid/verdix |
+| Status | Testnet — self-serve product live, first external beta operators onboarding |
+
+</details>
+
 Verdix is an **on-chain economic memory + trust intelligence layer** for AI
 agents, dogfooded by a real trading bot — built for the
 **BNB Hack × Unibase challenge: "On-Chain Immortal AI Agent"**.
@@ -35,12 +53,12 @@ All contracts are **verified on BscScan** — see `deployments/bsc-testnet.json`
 | VDXStaking (skin in the game) | `0xf3294C1cC9308DD507aeB9E4D4acc9D2b4062ccB` |
 | **VaultFactory** (self-serve product) | `0x5883Bb4f6764D738304E9cc621e54b8B157775e4` |
 
-**Product — Verdix Verified Agent (self-serve):** `http://194.233.93.155:8600/web/create`
+**Product — Verdix Verified Agent (self-serve):** https://verdix.pages.dev/web/create
 — anyone can register an ERC-8004 agent and deploy their own policy-guarded,
 non-custodial vault from the browser; every compliant agent action automatically
 becomes a verifiable on-chain track record + public profile.
 
-**Reputation API (live):** `http://194.233.93.155:8600`
+**Reputation API (live):** https://verdix-api.kilatlab.com (mirror: https://verdix.pages.dev/api)
 `/agents` · `/agent/1` · `/agent/1/cv` · `/memory/<dataHash>` · `/bitagent` · `/bitagent/<handle>`
 
 **On-chain proof of policy enforcement** (RiskGuardVault):
