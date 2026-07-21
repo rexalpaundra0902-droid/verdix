@@ -3,7 +3,7 @@
 **Project:** Verdix — On-Chain Immortal AI Agent with Verifiable Economic Memory
 **Challenge:** Unibase — "Build an On-Chain Immortal AI Agent with Decentralized
 Memory and Cross-Platform Interoperability on BNB Chain"
-**Chain:** BSC Testnet (97) — 6 verified contracts, 30+ successful transactions
+**Chain:** BSC Testnet (97) — 9 verified contracts, 30+ successful transactions
 
 ## One-liner
 
@@ -24,7 +24,7 @@ verified by anyone.
 
 ## Requirement checklist
 
-- [x] Deployed on BSC testnet — 6 contracts, all verified on BscScan
+- [x] Deployed on BSC testnet — 9 contracts, all verified on BscScan
 - [x] ≥ 2 successful contract transactions (30+: registrations, escrow cycle,
       payments, 8 dogfood attestations, vault actions incl. an intentionally
       blocked one)
