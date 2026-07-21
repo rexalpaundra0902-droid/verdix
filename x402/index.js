@@ -118,7 +118,7 @@ Discoverable on the x402 Bazaar.</p>
 npx awal x402 pay     https://verdix-api.kilatlab.com/x402/agent/1</div>
 ${cards}
 <p class="sub">Free: <a href="/x402/health">/x402/health</a> · machine-readable catalog: <span class="mono">Accept: application/json</span> · docs: <a href="https://verdix.pages.dev/web/api">verdix.pages.dev/web/api</a></p>
-<p class="foot">Verdix — verifiable economic memory for AI agents · data services, not investment advice · <a href="https://verdix.pages.dev/">verdix.pages.dev</a></p>
+<p class="foot">Verdix — verifiable economic memory for AI agents · data services, not investment advice · <a href="https://verdix.pages.dev/">verdix.pages.dev</a> · <a href="https://x.com/reyykanin">@reyykanin</a></p>
 </body></html>`;
 }
 
