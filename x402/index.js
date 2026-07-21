@@ -10,6 +10,9 @@ const { ExactEvmScheme } = require("@x402/evm/exact/server");
 const { declareDiscoveryExtension } = require("@x402/extensions");
 const { SERVICES } = require("./services");
 const data = require("./data");
+const ta = require("./ta");
+const tools = require("./tools");
+const { marked } = require("marked");
 
 const PAY_TO = process.env.X402_PAY_TO || "";
 const PORT = parseInt(process.env.X402_PORT || "8402", 10);
@@ -21,6 +24,7 @@ const FACILITATOR = process.env.X402_FACILITATOR || "https://x402.org/facilitato
 
 const app = express();
 app.disable("x-powered-by");
+app.use(express.json({ limit: "12mb" }));
 
 // Katalog servis (harga/deskripsi/grup) ada di services.js — 4 bidang, 20 servis.
 
@@ -35,7 +39,10 @@ if (PAY_TO) {
       accepts: { scheme: "exact", price: s.price, network: NETWORK, payTo: PAY_TO },
       description: s.desc,
       mimeType: s.mime,
-      extensions: { ...declareDiscoveryExtension({ output: { example: s.example } }) },
+      // discovery extension Bazaar cuma valid utk GET
+      ...(route.startsWith("GET ")
+        ? { extensions: { ...declareDiscoveryExtension({ output: { example: s.example } }) } }
+        : {}),
     };
   }
   app.use(paymentMiddleware(routes, server));
@@ -230,6 +237,116 @@ app.get("/x402/ai/market-brief/:symbol", async (req, res) => {
     if (!live) return res.status(502).json({ error: "live market data unavailable" });
     res.json(await data.marketBrief(s, live, senti, wp));
   } catch (e) { res.status(502).json({ error: String(e.message || e) }); }
+});
+
+// ---------- Bidang 5: Technical Analysis ----------
+app.get("/x402/ta/levels/:symbol", async (req, res) => {
+  const s = symOr400(req, res); if (!s) return;
+  try { res.json(await ta.levels(s)); }
+  catch (e) { res.status(502).json({ error: String(e.message || e) }); }
+});
+app.get("/x402/ta/regime/:symbol", async (req, res) => {
+  const s = symOr400(req, res); if (!s) return;
+  try { res.json(await ta.regime(s)); }
+  catch (e) { res.status(502).json({ error: String(e.message || e) }); }
+});
+
+// ---------- Bidang 6: Web Tools ----------
+function toolGate(res, limiter) {
+  if (!limiter()) { res.status(429).json({ error: "tool rate limit — retry in a few minutes" }); return false; }
+  return true;
+}
+app.get("/x402/web/screenshot", async (req, res) => {
+  if (!toolGate(res, tools.webToolsOk)) return;
+  try {
+    const png = await tools.screenshot(req.query.url, { width: req.query.width, fullPage: req.query.full === "1" });
+    res.type("image/png").send(png);
+  } catch (e) { res.status(400).json({ error: String(e.message || e) }); }
+});
+app.get("/x402/web/audit", async (req, res) => {
+  if (!toolGate(res, tools.webToolsOk)) return;
+  try { res.json(await tools.webAudit(req.query.url)); }
+  catch (e) { res.status(400).json({ error: String(e.message || e) }); }
+});
+app.get("/x402/web/extract", async (req, res) => {
+  if (!toolGate(res, tools.webToolsOk)) return;
+  try { res.json(await tools.extractText(req.query.url)); }
+  catch (e) { res.status(400).json({ error: String(e.message || e) }); }
+});
+
+// ---------- Bidang 7: AI Utility ----------
+app.post("/x402/ai/summarize", async (req, res) => {
+  if (!aiGate(res)) return;
+  try {
+    let text = String(req.body.text || "");
+    if (!text && req.body.url) text = (await tools.extractText(req.body.url)).text;
+    if (!text) return res.status(400).json({ error: "need text or url" });
+    const style = ["bullets", "paragraph", "tldr"].includes(req.body.style) ? req.body.style : "paragraph";
+    const out = await data.aiUtility(
+      `Summarize the user's text faithfully as ${style === "bullets" ? "concise bullet points" : style === "tldr" ? "a 1-2 sentence TL;DR" : "one tight paragraph"}. Keep the original language of the text. No preamble.`,
+      text.slice(0, 60000), 700);
+    res.json({ style, summary: out });
+  } catch (e) { res.status(502).json({ error: String(e.message || e) }); }
+});
+app.post("/x402/ai/translate", async (req, res) => {
+  if (!aiGate(res)) return;
+  try {
+    const text = String(req.body.text || ""), to = String(req.body.to || "en").slice(0, 16);
+    if (!text) return res.status(400).json({ error: "need text" });
+    const out = await data.aiUtility(
+      `Translate the user's text into "${to}". Preserve meaning, tone, register, and formatting. Output ONLY the translation.`,
+      text.slice(0, 40000), 1200);
+    res.json({ to, translation: out });
+  } catch (e) { res.status(502).json({ error: String(e.message || e) }); }
+});
+app.post("/x402/ai/extract-json", async (req, res) => {
+  if (!aiGate(res)) return;
+  try {
+    const text = String(req.body.text || "");
+    const schema = req.body.schema && typeof req.body.schema === "object" ? req.body.schema : null;
+    if (!text || !schema) return res.status(400).json({ error: "need text and schema object" });
+    const out = await data.aiUtility(
+      `Extract structured data from the user's text into JSON exactly matching this schema (keys → meaning): ${JSON.stringify(schema).slice(0, 2000)}. Output ONLY valid JSON, no markdown fences. Use null for missing fields.`,
+      text.slice(0, 40000), 1200);
+    let parsed; try { parsed = JSON.parse(out.replace(/^```json?\s*|\s*```$/g, "")); } catch { parsed = null; }
+    res.json({ data: parsed, raw: parsed ? undefined : out });
+  } catch (e) { res.status(502).json({ error: String(e.message || e) }); }
+});
+
+// ---------- Bidang 8: Documents & Media ----------
+const PDF_CSS = `<style>
+@page{size:A4;margin:22mm 18mm}body{font-family:Helvetica,Arial,sans-serif;color:#16181d;line-height:1.55;font-size:11pt}
+h1{font-size:20pt;border-bottom:2px solid #22c97f;padding-bottom:6px}h2{font-size:14pt;margin-top:18px}
+code,pre{font-family:Menlo,monospace;font-size:9.5pt;background:#f2f4f7;border-radius:4px;padding:2px 4px}
+pre{padding:10px;overflow-x:auto}table{border-collapse:collapse;width:100%}td,th{border:1px solid #d7dbe2;padding:6px 8px;font-size:10pt}
+th{background:#f2f4f7;text-align:left}blockquote{border-left:3px solid #22c97f;margin:0;padding:4px 12px;color:#4a4f58}
+</style>`;
+app.post("/x402/doc/pdf", async (req, res) => {
+  if (!toolGate(res, tools.webToolsOk)) return;
+  try {
+    let html = String(req.body.html || "");
+    if (!html && req.body.markdown) html = marked.parse(String(req.body.markdown));
+    if (!html) return res.status(400).json({ error: "need html or markdown" });
+    const title = String(req.body.title || "Document").slice(0, 120);
+    const doc = `<!doctype html><html><head><meta charset="utf-8"><title>${title.replace(/</g, "&lt;")}</title>${PDF_CSS}</head><body>${html}</body></html>`;
+    const pdf = await tools.htmlToPdf(doc);
+    res.type("application/pdf").send(pdf);
+  } catch (e) { res.status(400).json({ error: String(e.message || e) }); }
+});
+app.post("/x402/media/remove-bg", async (req, res) => {
+  if (!toolGate(res, tools.mediaOk)) return;
+  try {
+    let buf = null;
+    if (req.body.image_b64) {
+      buf = Buffer.from(String(req.body.image_b64).replace(/^data:[^,]*,/, ""), "base64");
+    } else if (req.body.url) {
+      const u = await tools.ssrfGuard(req.body.url);
+      const r = await fetch(u); buf = Buffer.from(await r.arrayBuffer());
+    }
+    if (!buf || !buf.length) return res.status(400).json({ error: "need image_b64 or url" });
+    const png = await tools.removeBg(buf);
+    res.type("image/png").send(png);
+  } catch (e) { res.status(400).json({ error: String(e.message || e) }); }
 });
 
 app.listen(PORT, "127.0.0.1", () => {

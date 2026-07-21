@@ -98,6 +98,64 @@ const SERVICES = {
     example: { coin: "BTC", net_usd: 12000000, n_long: 34, n_short: 21 },
   },
 
+  // ── Bidang 5: Technical Analysis ────────────────────────────────────
+  "GET /x402/ta/levels/:symbol": {
+    group: "Technical Analysis", price: "$0.01", mime: "application/json",
+    desc: "Nearest support/resistance from 4h + 1d swing structure (fractal), with distance-% from live price. Computed on request.",
+    example: { symbol: "BTCUSDT", swing_4h: { support: [], resistance: [] } },
+  },
+  "GET /x402/ta/regime/:symbol": {
+    group: "Technical Analysis", price: "$0.01", mime: "application/json",
+    desc: "Market regime snapshot on 4h: ADX14 trend state, ATR% + 300-bar volatility percentile, EMA50/200 bias.",
+    example: { symbol: "BTCUSDT", regime: "trending_up", adx14: 31.2 },
+  },
+
+  // ── Bidang 6: Web Tools ─────────────────────────────────────────────
+  "GET /x402/web/screenshot": {
+    group: "Web Tools", price: "$0.02", mime: "image/png",
+    desc: "Screenshot any public URL (real Chromium render). Query: ?url= &width=1280 &full=1 for full-page. Returns PNG.",
+    example: { binary: "image/png" },
+  },
+  "GET /x402/web/audit": {
+    group: "Web Tools", price: "$0.05", mime: "application/json",
+    desc: "Instant website audit: title/meta/OG/twitter/canonical/JSON-LD, h1 & img-alt checks, page weight, security headers — with an issues list.",
+    example: { url: "https://example.com", issue_count: 4, issues: [] },
+  },
+  "GET /x402/web/extract": {
+    group: "Web Tools", price: "$0.01", mime: "application/json",
+    desc: "Fetch a public URL and extract clean readable text (scripts/styles stripped) + title. For agent reading pipelines.",
+    example: { title: "Example", chars: 4231, text: "..." },
+  },
+
+  // ── Bidang 7: AI Utility (Claude) ───────────────────────────────────
+  "POST /x402/ai/summarize": {
+    group: "AI Utility", price: "$0.02", mime: "application/json",
+    desc: "Summarize text or a URL. Body: {text} or {url}, optional {style: 'bullets'|'paragraph'|'tldr'}.",
+    example: { summary: "..." },
+  },
+  "POST /x402/ai/translate": {
+    group: "AI Utility", price: "$0.02", mime: "application/json",
+    desc: "Translate text to a target language, register-aware. Body: {text, to: 'en'|'id'|...}.",
+    example: { translation: "..." },
+  },
+  "POST /x402/ai/extract-json": {
+    group: "AI Utility", price: "$0.03", mime: "application/json",
+    desc: "Turn messy text into structured JSON following your schema. Body: {text, schema: {field: 'description'}}.",
+    example: { data: {} },
+  },
+
+  // ── Bidang 8: Documents & Media ─────────────────────────────────────
+  "POST /x402/doc/pdf": {
+    group: "Documents & Media", price: "$0.05", mime: "application/pdf",
+    desc: "Render Markdown or HTML into a clean PDF document. Body: {markdown} or {html}, optional {title}. Returns PDF.",
+    example: { binary: "application/pdf" },
+  },
+  "POST /x402/media/remove-bg": {
+    group: "Documents & Media", price: "$0.05", mime: "image/png",
+    desc: "Remove image background (AI segmentation, u2net). Body: {image_b64} or {url} (max 8MB). Returns transparent PNG.",
+    example: { binary: "image/png" },
+  },
+
   // ── Bidang 4: AI Analysis (Claude) ──────────────────────────────────
   "GET /x402/ai/agent-audit/:id": {
     group: "AI Analysis", price: "$0.05", mime: "application/json",

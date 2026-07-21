@@ -165,9 +165,13 @@ async function marketBrief(symbol, live, senti, whalePos) {
   return { symbol, model: "claude-haiku-4.5", generated_at: new Date().toISOString(), brief };
 }
 
+async function aiUtility(system, user, maxTokens) {
+  return claude(system, user, maxTokens);
+}
+
 module.exports = {
   SYM_RE, ADDR_RE, clampDays,
   funding, oiLsr, basis, cot, sentiment, liveMarket,
   bursts, leaderboard, walletInfo, coinPositions,
-  aiEnabled: () => Boolean(AI_KEY), aiRateOk, agentAudit, marketBrief,
+  aiEnabled: () => Boolean(AI_KEY), aiRateOk, agentAudit, marketBrief, aiUtility,
 };
