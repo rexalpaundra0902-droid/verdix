@@ -189,4 +189,8 @@ async function createVault(){
 
 
 def create_page(page_fn) -> str:
-    return page_fn("Create Vault — Verdix", BODY)
+    return page_fn("Create Vault — Verdix", BODY,
+                   desc="Deploy your own policy-guarded, non-custodial vault in ~5 minutes. "
+                        "Your AI agent can trade but can never break policy — every action "
+                        "becomes a verifiable on-chain track record.",
+                   path="/web/create")

@@ -257,6 +257,8 @@ I18N = {
     "Verdix — проверяемая экономическая память для ИИ-агентов · живые данные из тестнета BSC и Membase ·"],
  "source": ["sumber","源码","ソース","소스","código","исходники"],
  "· testnet only, not investment advice": ["· testnet saja, bukan saran investasi","· 仅测试网，非投资建议","· テストネットのみ、投資助言ではない","· 테스트넷 전용, 투자 조언 아님","· solo testnet, no es consejo de inversión","· только тестнет, не инвестиционный совет"],
+ "EconomicMemory on BscScan": ["EconomicMemory di BscScan","BscScan 上的 EconomicMemory","BscScan上のEconomicMemory","BscScan의 EconomicMemory","EconomicMemory en BscScan","EconomicMemory на BscScan"],
+ "Skip to content": ["Langsung ke konten","跳到内容","コンテンツへ","콘텐츠로 건너뛰기","Saltar al contenido","К содержимому"],
 }
 _LANGS = ["id", "zh", "ja", "ko", "es", "ru"]
 _DICTS_JSON = _json.dumps({lang: {k: v[i] for k, v in I18N.items()} for i, lang in enumerate(_LANGS)},
@@ -295,75 +297,151 @@ if(cur!=='en')apply(cur);
 </script>""".replace("%DICTS%", _DICTS_JSON)
 
 CSS = """
-:root{color-scheme:dark}
+:root{color-scheme:dark;
+ --bg:#07090f;--surface:rgba(255,255,255,.03);--surface-2:rgba(255,255,255,.055);
+ --border:rgba(255,255,255,.08);--border-hi:rgba(255,255,255,.16);
+ --text:#e8ecf4;--muted:#9aa4b8;--dim:#6b7488;
+ --emerald:#22c97f;--violet:#8b5cf6;--blue:#7aa2ff;--red:#f87171;
+ --mono:'IBM Plex Mono','SFMono-Regular',ui-monospace,Menlo,Consolas,monospace}
+@font-face{font-family:'Space Grotesk';src:url('https://verdix.pages.dev/fonts/space-grotesk-var.woff2') format('woff2');font-weight:300 700;font-display:swap}
+@font-face{font-family:'IBM Plex Mono';src:url('https://verdix.pages.dev/fonts/plex-mono-400.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'IBM Plex Mono';src:url('https://verdix.pages.dev/fonts/plex-mono-600.woff2') format('woff2');font-weight:600;font-display:swap}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#07090f;color:#e8ecf4;font:15px/1.65 system-ui,-apple-system,sans-serif;padding:28px 20px;max-width:1000px;margin:0 auto;position:relative}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);
+ font:15px/1.65 'Space Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+ -webkit-font-smoothing:antialiased;overflow-x:clip;
+ padding:96px 24px 40px;max-width:1080px;margin:0 auto;position:relative}
+@media(max-width:640px){body{padding:88px 16px 32px}}
+::selection{background:rgba(34,201,127,.28);color:#fff}
 body::before{content:'';position:fixed;inset:0;z-index:-1;background:
  radial-gradient(600px 400px at 85% -10%,rgba(139,92,246,.16),transparent 60%),
- radial-gradient(700px 500px at -10% 20%,rgba(52,211,153,.10),transparent 60%),
- linear-gradient(rgba(122,162,255,.035) 1px,transparent 1px),
- linear-gradient(90deg,rgba(122,162,255,.035) 1px,transparent 1px);
- background-size:auto,auto,44px 44px,44px 44px}
-a{color:#7aa2ff;text-decoration:none;transition:.2s}a:hover{color:#a5c0ff}
-h1{font-size:clamp(24px,4vw,32px);font-weight:800;margin-bottom:4px;
- background:linear-gradient(90deg,#e8ecf4,#34d399 55%,#7aa2ff);-webkit-background-clip:text;background-clip:text;color:transparent}
-h2{font-size:18px;margin:26px 0 10px;color:#cdd6e4}
-.sub{color:#8b93a7;margin-bottom:20px}
-.badge{display:inline-block;padding:3px 12px;border-radius:99px;font-size:12px;font-weight:700;letter-spacing:.02em}
-.b-ok{background:rgba(52,211,153,.12);color:#34d399;border:1px solid rgba(52,211,153,.35)}
+ radial-gradient(700px 500px at -10% 20%,rgba(34,201,127,.09),transparent 60%),
+ linear-gradient(rgba(122,162,255,.04) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(122,162,255,.04) 1px,transparent 1px);
+ background-size:auto,auto,56px 56px,56px 56px}
+a{color:var(--blue);text-decoration:none;transition:color .2s}a:hover{color:#a5c0ff}
+:focus-visible{outline:2px solid var(--emerald);outline-offset:2px;border-radius:4px}
+h1{font-size:clamp(26px,4vw,34px);font-weight:700;letter-spacing:-.01em;margin-bottom:4px;
+ background:linear-gradient(90deg,#e8ecf4,#22c97f 55%,#7aa2ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:18px;font-weight:700;margin:28px 0 10px;color:#cdd6e4}
+.sub{color:var(--muted);margin-bottom:20px}
+.badge{display:inline-block;padding:3px 12px;border-radius:99px;font-size:12px;font-weight:600;letter-spacing:.02em;font-family:var(--mono)}
+.b-ok{background:rgba(34,201,127,.1);color:var(--emerald);border:1px solid rgba(34,201,127,.35)}
 .b-warn{background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.3)}
-.b-dim{background:#161b28;color:#8b93a7;border:1px solid #202839}
-table{width:100%;border-collapse:collapse;margin-top:8px}
-th{color:#8b93a7;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.08em;padding:9px 12px;border-bottom:1px solid #1b2232}
-td{padding:11px 12px;border-bottom:1px solid #121826}
-tr{transition:.15s}tr:hover td{background:rgba(122,162,255,.05)}
-.score{font-weight:800;font-variant-numeric:tabular-nums}
-.big{font-size:clamp(36px,6vw,52px);font-weight:900;line-height:1.05;
- background:linear-gradient(120deg,#34d399,#7aa2ff);-webkit-background-clip:text;background-clip:text;color:transparent}
-.card{background:rgba(16,21,33,.72);border:1px solid #1b2232;border-radius:16px;padding:20px;margin:14px 0;
- backdrop-filter:blur(8px);box-shadow:0 0 0 1px rgba(122,162,255,.03),0 8px 32px rgba(0,0,0,.35);transition:.25s}
-.card:hover{border-color:rgba(52,211,153,.35);box-shadow:0 0 24px rgba(52,211,153,.07),0 8px 32px rgba(0,0,0,.35)}
+.b-dim{background:var(--surface);color:var(--muted);border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;margin-top:8px;min-width:520px}
+th{color:var(--dim);text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.08em;padding:9px 12px;border-bottom:1px solid var(--border);font-family:var(--mono)}
+td{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.05)}
+tr{transition:background .15s}tr:hover td{background:rgba(122,162,255,.05)}
+.score{font-weight:700;font-variant-numeric:tabular-nums}
+.big{font-size:clamp(36px,6vw,52px);font-weight:700;line-height:1.05;font-variant-numeric:tabular-nums;
+ background:linear-gradient(120deg,#22c97f,#7aa2ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;margin:14px 0;
+ backdrop-filter:blur(8px);box-shadow:0 8px 32px rgba(0,0,0,.35);transition:border-color .25s,box-shadow .25s}
+.card:hover{border-color:rgba(34,201,127,.35);box-shadow:0 0 24px rgba(34,201,127,.07),0 8px 32px rgba(0,0,0,.35)}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-.kv .k{color:#8b93a7;font-size:11px;text-transform:uppercase;letter-spacing:.08em}
-.kv .v{font-size:17px;font-weight:700;margin-top:2px;word-break:break-all}
-.bar{height:8px;background:#161b28;border-radius:99px;overflow:hidden;margin-top:5px}
-.bar>div{height:100%;background:linear-gradient(90deg,#34d399,#7aa2ff);box-shadow:0 0 10px rgba(52,211,153,.5)}
-.mono{font-family:ui-monospace,SFMono-Regular,monospace;font-size:13px}
-.foot{color:#5b6172;font-size:12px;margin-top:30px;border-top:1px solid #121826;padding-top:14px}
-.tblwrap{overflow-x:auto}
-button{background:linear-gradient(90deg,#34d399,#4f8df9);color:#06121c;font-weight:800;border:0;border-radius:10px;
- padding:10px 18px;cursor:pointer;transition:.2s;box-shadow:0 0 18px rgba(52,211,153,.25)}
-button:hover{transform:translateY(-1px);box-shadow:0 0 26px rgba(52,211,153,.45)}
-input{width:100%;padding:9px 10px;background:#0a0e18;border:1px solid #1b2232;border-radius:9px;color:#e8ecf4;transition:.2s}
-input:focus{outline:none;border-color:#34d399;box-shadow:0 0 0 3px rgba(52,211,153,.12)}
-.lang-sel{background:#0a0e18;border:1px solid #1b2232;color:#8b93a7;border-radius:8px;padding:5px 8px;font:600 12px ui-monospace,monospace;cursor:pointer}
-.lang-sel:focus{outline:none;border-color:#34d399}
-.code{background:#0a0e18;border:1px solid #1b2232;border-radius:10px;padding:14px;overflow-x:auto;font-family:ui-monospace,monospace;font-size:12.5px;color:#a5c0ff;white-space:pre;line-height:1.5;margin-top:8px}
-.topnav{display:flex;gap:18px;row-gap:8px;align-items:center;margin-bottom:26px;font-weight:600;flex-wrap:wrap}
-@media(max-width:480px){.topnav{gap:12px}}
+.kv .k{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono)}
+.kv .v{font-size:17px;font-weight:700;margin-top:2px;word-break:break-all;font-variant-numeric:tabular-nums}
+.bar{height:8px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden;margin-top:5px}
+.bar>div{height:100%;background:linear-gradient(90deg,#22c97f,#7aa2ff);box-shadow:0 0 10px rgba(34,201,127,.5)}
+.mono{font-family:var(--mono);font-size:13px}
+.foot{color:var(--dim);font-size:12px;margin-top:36px;border-top:1px solid var(--border);padding-top:16px}
+.tblwrap{overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+button{background:linear-gradient(135deg,#10b981 0%,#22c97f 55%,#5eead4 120%);color:#04110b;font-weight:600;border:1px solid transparent;border-radius:12px;
+ padding:10px 20px;cursor:pointer;font-family:inherit;font-size:.92rem;
+ transition:transform .18s,box-shadow .25s;box-shadow:0 0 0 1px rgba(34,201,127,.35),0 6px 28px -6px rgba(34,201,127,.45)}
+button:hover{transform:translateY(-1px);box-shadow:0 0 0 1px rgba(34,201,127,.55),0 12px 40px -6px rgba(34,201,127,.6)}
+input{width:100%;padding:9px 10px;background:rgba(10,14,24,.8);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:inherit;transition:border-color .2s,box-shadow .2s}
+input:focus{outline:none;border-color:var(--emerald);box-shadow:0 0 0 3px rgba(34,201,127,.12)}
+.code{background:rgba(10,14,24,.8);border:1px solid var(--border);border-radius:10px;padding:14px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;color:#a5c0ff;white-space:pre;line-height:1.5;margin-top:8px}
 .guide{margin:10px 0 0 18px;display:grid;gap:9px}
 .guide>li{color:#cdd6e4;font-size:.94rem;line-height:1.6}
 .guide-defs{margin:6px 0 0 16px;display:grid;gap:4px}
-.guide-defs li{color:#8b93a7;font-size:.88rem}
+.guide-defs li{color:var(--muted);font-size:.88rem}
+/* topbar — selaras nav landing (fixed + blur) */
+.topnav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(7,9,15,.62);
+ backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);
+ border-bottom:1px solid rgba(255,255,255,.06)}
+.topnav-in{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:20px;height:64px;padding:0 24px;flex-wrap:nowrap}
+.brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:1.05rem;letter-spacing:.02em;color:var(--text)}
+.brand:hover{color:var(--text)}
+.brand svg{width:26px;height:26px;flex:none}
+.topnav-links{display:flex;gap:20px;margin-left:auto;align-items:center;white-space:nowrap}
+.topnav-links a{font-size:.9rem;color:var(--muted)}
+.topnav-links a:hover{color:var(--text)}
+.btn-launch{background:linear-gradient(135deg,#10b981 0%,#22c97f 55%,#5eead4 120%);color:#04110b!important;
+ padding:8px 16px;border-radius:10px;font-weight:600;font-size:.86rem;
+ box-shadow:0 0 0 1px rgba(34,201,127,.35),0 6px 28px -6px rgba(34,201,127,.45);transition:transform .18s,box-shadow .25s}
+.btn-launch:hover{transform:translateY(-1px);box-shadow:0 0 0 1px rgba(34,201,127,.55),0 12px 40px -6px rgba(34,201,127,.6)}
+.lang-sel{-webkit-appearance:none;appearance:none;background:rgba(10,14,20,.6);border:1px solid rgba(255,255,255,.14);color:var(--muted);border-radius:8px;
+ padding:6px 22px 6px 10px;font:600 .8rem var(--mono);cursor:pointer;transition:.2s;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%238b93a7'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
+.lang-sel:hover{color:#f3f3f0;border-color:var(--emerald)}
+.lang-sel option{background:#0b0f14;color:#e8ecf4}
+.skip{position:absolute;left:-9999px;top:0;background:#0b0f14;color:var(--text);padding:10px 16px;border-radius:0 0 10px 0;z-index:60}
+.skip:focus{left:0}
+@media(max-width:560px){.topnav-links{gap:14px}.topnav-links .navgh{display:none}.topnav-in{gap:12px;padding:0 16px}}
+@media(max-width:480px){.topnav-links .navapi{display:none}.topnav-links{gap:10px}
+ .brand{font-size:.98rem}.brand svg{width:22px;height:22px}
+ .btn-launch{padding:7px 12px;font-size:.8rem}.lang-sel{padding:5px 18px 5px 7px;font-size:.72rem}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
 """
 
 
-NAV = ("<nav class='topnav'>"
-       "<a href='/' style='font-weight:900;font-size:17px;letter-spacing:.02em'>"
-       "<span style='color:#34d399'>◆</span> VERDIX</a>"
-       "<span style='flex:1'></span>"
-       "<a href='/web'>Directory</a><a href='/web/create'>Launch App</a>"
-       "<a href='https://github.com/rexalpaundra0902-droid/verdix'>GitHub</a>" + LANG_SEL + "</nav>")
+_LOGO_SVG = ("<svg viewBox='0 0 120 120' fill='none' aria-hidden='true'>"
+             "<path d='M22,24 L60,96 L98,24' stroke='#f3f3f0' stroke-width='12'"
+             " stroke-linecap='round' stroke-linejoin='round'/>"
+             "<line x1='44' y1='108' x2='76' y2='108' stroke='#22c97f' stroke-width='12'"
+             " stroke-linecap='round'/></svg>")
+
+_FAVICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'"
+            " fill='none'%3E%3Cpath d='M22,24 L60,96 L98,24' stroke='%23f3f3f0' stroke-width='14'"
+            " stroke-linecap='round' stroke-linejoin='round'/%3E%3Cline x1='44' y1='108' x2='76'"
+            " y2='108' stroke='%2322c97f' stroke-width='14' stroke-linecap='round'/%3E%3C/svg%3E")
+
+NAV = ("<a class='skip' href='#main'>Skip to content</a>"
+       "<nav class='topnav'><div class='topnav-in'>"
+       "<a class='brand' href='/' aria-label='Verdix home'>" + _LOGO_SVG + "Verdix</a>"
+       "<div class='topnav-links'>"
+       "<a href='/web'>Directory</a>"
+       "<a class='navapi' href='/web/api'>API</a>"
+       "<a class='navgh' href='https://github.com/rexalpaundra0902-droid/verdix' target='_blank' rel='noopener'>GitHub</a>"
+       "<a class='btn-launch' href='/web/create'>Launch App</a>" + LANG_SEL + "</div></div></nav>")
+
+_DESC_DEFAULT = ("Verdix — on-chain trust scores, policy-guarded vaults, and verifiable "
+                 "economic memory for AI agents on BNB Chain.")
+_OG_IMAGE = "https://verdix.pages.dev/img/og.png"
 
 
-def page(title: str, body: str) -> str:
-    return (f"<!doctype html><html><head><meta charset='utf-8'>"
-            f"<meta name='viewport' content='width=device-width,initial-scale=1'>"
-            f"<title>{html.escape(title)}</title><style>{CSS}</style></head>"
-            f"<body>{NAV}{body}<p class='foot'>Verdix — verifiable economic memory for AI agents · "
+def page(title: str, body: str, desc: str | None = None, path: str | None = None) -> str:
+    desc = desc or _DESC_DEFAULT
+    canon = f"https://verdix.pages.dev{path}" if path else None
+    t, d = html.escape(title), html.escape(desc, quote=True)
+    head = (
+        "<meta charset='utf-8'>"
+        "<meta name='viewport' content='width=device-width,initial-scale=1'>"
+        f"<title>{t}</title>"
+        f"<meta name='description' content=\"{d}\">"
+        "<meta name='theme-color' content='#07090f'>"
+        f"<link rel='icon' href=\"{_FAVICON}\">"
+        + (f"<link rel='canonical' href='{canon}'>" if canon else "")
+        + f"<meta property='og:title' content=\"{t}\">"
+        f"<meta property='og:description' content=\"{d}\">"
+        "<meta property='og:type' content='website'>"
+        f"<meta property='og:image' content='{_OG_IMAGE}'>"
+        + (f"<meta property='og:url' content='{canon}'>" if canon else "")
+        + "<meta name='twitter:card' content='summary_large_image'>"
+        f"<meta name='twitter:title' content=\"{t}\">"
+        f"<meta name='twitter:description' content=\"{d}\">"
+        f"<meta name='twitter:image' content='{_OG_IMAGE}'>"
+        f"<style>{CSS}</style>")
+    return (f"<!doctype html><html lang='en'><head>{head}</head>"
+            f"<body>{NAV}<main id='main'>{body}"
+            f"<p class='foot'>Verdix — verifiable economic memory for AI agents · "
             f"live data from BSC testnet &amp; Membase · "
             f"<a href='https://github.com/rexalpaundra0902-droid/verdix'>source</a> · testnet only, not investment advice</p>"
-            f"{I18N_SCRIPT}</body></html>")
+            f"</main>{I18N_SCRIPT}</body></html>")
 
 
 def score_badge(s: float) -> str:
@@ -398,7 +476,10 @@ def leaderboard_page(verdix_agents: list[dict], bitagents: list[dict]) -> str:
         f"<h2>BitAgent ecosystem (Unibase AIP, chain 97) — {len(bitagents)} agents</h2>"
         "<div class='tblwrap'><table><tr><th>Agent</th><th>Trust Score</th><th>Jobs</th><th>Revenue</th><th></th></tr>"
         f"{brows}</table></div>")
-    return page("Verdix Trust Directory", body)
+    return page("Verdix Trust Directory", body,
+                desc="Live trust scores for AI agents — computed from on-chain proofs, "
+                     "not claims. Verdix-native agents + the BitAgent ecosystem.",
+                path="/web")
 
 
 def _component_bars(components: dict[str, float]) -> str:
@@ -437,9 +518,12 @@ def verdix_agent_page(p: dict, entries: list[dict], explorer: str, memory_addr: 
         f"<h2>Economic memory (last 15)</h2>"
         f"<div class='tblwrap'><table><tr><th>Entry</th><th>Class/Tier</th><th>Outcome</th><th>Payload (verify)</th></tr>{ent_rows}</table></div>"
         f"<p class='sub' style='margin-top:12px'>Verify it yourself: "
-        f"<a href='{explorer}/address/{memory_addr}#readContract'>EconomicMemory di BscScan</a> · "
+        f"<a href='{explorer}/address/{memory_addr}#readContract'>EconomicMemory on BscScan</a> · "
         f"<a href='/agent/{p['agentId']}'>raw JSON</a> · <a href='/agent/{p['agentId']}/cv'>Economic CV</a></p>")
-    return page(f"Verdix Agent #{p['agentId']}", body)
+    return page(f"Verdix Agent #{p['agentId']}", body,
+                desc=f"Trust Score {p['trustScore']:.1f} · {p['n_subject']} verified on-chain "
+                     f"actions · full economic memory, publicly verifiable.",
+                path=f"/web/agent/{p['agentId']}")
 
 
 def bitagent_page(b: dict) -> str:
@@ -459,7 +543,11 @@ def bitagent_page(b: dict) -> str:
         f"</div><p style='margin-top:10px'>{ver}</p></div>"
         f"<h2>Score components</h2><div class='card'><div class='grid'>{_component_bars(comp)}</div></div>"
         f"<p class='sub'>Source: {html.escape(b['source'])} · <a href='/bitagent/{html.escape(str(b['handle']))}'>raw JSON</a></p>")
-    return page(f"{b['handle']} — Verdix Trust", body)
+    return page(f"{b['handle']} — Verdix Trust", body,
+                desc=f"Trust Score {b['trustScore']:.1f} for BitAgent agent "
+                     f"{b['name'] or b['handle']} — scored by Verdix from platform stats "
+                     f"+ on-chain identity.",
+                path=f"/web/bitagent/{b['handle']}")
 
 
 def api_docs_page() -> str:
@@ -491,4 +579,7 @@ def api_docs_page() -> str:
         "<span class='mono'>verdix.pages.dev/api/…</span> · <span class='mono'>verdix-api.kilatlab.com/api/…</span></p>"
         "<p class='sub'>The scoring formula is open source — "
         "<a href='https://github.com/rexalpaundra0902-droid/verdix/blob/HEAD/intel/trustscore.py' target='_blank' rel='noopener'>read intel/trustscore.py</a>.</p></div>")
-    return page("Verdix API", body)
+    return page("Verdix API", body,
+                desc="Public, free, no-key API: trust scores, economic memory entries, "
+                     "and verified payloads for AI agents — machine-readable.",
+                path="/web/api")

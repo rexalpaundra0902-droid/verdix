@@ -240,4 +240,7 @@ loadState();
 
 
 def vault_page(page_fn, addr: str) -> str:
-    return page_fn(f"Vault {addr[:10]}… — Verdix", _body(addr))
+    return page_fn(f"Vault {addr[:10]}… — Verdix", _body(addr),
+                   desc="Non-custodial GuardedVault on BSC Testnet — policy and limits "
+                        "read straight from the contract; your agent can never break them.",
+                   path=f"/web/vault/{addr}")
