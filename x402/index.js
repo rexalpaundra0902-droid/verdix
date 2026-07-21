@@ -8,6 +8,8 @@ const { paymentMiddleware } = require("@x402/express");
 const { x402ResourceServer, HTTPFacilitatorClient } = require("@x402/core/server");
 const { ExactEvmScheme } = require("@x402/evm/exact/server");
 const { declareDiscoveryExtension } = require("@x402/extensions");
+const { SERVICES } = require("./services");
+const data = require("./data");
 
 const PAY_TO = process.env.X402_PAY_TO || "";
 const PORT = parseInt(process.env.X402_PORT || "8402", 10);
@@ -20,49 +22,7 @@ const FACILITATOR = process.env.X402_FACILITATOR || "https://x402.org/facilitato
 const app = express();
 app.disable("x-powered-by");
 
-// ---------- katalog servis (harga & deskripsi satu sumber) ----------
-const SERVICES = {
-  "GET /x402/agents": {
-    price: "$0.002", upstream: () => "/agents", mime: "application/json",
-    desc: "All Verdix-native AI agents with live Trust Score, verified on-chain actions, and VDX stake.",
-    example: { agents: [{ agentId: 1, trustScore: 57.9, n_subject: 11 }] },
-  },
-  "GET /x402/agent/:id": {
-    price: "$0.005", upstream: (p) => `/agent/${p.id}`, mime: "application/json",
-    desc: "Full Trust Score breakdown for one Verdix agent — every formula component, raw, from on-chain economic memory.",
-    example: { agentId: 1, trustScore: 57.9, success_rate: 0.884 },
-  },
-  "GET /x402/agent/:id/cv": {
-    price: "$0.005", upstream: (p) => `/agent/${p.id}/cv`, mime: "text/markdown",
-    desc: "The agent's Economic CV in markdown — its verifiable track record as a document.",
-    example: { markdown: "# Economic CV — Verdix Agent #1 ..." },
-  },
-  "GET /x402/entries": {
-    price: "$0.002", upstream: () => "/entries", mime: "application/json",
-    desc: "Latest Economic Memory entries recorded on-chain (BSC testnet), with payload hashes.",
-    example: { entries: [{ entryId: 12, outcome: 0 }] },
-  },
-  "GET /x402/bitagent": {
-    price: "$0.005", upstream: () => "/bitagent", mime: "application/json",
-    desc: "Trust-score leaderboard of the BitAgent ecosystem (Unibase AIP, 60+ agents), survivorship-aware.",
-    example: { agents: [{ handle: "weather", trustScore: 58.9 }] },
-  },
-  "GET /x402/bitagent/:handle": {
-    price: "$0.005", upstream: (p) => `/bitagent/${encodeURIComponent(p.handle)}`, mime: "application/json",
-    desc: "Score detail + on-chain ERC-8004 identity check for one BitAgent ecosystem agent.",
-    example: { handle: "weather", trustScore: 58.9, identity_verified_onchain: true },
-  },
-  "GET /x402/memory/:hash": {
-    price: "$0.003", upstream: (p) => `/memory/${encodeURIComponent(p.hash)}`, mime: "application/json",
-    desc: "The verified payload behind an on-chain Economic Memory dataHash, fetched from Membase.",
-    example: { dataHash: "0x...", payload: {} },
-  },
-  "GET /x402/dossier/:id": {
-    price: "$0.02", upstream: null, mime: "application/json", // komposit, dirakit lokal
-    desc: "Premium composite dossier for one Verdix agent: profile + score components + full recent memory + Economic CV, in one call.",
-    example: { profile: {}, entries: [], cv: "# Economic CV ..." },
-  },
-};
+// Katalog servis (harga/deskripsi/grup) ada di services.js — 4 bidang, 20 servis.
 
 // ---------- x402 middleware ----------
 if (PAY_TO) {
@@ -194,6 +154,82 @@ app.get("/x402/dossier/:id", async (req, res) => {
   } catch (e) {
     res.status(502).json({ error: "upstream unavailable", detail: String(e.message || e) });
   }
+});
+
+// ---------- Bidang 2: Market Intelligence ----------
+function symOr400(req, res) {
+  const s = String(req.params.symbol || "").toUpperCase();
+  if (!data.SYM_RE.test(s)) { res.status(400).json({ error: "bad symbol" }); return null; }
+  return s;
+}
+app.get("/x402/market/funding/:symbol", (req, res) => {
+  const s = symOr400(req, res); if (!s) return;
+  res.json(data.funding(s, data.clampDays(req.query.days, 30, 365)));
+});
+app.get("/x402/market/oi-lsr/:symbol", (req, res) => {
+  const s = symOr400(req, res); if (!s) return;
+  res.json(data.oiLsr(s, data.clampDays(req.query.days, 7, 90)));
+});
+app.get("/x402/market/basis/:symbol", (req, res) => {
+  const s = symOr400(req, res); if (!s) return;
+  res.json(data.basis(s, data.clampDays(req.query.days, 30, 365)));
+});
+app.get("/x402/market/cot", (req, res) => res.json(data.cot()));
+app.get("/x402/market/sentiment", (req, res) => res.json(data.sentiment()));
+app.get("/x402/market/live/:symbol", async (req, res) => {
+  const s = symOr400(req, res); if (!s) return;
+  try { res.json(await data.liveMarket(s)); }
+  catch (e) { res.status(502).json({ error: String(e.message || e) }); }
+});
+
+// ---------- Bidang 3: Whale Intelligence ----------
+app.get("/x402/whale/bursts", (req, res) => res.json(data.bursts()));
+app.get("/x402/whale/leaderboard", (req, res) => res.json(data.leaderboard()));
+app.get("/x402/whale/wallet/:addr", (req, res) => {
+  const a = String(req.params.addr || "");
+  if (!data.ADDR_RE.test(a)) return res.status(400).json({ error: "bad address" });
+  const info = data.walletInfo(a);
+  if (!info) return res.status(404).json({ error: "wallet not in tracked cohort" });
+  res.json(info);
+});
+app.get("/x402/whale/positions/:coin", (req, res) => {
+  const c = String(req.params.coin || "").toUpperCase();
+  if (!data.SYM_RE.test(c)) return res.status(400).json({ error: "bad coin" });
+  res.json(data.coinPositions(c));
+});
+
+// ---------- Bidang 4: AI Analysis ----------
+function aiGate(res) {
+  if (!data.aiEnabled()) { res.status(503).json({ error: "AI tier not configured" }); return false; }
+  if (!data.aiRateOk()) { res.status(429).json({ error: "AI tier rate limit — retry in a few minutes" }); return false; }
+  return true;
+}
+app.get("/x402/ai/agent-audit/:id", async (req, res) => {
+  if (!aiGate(res)) return;
+  const id = req.params.id;
+  try {
+    const get = (p, accept) => fetch(UPSTREAM + p, { headers: { Accept: accept || "application/json" } })
+      .then((r) => (r.ok ? (accept === "text/plain" ? r.text() : r.json()) : null)).catch(() => null);
+    const [profile, entries, cv] = await Promise.all([
+      get(`/agent/${id}`), get("/entries"), get(`/agent/${id}/cv`, "text/plain"),
+    ]);
+    if (!profile) return res.status(404).json({ error: "agent not found" });
+    res.json(await data.agentAudit(id, { profile, recent_entries: entries, economic_cv: cv }));
+  } catch (e) { res.status(502).json({ error: String(e.message || e) }); }
+});
+app.get("/x402/ai/market-brief/:symbol", async (req, res) => {
+  if (!aiGate(res)) return;
+  const s = symOr400(req, res); if (!s) return;
+  try {
+    const coin = s.replace(/USDT$|USDC$|USD$/, "");
+    const [live, senti, wp] = await Promise.all([
+      data.liveMarket(s).catch(() => null),
+      Promise.resolve().then(() => data.sentiment()).catch(() => null),
+      Promise.resolve().then(() => data.coinPositions(coin)).catch(() => null),
+    ]);
+    if (!live) return res.status(502).json({ error: "live market data unavailable" });
+    res.json(await data.marketBrief(s, live, senti, wp));
+  } catch (e) { res.status(502).json({ error: String(e.message || e) }); }
 });
 
 app.listen(PORT, "127.0.0.1", () => {

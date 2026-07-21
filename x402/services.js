@@ -79,7 +79,7 @@ const SERVICES = {
   // ── Bidang 3: Whale Intelligence (Hyperliquid) ──────────────────────
   "GET /x402/whale/bursts": {
     group: "Whale Intelligence", price: "$0.05", mime: "application/json",
-    desc: "PREMIUM — live whale burst events: coordinated OPEN flow ≥$250k/1h across tracked Hyperliquid whale wallets, with direction sign. Same detector as our internal research.",
+    desc: "PREMIUM — whale burst events (15-min delayed): coordinated OPEN flow ≥$250k/1h across tracked Hyperliquid whale wallets, with direction sign. Same detector as our internal research; real-time tier on request.",
     example: { bursts: [{ coin: "BTC", net_usd: 310000, sign: 1 }] },
   },
   "GET /x402/whale/leaderboard": {
