@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "auditing-foundry-smart-contract-security": {
+      "source": "mukul975/anthropic-cybersecurity-skills",
+      "sourceType": "github",
+      "skillPath": "skills/auditing-foundry-smart-contract-security/SKILL.md",
+      "computedHash": "456c113548619c9f7ae73b6c98ec15b33e56448f03cc8e1ee28bfdbf77bc8c39"
+    }
+  }
+}

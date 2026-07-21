@@ -578,16 +578,7 @@ def api_docs_page() -> str:
         "<p class='sub' style='margin-top:8px'>Base URL works on both domains: "
         "<span class='mono'>verdix.pages.dev/api/…</span> · <span class='mono'>verdix-api.kilatlab.com/api/…</span></p>"
         "<p class='sub'>The scoring formula is open source — "
-        "<a href='https://github.com/rexalpaundra0902-droid/verdix/blob/HEAD/intel/trustscore.py' target='_blank' rel='noopener'>read intel/trustscore.py</a>.</p></div>"
-        "<div class='card' style='margin-top:18px'><b>x402 — agent-payable tier</b> "
-        "<span class='badge b-ok'>NEW</span>"
-        "<p class='sub' style='margin-top:6px'>The same data as machine-payable services: "
-        "AI agents pay per-call in USDC via the x402 protocol — no account, no API key, "
-        "discoverable on the x402 Bazaar. 8 services from $0.002/call.</p>"
-        "<pre class='code'>npx awal x402 details https://verdix-api.kilatlab.com/x402/agent/1\n"
-        "npx awal x402 pay     https://verdix-api.kilatlab.com/x402/agent/1</pre>"
-        "<p class='sub' style='margin-top:8px'>Catalog: "
-        "<a href='https://verdix-api.kilatlab.com/x402/' target='_blank' rel='noopener'>verdix-api.kilatlab.com/x402/</a></p></div>")
+        "<a href='https://github.com/rexalpaundra0902-droid/verdix/blob/HEAD/intel/trustscore.py' target='_blank' rel='noopener'>read intel/trustscore.py</a>.</p></div>")
     return page("Verdix API", body,
                 desc="Public, free, no-key API: trust scores, economic memory entries, "
                      "and verified payloads for AI agents — machine-readable.",
