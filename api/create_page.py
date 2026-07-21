@@ -6,8 +6,8 @@ lalu deploy GuardedVault milik user sendiri via VaultFactory. Non-custodial:
 vault dimiliki wallet user, Verdix tidak pernah memegang dana.
 """
 
-FACTORY = "0x5883Bb4f6764D738304E9cc621e54b8B157775e4"
-REGISTRY = "0x03E3701c98CFe457460BDe6b71d9b466CDC6cBe0"
+FACTORY = "0x46DD4ED8178cF97F5B8D7E7e55E1e879Ec057C0c"
+REGISTRY = "0x5cC6f74214FbD3D390E3be73aBCfc9fb1A41036C"
 SEL_CREATE = "0x8b89b33e"  # createVault(uint256,(uint128,uint128,uint64,uint128))
 SEL_REGISTER = "0xf2c298be"  # register(string)
 TOPIC_REGISTERED = "0xca52e62c367d81bb2e328eb795f7c7ba24afb478408a26c0e201d155c449bc4a"

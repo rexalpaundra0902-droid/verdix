@@ -66,7 +66,7 @@ missing layer: **verifiable reputation with built-in sybil resistance.**
 | Component | What it does | Proof |
 |---|---|---|
 | **6 verified contracts** | AgentRegistry (ERC-8004), EconomicMemory, PaymentRouter, TaskEscrow, StressOracle, RiskGuardVault | All verified on BscScan (`deployments/bsc-testnet.json`), 30+ successful txs |
-| **EconomicMemory** | Append-only ledger; **only audited recorder contracts can write** — self-report is impossible by construction | `0x8692F4Bbc7422139D4335AF01734bEbe99516900` |
+| **EconomicMemory** | Append-only ledger; **only audited recorder contracts can write** — self-report is impossible by construction | `0x6329a6e3920EBA211808a103662136772ad20510` |
 | **RiskGuardVault** | On-chain risk constitution (max-tx / daily cap / cooldown / whitelist / halt floor) the agent cannot override | Compliant tx succeeds; oversized tx **reverts `ExceedsMaxTx`** on-chain |
 | **Trust Score engine** | `f(success·tier·recency, log-volume, counterparty-diversity anti-farming, stress behavior, disputes, control-change decay)` | `intel/trustscore.py`, 11 unit tests incl. bought-identity decay |
 | **Reputation API (live)** | `/agents`, `/agent/1/cv`, `/memory/<dataHash>`, `/bitagent` | http://194.233.93.155:8600 |

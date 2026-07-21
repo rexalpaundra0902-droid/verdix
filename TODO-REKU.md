@@ -1,4 +1,11 @@
-# TODO REKU — Verdix (update 2026-07-20)
+# TODO REKU — Verdix (update 2026-07-21 malam)
+
+## ☀️ BESOK PAGI (sisa dari 2026-07-21, ±10 menit total)
+1. Cek balasan 3 thread: Lucas (Discord Unibase) · DM X @Unibase_AI ·
+   pertanyaan form di Discord BNB. Ada balasan → paste ke Claude, dibantu draft.
+2. Cek komen di post outreach grup TG BNB → bales yang nyaut.
+3. Register di app.bitagent.io (Projects → connect existing → Verdix).
+4. Tweet (teks di §4 bawah).
 
 Urut prioritas baru yang disepakati: **beta operator DULU → baru mainnet.**
 (Mainnet dgn 2 agent internal ga ngerubah cerita; 3–5 operator eksternal di
@@ -6,9 +13,17 @@ testnet bikin keputusan mainnet didukung data orang lain + proposal grant kuat.)
 
 ## 1. ⭐ OUTREACH BETA — STATUS 2026-07-20 MALAM: BERGERAK
 - ❌ Post di General Unibase: kena auto-delete bot 2× (akun aman) — jangan ulangi jalur ini
-- ✅ DM admin Lucas (Unibase) TERKIRIM — nunggu balasan
-- ⏭ Besok: DM X @Unibase_AI (standby)
+- ✅ DM admin Lucas (Unibase) TERKIRIM 2026-07-20 — sampai 2026-07-21 belum ada balasan
+- ✅ DM X @Unibase_AI TERKIRIM 2026-07-21 (2 pesan, DM kebuka) — nunggu balasan.
+  Dua jalur aktif: Lucas (Discord) + X. JANGAN post ulang di Discord General
+  (auto-delete bot 2x).
 - Sisa target: grup dev BNB lain yang lu ikuti (teks di bawah masih valid)
+- 2026-07-21: Reku join TG BNB (grup BNB Hack). Form utama BNB Hack
+  (forms.gle/UVvuEGPZ) KETUTUP — blog resmi konfirmasi "may close submissions
+  at any time". Reku udah nanya di Discord BNB soal reopen + apakah submission
+  19 Jul (Unibase) masuk pipeline utama — NUNGGU JAWABAN.
+- ✅ Outreach EN KEPOST di grup TG BNB (BNB Hack) 2026-07-21 — standby bales
+  yang nyaut; jangan repost di grup yang sama.
 Kirim ke: Discord Unibase (#builders/#general), TG @unibase_ai, grup dev BNB yang lu ikuti.
 
 Teks EN (copy-paste — v3, direview auditor: buka soal MEREKA, satu ask, faucet link):
@@ -52,6 +67,15 @@ Versi ID (grup lokal):
 > awal gak bakal balik lagi.
 > **Satu ask: cobain, kasih tau di mana rusaknya. DM gua.** https://verdix.pages.dev
 
+⚠️ JEBAKAN FAUCET (diverifikasi 2026-07-21): faucet resmi bnbchain.org WAJIB
+punya 0.002 BNB MAINNET — wallet fresh bakal ditolak. Kalau ada calon operator
+ngeluh gak dapet gas:
+1. Suruh coba faucet Chainlink: https://faucets.chain.link/bnb-chain-testnet
+   (login GitHub, tanpa syarat saldo — jalur yang dulu kita pakai), ATAU
+2. Langsung tawarin: "DM me your address, I'll send you testnet gas" →
+   kasih tau Claude alamatnya, dikirim 0.02 tBNB dari deployer (stok 0.108,
+   cukup ±5 operator). Friksi ilang = operator gak kabur di langkah pertama.
+
 Amunisi kalau ada yang skeptis (jawaban singkat):
 - "Skornya bisa dipalsuin?" → formula open source (intel/trustscore.py) + tiap
   komponen bisa di-query API publik. Contoh kejujurannya: agent kami sendiri
@@ -76,6 +100,24 @@ point pihak-ketiga buat launch week mereka. Kirim ke TG Dev Group
 > be added to the integrations list in your docs? (2) Does the UB ecosystem/
 > treasury allocation have a builder-support path for deep integrators — and
 > does our agent's Membase contribution qualify for Knowledge Mining rewards?
+
+## 1b-X. ⭐ DM X @Unibase_AI — versi pendek buat X (copy-paste per blok)
+X DM ke non-mutual masuk "message requests" → harus pendek & langsung nilai.
+Kirim sebagai 2 pesan terpisah:
+
+> Hey — builder of Verdix here (BNB Hack, your On-Chain Immortal Agent
+> challenge). We publicly compute Trust Scores for 63 BitAgent agents +
+> our agent runs live in your AIP registry (#1700, Membase payloads).
+> Congrats on the Base launch 🎉
+
+> Our independent scores over your agent population = third-party proof
+> point for launch week. Happy to co-publish a "state of BitAgent agents"
+> thread. Also: any builder-support path for deep integrators?
+> Live: verdix.pages.dev
+
+Fallback kalau DM ketutup — reply publik ke tweet Base launch mereka:
+> Independent Trust Scores for 63 BitAgent agents, live since launch week —
+> decomposable via public API. verdix.pages.dev 🤝
 
 ## ⛔ BLOCKED — DappBay listing (nunggu jawaban support / mainnet)
 - Status 2026-07-20: submit ke-blok (form mainnet-oriented; BSC/opBNB/Greenfield).

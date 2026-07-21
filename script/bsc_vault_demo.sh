@@ -12,8 +12,8 @@ KEYDIR=/root/.verdix-keys
 DEPLOYER_PK=$(cat $KEYDIR/testnet-deployer.key)
 BOT_PK=$(cat $KEYDIR/bot-agent.key)
 VENUE=$(cast wallet address "$(cat $KEYDIR/client-agent.key)") # stand-in venue
-REGISTRY=0x03E3701c98CFe457460BDe6b71d9b466CDC6cBe0
-MEMORY=0x8692F4Bbc7422139D4335AF01734bEbe99516900
+REGISTRY=0x5cC6f74214FbD3D390E3be73aBCfc9fb1A41036C
+MEMORY=0x6329a6e3920EBA211808a103662136772ad20510
 BOT_ID=1
 OUT=deployments/out
 

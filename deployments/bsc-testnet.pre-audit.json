@@ -1,0 +1,32 @@
+{
+  "chainId": 97,
+  "rpc": "https://bsc-testnet.bnbchain.org",
+  "explorer": "https://testnet.bscscan.com",
+  "deployer": "0xeB517e1ef8A282E8B5dd1f102cf61b76b02dBaCE",
+  "contracts": {
+    "AgentRegistry": "0x03E3701c98CFe457460BDe6b71d9b466CDC6cBe0",
+    "EconomicMemory": "0x8692F4Bbc7422139D4335AF01734bEbe99516900",
+    "PaymentRouter": "0x21Ec45c09BEFAbA63539fd1dCfA0ad2CeDcB8662",
+    "TaskEscrow": "0x1A51D8062f2C022bA12f46851411d87a47dF36D8",
+    "StressOracle": "0xb67b938F6e0592722aF87bc0e48A0DF7684FA6FD",
+    "RiskGuardVault": "0x397170E0c1315654CfbB09902f564C1bd7B1358B",
+    "VDX": "0x85A78EDa8B300B7EEF196F876953Eb5b33Ea7984",
+    "VDXStaking": "0xf3294C1cC9308DD507aeB9E4D4acc9D2b4062ccB",
+    "VaultFactory": "0x5883Bb4f6764D738304E9cc621e54b8B157775e4"
+  },
+  "agents": {
+    "1": {
+      "name": "smc-bot",
+      "address": "0xf735f6C3844b8BbB34B25630f8De5a54a6cd4b86"
+    },
+    "2": {
+      "name": "reku",
+      "address": "0x97a64CC90dACd93F83D6347be4719a585FbB9EA9"
+    }
+  },
+  "demo": {
+    "compliantTx": "0x5ab22b5db269b3b2dd3679fa2af69404d6d0ed1c684f8df79d96a39b532fbc2f",
+    "blockedTx": "0xcb7e5dd10be44df82dfec34f7c49f2fd30be0cd3c57b31b2b6e0a908d34e567d",
+    "userVault": "0x6F899BC6A3Ba7a97c120C4282Eb61D58c34056dB"
+  }
+}
