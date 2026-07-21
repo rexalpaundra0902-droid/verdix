@@ -31,3 +31,10 @@ watch/*.log
 # internal working notes — never publish
 TODO-*.md
 *.internal.md
+
+# dokumen strategi internal — jangan publish
+docs/B2B_UNIBASE_PITCH.md
+docs/FUNDING_RESEARCH_*.md
+docs/GRANT_PROPOSAL.md
+docs/POSITIONING_ERC8004.md
+docs/WEB_AUDIT_*.md

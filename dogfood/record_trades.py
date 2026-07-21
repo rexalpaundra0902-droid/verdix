@@ -52,10 +52,13 @@ def classify(exit_reason: str | None) -> bool:
 def load_closed_trades(db_path: str) -> list[dict]:
     con = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
     con.row_factory = sqlite3.Row
+    # VENUE_WIPE = posisi di-wipe venue (artefak accounting, bot sendiri
+    # meng-exclude-nya dari statistik) — bukan observed behavior, jangan diattest.
     rows = con.execute(
         "SELECT id, symbol, side, entry_time, exit_time, exit_reason, "
         "       size_usd, pnl_usd, pnl_pct "
-        "FROM trades WHERE exit_time IS NOT NULL ORDER BY exit_time"
+        "FROM trades WHERE exit_time IS NOT NULL "
+        "  AND IFNULL(exit_reason, '') != 'VENUE_WIPE' ORDER BY exit_time"
     ).fetchall()
     con.close()
     return [dict(r) for r in rows]

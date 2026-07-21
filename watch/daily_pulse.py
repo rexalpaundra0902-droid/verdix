@@ -2,11 +2,13 @@
 """Verdix daily pulse — bikin agent hidup sendiri, tanpa nunggu disuruh.
 
 Jalan via cron 1x/hari:
-  1. Trade closed BARU di journal testnet (bot trading 24/7) → attest on-chain
+  1. Trade closed BARU di journal LIVE MAINNET bot (uang riil) → attest on-chain
      (StressOracle, Class 4) + payload ke Membase. Economic Memory tumbuh sendiri.
+     (Sebelum 2026-07-20 sumbernya journal testnet — 8 attestasi awal + state
+     "attested" berasal dari sana; sekarang pakai "attested_live".)
   2. Agent nulis jurnal pasar 4H harian (BTC/ETH) ke Membase — memory-nya
      bertambah tiap hari walau tidak ada job masuk.
-Incremental (state file), journal dibaca READ-ONLY, semua on-chain di TESTNET.
+Incremental (state file), journal dibaca READ-ONLY, tx on-chain di TESTNET (chain 97).
 Notif TG singkat kalau ada aktivitas.
 """
 
@@ -24,8 +26,8 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 STATE = Path(__file__).with_name(".pulse_state.json")
-DB = "/root/smc-bot-v19/data/journal_testnet.db"
-SOURCE = "smc-bot-live"  # HARUS sama dgn attestation awal (hash determinism)
+DB = "/root/smc-bot-v19/data/journal_live.db"  # LIVE MAINNET sejak 2026-07-20
+SOURCE = "smc-bot-live"  # label historis attestation awal — sekarang beneran live
 RPC = "https://bsc-testnet.bnbchain.org"
 ORACLE = "0xb67b938F6e0592722aF87bc0e48A0DF7684FA6FD"
 BOT_AGENT_ID = "1"
@@ -80,7 +82,9 @@ def attest_new_trades(state: dict) -> list[str]:
     from dogfood.record_trades import load_closed_trades, to_attestations
     from payloads.membase_store import upload_payload
 
-    done = set(state.setdefault("attested", list(range(1, 9))))
+    # "attested" lama = trade-id journal TESTNET (arsip, jangan dipakai lagi —
+    # id live mulai dari 1 juga, bakal nabrak). Live pakai key sendiri.
+    done = set(state.setdefault("attested_live", []))
     lines = []
     for a in to_attestations(load_closed_trades(DB), SOURCE):
         if a["tradeId"] in done:
@@ -93,7 +97,7 @@ def attest_new_trades(state: dict) -> list[str]:
             print(f"attested #{a['tradeId']} {a['symbol']} -> {a['dataHash'][:16]}...")
         except Exception as e:
             print(f"GAGAL attest #{a['tradeId']}: {e}")
-    state["attested"] = sorted(done)
+    state["attested_live"] = sorted(done)
     return lines
 
 

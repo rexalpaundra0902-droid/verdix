@@ -95,6 +95,21 @@ class Handler(BaseHTTPRequestHandler):
         pass
 
     def _reply(self, code: int, body: str, ctype: str = "application/json"):
+        # Content negotiation: endpoint JSON dibuka BROWSER (Accept: text/html)
+        # → bungkus viewer manusiawi; curl/script tetap dapat JSON mentah.
+        if (ctype == "application/json" and code == 200
+                and "text/html" in self.headers.get("Accept", "")):
+            import html as _h
+            path = self.path.split("?")[0]
+            body_html = (
+                "<p><a href='/web/api'>← API docs</a></p>"
+                f"<h1 class='mono' style='font-size:1.3rem'>GET {_h.escape(path)}</h1>"
+                "<p class='sub'>Machine-readable API response — scripts and curl get this exact JSON, raw.</p>"
+                f"<pre class='code'>{_h.escape(body)}</pre>"
+                "<p class='sub' style='margin-top:12px'>Human view: <a href='/web'>directory</a> · "
+                "<a href='/web/agent/1'>agent profile</a> · <a href='/web/api'>all endpoints</a></p>")
+            body = webui.page("Verdix API", body_html)
+            ctype = "text/html"
         data = body.encode()
         self.send_response(code)
         self.send_header("Content-Type", f"{ctype}; charset=utf-8")
@@ -106,12 +121,44 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):  # noqa: N802
         try:
             parts = [p for p in self.path.split("?")[0].split("/") if p]
+            # alias /api/<x> → /<x>: contoh curl yang diiklankan (verdix.pages.dev/api/...)
+            # harus juga jalan kalau di-hit langsung ke domain API
+            if len(parts) > 1 and parts[0] == "api":
+                parts = parts[1:]
             if not parts:
                 landing = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "landing.html")
                 if os.path.exists(landing):
                     self._reply(200, open(landing, encoding="utf-8").read(), ctype="text/html")
                     return
                 parts = ["api"]  # fallback: tampilkan info JSON
+            if parts[0] == "js" and len(parts) == 2 and parts[1].endswith(".js"):
+                fp = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "js",
+                                  os.path.basename(parts[1]))
+                if os.path.exists(fp):
+                    data = open(fp, "rb").read()
+                    self.send_response(200)
+                    self.send_header("Content-Type", "application/javascript")
+                    self.send_header("Content-Length", str(len(data)))
+                    self.send_header("Cache-Control", "public, max-age=86400")
+                    self.end_headers()
+                    self.wfile.write(data)
+                else:
+                    self._reply(404, json.dumps({"error": "not found"}))
+                return
+            if parts[0] == "img" and len(parts) == 2 and parts[1].endswith((".webp", ".png")):
+                fp = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "img",
+                                  os.path.basename(parts[1]))
+                if os.path.exists(fp):
+                    data = open(fp, "rb").read()
+                    self.send_response(200)
+                    self.send_header("Content-Type", "image/png" if fp.endswith(".png") else "image/webp")
+                    self.send_header("Content-Length", str(len(data)))
+                    self.send_header("Cache-Control", "public, max-age=86400")
+                    self.end_headers()
+                    self.wfile.write(data)
+                else:
+                    self._reply(404, json.dumps({"error": "not found"}))
+                return
             if parts[0] == "fonts" and len(parts) == 2 and parts[1].endswith(".woff2"):
                 fp = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "fonts",
                                   os.path.basename(parts[1]))
@@ -146,16 +193,34 @@ class Handler(BaseHTTPRequestHandler):
                 self._reply(200, json.dumps({"count": len(st["entries"]), "recent": recent}, indent=2))
             elif parts == ["agents"]:
                 st = chain_state()
-                agents = [
-                    {"agentId": i, "trustScore": agent_payload(i)["trustScore"]}
-                    for i in range(1, st["n_agents"] + 1)
-                ]
+                names = {1: "smc-bot", 2: "reku"}
+                agents = []
+                for i in range(1, st["n_agents"] + 1):
+                    p = agent_payload(i)
+                    agents.append({
+                        "agentId": i,
+                        "name": names.get(i, f"agent-{i}"),
+                        "trustScore": p["trustScore"],
+                        "verifiedActions": p["n_subject"],
+                        "vdxStaked": p["vdxStaked"],
+                        "foundingOperator": i <= 7,
+                        "profile": f"https://verdix.pages.dev/web/agent/{i}",
+                        "detail": f"https://verdix.pages.dev/api/agent/{i}",
+                    })
                 self._reply(200, json.dumps({"count": len(agents), "agents": agents}, indent=2))
             elif parts[0] == "web":
                 if len(parts) == 2 and parts[1] == "create":
                     from api.create_page import create_page
 
                     self._reply(200, create_page(webui.page), ctype="text/html")
+                    return
+                if len(parts) == 2 and parts[1] == "api":
+                    self._reply(200, webui.api_docs_page(), ctype="text/html")
+                    return
+                if len(parts) == 3 and parts[1] == "vault" and parts[2].startswith("0x") and len(parts[2]) == 42:
+                    from api.vault_page import vault_page
+
+                    self._reply(200, vault_page(webui.page, parts[2]), ctype="text/html")
                     return
                 st = chain_state()
                 if len(parts) == 1:
@@ -166,7 +231,7 @@ class Handler(BaseHTTPRequestHandler):
                 elif parts[1] == "agent" and len(parts) == 3 and parts[2].isdigit():
                     aid = int(parts[2])
                     if not (1 <= aid <= st["n_agents"]):
-                        self._reply(404, webui.page("404", "<h1>Agent tidak ditemukan</h1>"), ctype="text/html")
+                        self._reply(404, webui.page("404", "<h1>Agent not found</h1>"), ctype="text/html")
                     else:
                         entries = [e for e in st["entries"]
                                    if e["agentId"] == aid or e.get("counterpartyId") == aid]
@@ -177,7 +242,7 @@ class Handler(BaseHTTPRequestHandler):
                     agents = cached("bitagent", lambda: fetch_agents(chain_id=97))
                     match = [a for a in agents if a.get("handle") == parts[2]]
                     if not match:
-                        self._reply(404, webui.page("404", "<h1>Agent tidak ditemukan</h1>"), ctype="text/html")
+                        self._reply(404, webui.page("404", "<h1>Agent not found</h1>"), ctype="text/html")
                     else:
                         b = cached(f"ba:{parts[2]}", lambda: score_agent(match[0], check_onchain=True))
                         self._reply(200, webui.bitagent_page(b), ctype="text/html")

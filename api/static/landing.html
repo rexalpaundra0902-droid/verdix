@@ -9,7 +9,25 @@
 <meta property="og:title" content="Verdix — Reputation your AI agent can't fake">
 <meta property="og:description" content="On-chain economic memory, policy-guarded vaults, and live trust scores for the AI agent economy. Live on BNB Chain.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://verdix.pages.dev/">
+<meta property="og:image" content="https://verdix.pages.dev/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Verdix — Reputation your AI agent can't fake">
+<meta name="twitter:description" content="On-chain economic memory, policy-guarded vaults, and live trust scores for the AI agent economy. Live on BNB Chain.">
+<meta name="twitter:image" content="https://verdix.pages.dev/img/og.png">
+<link rel="canonical" href="https://verdix.pages.dev/">
 <title>Verdix — Reputation your AI agent can't fake</title>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"Verdix",
+ "url":"https://verdix.pages.dev/",
+ "description":"On-chain economic memory, policy-guarded vaults, and live trust scores for the AI agent economy — deployed on BNB Chain.",
+ "publisher":{"@type":"Organization","name":"Verdix",
+  "url":"https://verdix.pages.dev/",
+  "logo":"https://verdix.pages.dev/img/verdix-logo-512.png",
+  "sameAs":["https://github.com/rexalpaundra0902-droid/verdix"]}}
+</script>
 <style>
   
   @font-face{font-family:'Space Grotesk';src:url('fonts/space-grotesk-var.woff2') format('woff2');font-weight:300 700;font-display:swap}
@@ -25,6 +43,7 @@
     --text:#e8ecf4;
     --muted:#9aa4b8;
     --dim:#6b7488;
+    --warm:#a39b8f;
     --emerald:#22c97f;
     --emerald-dim:rgba(34,201,127,.14);
     --violet:#8b5cf6;
@@ -134,6 +153,10 @@
     .nav-toggle{display:block}
   }
 
+  .skip{position:absolute;left:-9999px;top:0;background:#0b0f14;color:var(--text);
+    padding:10px 16px;border-radius:0 0 10px 0;z-index:60}
+  .skip:focus{left:0}
+
   /* ---------- hero ---------- */
   .hero{position:relative;padding:158px 0 78px;text-align:center;overflow:visible}
   .badge{
@@ -183,23 +206,23 @@
   }
   .stat:hover::before{opacity:1}
   .stat .num{
-    font-size:clamp(1.7rem,3.4vw,2.5rem);font-weight:800;letter-spacing:-.02em;
-    font-variant-numeric:tabular-nums;
+    font-size:clamp(2.6rem,5.2vw,4rem);font-weight:800;letter-spacing:-.02em;
+    font-family:var(--mono);font-variant-numeric:tabular-nums;
     background:linear-gradient(120deg,#fff,#a7f3d0);
     -webkit-background-clip:text;background-clip:text;color:transparent;
   }
-  .stat .lbl{font-size:.82rem;color:var(--dim);margin-top:6px;letter-spacing:.05em;text-transform:uppercase}
+  .stat .lbl{font-size:.8rem;color:var(--warm);margin-top:6px;letter-spacing:.05em;text-transform:uppercase}
   @media(max-width:760px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
 
   /* ---------- generic section ---------- */
-  section{padding:96px 0;position:relative}
+  section{padding:clamp(96px,9vw,128px) 0;position:relative}
   .eyebrow{
     font-size:.78rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
     color:var(--blue);margin-bottom:14px;
   }
   .eyebrow.green{color:var(--emerald)}
   .eyebrow.red{color:var(--red)}
-  h2{font-size:clamp(1.65rem,3.8vw,2.5rem);font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-bottom:14px}
+  h2{font-size:clamp(1.75rem,3.2vw,2.25rem);font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-bottom:14px}
   .lead{color:var(--muted);font-size:clamp(.98rem,1.8vw,1.1rem);max-width:640px}
   .sec-head{margin-bottom:52px}
   .sec-head.center{text-align:center}
@@ -304,15 +327,15 @@
   .lb-rank{font-family:var(--mono);color:var(--dim);font-size:.9rem}
   .lb-rank.top{color:var(--emerald)}
   .lb-name{min-width:0}
-  .lb-name .h{font-weight:600;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .lb-name .s{font-size:.76rem;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lb-name .h{display:block;font-weight:600;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lb-name .s{display:block;font-size:.76rem;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .lb-bar{height:7px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
   .lb-bar i{
     display:block;height:100%;width:0;border-radius:inherit;
     background:linear-gradient(90deg,#8b5cf6,#22c97f);
     transition:width 1.1s cubic-bezier(.2,.7,.3,1);
   }
-  .lb-score{font-family:var(--mono);font-weight:700;font-size:.95rem;text-align:right;color:var(--emerald)}
+  .lb-score{font-family:var(--mono);font-weight:700;font-size:1.25rem;text-align:right;color:var(--emerald)}
   @media(max-width:560px){
     .lb-row{grid-template-columns:26px 1fr 46px;}
     .lb-bar{display:none}
@@ -411,9 +434,10 @@
 
   /* ---------- section hairline divider ---------- */
   .sec-hr{
-    height:1px;max-width:var(--maxw);margin:0 auto;
-    background:linear-gradient(90deg,transparent,rgba(255,255,255,.10) 30%,rgba(34,201,127,.18) 50%,rgba(255,255,255,.10) 70%,transparent);
+    height:0;max-width:var(--maxw);margin:0 auto;
+    border-top:1px dashed rgba(255,255,255,.16);position:relative;
   }
+  .sec-hr::after{content:'✂';position:absolute;left:24px;top:-9px;color:var(--dim);font-size:11px;opacity:.5}
 
   /* ---------- watermark ---------- */
   .wm{
@@ -533,6 +557,9 @@
   .phase ul{list-style:none;display:grid;gap:7px}
   .phase li{font-size:.85rem;color:var(--muted);display:flex;gap:8px;align-items:flex-start}
   .phase li::before{content:"—";color:var(--dim);flex:none}
+  .phase li.li-done::before{content:"✓";color:var(--emerald)}
+  .phase li.li-done{color:var(--text)}
+  .phase li.li-doing::before{content:"●";color:var(--warm);font-size:.6rem;line-height:1.9}
   .phase.done li::before{content:"✓";color:var(--emerald)}
 
   html{overflow-x:clip}
@@ -542,6 +569,10 @@
   .lang-tg{background:none;border:1px solid rgba(255,255,255,.14);color:var(--muted);border-radius:8px;
     padding:6px 10px;font:600 .8rem 'IBM Plex Mono',monospace;cursor:pointer;transition:.2s}
   .lang-tg:hover{color:#f3f3f0;border-color:#22c97f}
+  .method{margin-top:6px;font-size:.9rem}.method a{color:#22c97f}.method a:hover{text-decoration:underline}
+  .sublbl{margin-top:4px;font-size:.72rem;color:var(--warm);opacity:.9}
+  select.lang-tg{-webkit-appearance:none;appearance:none;background:rgba(10,14,20,.6);padding-right:22px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%238b93a7'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
+  select.lang-tg option{background:#0b0f14;color:#e8ecf4}
   .btn-wallet{background:rgba(34,201,127,.08);border:1px solid rgba(34,201,127,.4);color:#22c97f;cursor:pointer}
   .btn-wallet:hover{background:rgba(34,201,127,.16)}
   .btn-wallet.connected{font-family:'IBM Plex Mono',monospace;font-size:.78rem}
@@ -561,10 +592,67 @@
   .wm-item img{width:26px;height:26px;border-radius:6px}
   .wm-ext{margin-left:auto;color:#8a8f89}
   .wm-note{margin-top:10px;font-size:.78rem;color:#8a8f89}
+  .cn-stamp{width:15px;height:15px;font-size:.58rem;margin-right:6px;vertical-align:-2px}
+
+  /* ---------- band section (ritme layout) ---------- */
+  .band{background:linear-gradient(180deg,rgba(255,255,255,.028),rgba(255,255,255,.012));
+    border-top:1px dashed rgba(255,255,255,.14);border-bottom:1px dashed rgba(255,255,255,.14)}
+
+  /* ---------- trust signal strip ---------- */
+  .trustrip{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:30px}
+  .trustrip .chip{border:1px solid var(--border);border-radius:999px;padding:6px 15px;
+    font-size:.78rem;color:var(--warm);font-weight:600;letter-spacing:.02em;transition:.2s}
+  .trustrip .chip:hover{border-color:rgba(34,201,127,.4);color:var(--text)}
+
+  /* ---------- tx proof panel (hero) ---------- */
+  .txproof{max-width:460px;margin:26px auto 0;display:grid;gap:10px;text-align:left}
+  .txcard{display:block;background:rgba(10,14,20,.72);border:1px solid var(--border);border-radius:14px;
+    padding:14px 16px;transition:.2s;position:relative;overflow:hidden;
+    opacity:0;transform:translateY(14px);animation:txin .6s cubic-bezier(.2,.7,.3,1) forwards}
+  .txcard.txfail{animation-delay:.45s}
+  .txcard.txok{animation-delay:.7s;padding:11px 16px}
+  @keyframes txin{to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){.txcard{animation:none;opacity:1;transform:none}}
+  .txcard:hover{border-color:var(--border-hi);transform:translateY(-2px)}
+  .txrow{display:flex;align-items:center;gap:10px;font-size:.92rem;flex-wrap:wrap}
+  .txamt{font-weight:700;color:var(--text)}
+  .txarrow{color:var(--muted)}
+  .txgo{margin-left:auto;color:#7aa2ff;font-size:.82rem;font-weight:600}
+  .txstamp{display:inline-block;margin-top:9px;padding:4px 12px;border:2px solid var(--red);border-radius:8px;
+    color:var(--red);font:800 .78rem/1.3 var(--mono);letter-spacing:.06em;transform:rotate(-2deg);
+    box-shadow:0 0 14px rgba(255,90,90,.12)}
+  .txok .txoktxt{color:#22c97f;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:7px}
+  .stamp-ok{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;
+    border:1.6px solid #22c97f;border-radius:52% 48% 50% 50%/48% 52% 48% 52%;font-size:.72rem;font-weight:800}
+  .txcap{color:var(--warm);font-size:.8rem;text-align:center;margin-top:2px}
+
+  /* ---------- plain one-liner + hero see-link ---------- */
+  .hero p.plain{max-width:640px;margin:14px auto 0;color:var(--text);font-size:1.02rem;line-height:1.6;
+    background:rgba(34,201,127,.06);border:1px solid rgba(34,201,127,.22);border-radius:12px;padding:12px 18px}
+  .hero-see{margin-top:16px;font-size:.95rem}
+  .hero-see a{color:var(--muted);border-bottom:1px dashed rgba(255,255,255,.25);padding-bottom:2px;transition:.2s}
+  .hero-see a:hover{color:#22c97f;border-color:#22c97f}
+
+  /* ---------- who it's for ---------- */
+  .whofor .card h3{margin-bottom:8px}
+  .golink{margin-top:14px;font-weight:600}
+  .golink a{color:#22c97f}
+  .golink a:hover{text-decoration:underline}
+
+  /* ---------- product shots ---------- */
+  .shots-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:8px}
+  @media(max-width:900px){.shots-grid{grid-template-columns:1fr}}
+  .shot{margin:0}
+  .shot img{width:100%;height:auto;display:block;border:1px solid var(--border);border-radius:14px;
+    box-shadow:0 18px 60px -30px rgba(0,0,0,.8);transition:transform .25s,border-color .25s}
+  .shot a:hover img{transform:translateY(-3px);border-color:rgba(34,201,127,.45)}
+  .shot figcaption{margin-top:12px;color:var(--warm);font-size:.92rem;line-height:1.55}
+  .shot figcaption a{color:#22c97f;font-weight:600}
 </style>
 </head>
 <body>
 
+<a class="skip" href="#top">Skip to content</a>
 <div id="scrollProgress" aria-hidden="true"></div>
 <div class="bg-grid" aria-hidden="true"></div>
 
@@ -587,10 +675,10 @@
       <a href="#tokenomics">$VDX</a>
       <a href="#roadmap">Roadmap</a>
       <a href="https://github.com/rexalpaundra0902-droid/verdix" target="_blank" rel="noopener">Docs</a>
-      <button class="lang-tg" id="langTg" aria-label="Language">ID</button>
       <button class="btn btn-wallet btn-sm" id="walletBtn">Connect Wallet</button>
       <a class="btn btn-primary btn-sm" href="/web/create">Launch App</a>
     </div>
+    <select class="lang-tg" id="langSel" aria-label="Language"><option value="en">EN</option><option value="id">ID</option><option value="zh">中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">ES</option><option value="ru">RU</option></select>
   </div>
 </nav>
 
@@ -603,11 +691,25 @@
     <div class="badge rv"><span class="pulse"></span> Live on BSC Testnet</div>
     <h1 class="rv rv-d1">Reputation your AI agent <span class="grad-text">can't fake.</span></h1>
     <p class="sub rv rv-d2">On-chain economic memory, policy-guarded vaults, and live trust scores for the AI agent economy — deployed on BNB Chain.</p>
+    <p class="plain rv rv-d2">Run an AI agent that touches money? Give it a vault it can't overspend — every action it takes becomes a public track record, automatically.</p>
     <div class="hero-ctas rv rv-d3">
       <a class="btn btn-primary btn-lg" href="/web/create">Create Verified Vault
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
       </a>
       <a class="btn btn-ghost btn-lg" href="/web">View Directory</a>
+    </div>
+    <p class="hero-see rv rv-d3"><a href="/web/agent/1">See a live agent profile →</a></p>
+
+    <!-- ============ TX PROOF PANEL ============ -->
+    <div class="txproof rv rv-d4" aria-label="Real on-chain policy enforcement">
+      <a class="txcard txfail" href="https://testnet.bscscan.com/tx/0xcb7e5dd10be44df82dfec34f7c49f2fd30be0cd3c57b31b2b6e0a908d34e567d" target="_blank" rel="noopener">
+        <div class="txrow"><span class="mono txamt">0.006 tBNB</span><span class="txarrow">→</span><span class="mono">RiskGuardVault</span><span class="txgo">tx ↗</span></div>
+        <div class="txstamp">✕ REVERTED — ExceedsMaxTx</div>
+      </a>
+      <a class="txcard txok" href="https://testnet.bscscan.com/tx/0x5ab22b5db269b3b2dd3679fa2af69404d6d0ed1c684f8df79d96a39b532fbc2f" target="_blank" rel="noopener">
+        <div class="txrow"><span class="mono txamt">0.004 tBNB</span><span class="txarrow">→</span><span class="txoktxt"><span class="stamp-ok">✓</span> executed &amp; scored</span><span class="txgo">tx ↗</span></div>
+      </a>
+      <p class="txcap">Both transactions are real. Click them.</p>
     </div>
 
     <!-- ============ LIVE TERMINAL ============ -->
@@ -623,22 +725,32 @@
     <div class="stats rv rv-d4">
       <div class="stats-grid">
         <div class="stat">
-          <div class="num" id="statAgents" data-target="65" data-suffix="">0</div>
-          <div class="lbl">Agents scored</div>
+          <div class="num" id="statAgents" data-target="2" data-suffix="">2</div>
+          <div class="lbl">Verdix-native agents live</div>
+          <div class="sublbl" id="statEco">+63 ecosystem agents scored</div>
         </div>
         <div class="stat">
-          <div class="num" id="statActions" data-target="13" data-suffix="+">0</div>
+          <div class="num" id="statActions" data-target="13" data-suffix="+">13+</div>
           <div class="lbl">On-chain verified actions</div>
         </div>
         <div class="stat">
-          <div class="num" id="statContracts" data-target="8" data-suffix="">0</div>
+          <div class="num" id="statContracts" data-target="9" data-suffix="">9</div>
           <div class="lbl">Contracts verified</div>
         </div>
         <div class="stat">
-          <div class="num" id="statTrust" data-target="56.8" data-suffix="">0</div>
+          <div class="num" id="statTrust" data-target="57.9" data-suffix="">57.9</div>
           <div class="lbl">Live trust score</div>
         </div>
       </div>
+    </div>
+
+    <!-- ============ TRUST SIGNAL STRIP ============ -->
+    <div class="trustrip rv rv-d4" aria-label="Trust signals">
+      <a class="chip" href="#product">Built on Membase</a>
+      <a class="chip" href="#contracts">BNB Chain</a>
+      <a class="chip" href="#contracts">Live on BSC Testnet</a>
+      <a class="chip" href="#roadmap">ERC-8004 compat — roadmap</a>
+      <a class="chip" href="#contracts">9 verified contracts</a>
     </div>
   </div>
 </header>
@@ -678,6 +790,35 @@
     </div>
   </div>
 </section>
+
+<!-- ============ WHO IT'S FOR ============ -->
+<section class="whofor" id="whofor">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <div class="eyebrow">Who it's for</div>
+      <h2>One trust layer, three ways in</h2>
+    </div>
+    <div class="grid-3">
+      <div class="card rv">
+        <h3>Agent operators</h3>
+        <p>You run a trading bot or AI agent that touches money. Deploy a vault, set hard rules, and every compliant action builds a track record you can prove — not just claim.</p>
+        <p class="golink"><a href="/web/create">Create a vault →</a></p>
+      </div>
+      <div class="card rv rv-d1">
+        <h3>Platforms &amp; marketplaces</h3>
+        <p>You list agents — and take the blame when one rugs. Check verified history and require a Verdix profile before an agent touches user funds.</p>
+        <p class="golink"><a href="/web/api">Query the API →</a></p>
+      </div>
+      <div class="card rv rv-d2">
+        <h3>Users &amp; allocators</h3>
+        <p>You decide which agent deserves capital. Read the on-chain record: real actions, real failures, and a score nobody can buy.</p>
+        <p class="golink"><a href="/web">Browse the directory →</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-hr" aria-hidden="true"></div>
 
 <!-- ============ BUILT ON ============ -->
 <section class="builton">
@@ -755,7 +896,7 @@
 </section>
 
 <!-- ============ HOW IT WORKS ============ -->
-<section id="how">
+<section id="how" class="band">
   <div class="wrap">
     <div class="sec-head center rv">
       <div class="eyebrow">How it works</div>
@@ -788,6 +929,29 @@
 
 <div class="sec-hr" aria-hidden="true"></div>
 
+<!-- ============ PRODUCT SHOTS ============ -->
+<section class="shots" id="shots">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <div class="eyebrow">Inside the app</div>
+      <h2>This is what verified looks like</h2>
+      <p class="lead">Live pages from the running product — real data, not mockups.</p>
+    </div>
+    <div class="shots-grid">
+      <figure class="shot rv">
+        <a href="/web/agent/1"><img src="img/shot-profile.webp" alt="Verdix agent profile with live Trust Score" loading="lazy" width="1400" height="992"></a>
+        <figcaption>Public agent profile — Trust Score computed from the chain. <a href="/web/agent/1">Open live →</a></figcaption>
+      </figure>
+      <figure class="shot rv rv-d1">
+        <a href="/web/vault/0x6F899BC6A3Ba7a97c120C4282Eb61D58c34056dB"><img src="img/shot-vault.webp" alt="Vault control room with live on-chain state" loading="lazy" width="1400" height="992"></a>
+        <figcaption>Vault control room — policy and limits read straight from the contract. <a href="/web/vault/0x6F899BC6A3Ba7a97c120C4282Eb61D58c34056dB">Open live →</a></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<div class="sec-hr" aria-hidden="true"></div>
+
 <!-- ============ LEADERBOARD ============ -->
 <section id="leaderboard">
   <div class="wrap">
@@ -795,6 +959,7 @@
       <div class="eyebrow green">Live network</div>
       <h2>Trust Score leaderboard</h2>
       <p class="lead">Scored from on-chain and verified activity, refreshed live from the Verdix API.</p>
+      <p class="method"><a href="https://github.com/rexalpaundra0902-droid/verdix/blob/HEAD/intel/trustscore.py" target="_blank" rel="noopener">Open methodology — every weight is public, read the exact formula →</a><br><a href="https://verdix.pages.dev/api/agent/1" target="_blank" rel="noopener">Every score component is queryable via the public API — decompose any score yourself →</a></p>
     </div>
     <div class="lb-card rv rv-d1">
       <div class="lb-head">
@@ -802,12 +967,18 @@
         <a href="/web">Full directory →</a>
       </div>
       <div class="lb-rows" id="lbRows">
-        <!-- populated by JS; static fallback below -->
+        <!-- fallback statis = agent Verdix RIIL (JS ganti dgn leaderboard live) -->
         <div class="lb-row">
           <span class="lb-rank top">#1</span>
-          <span class="lb-name"><span class="h">verdix-sentinel</span><span class="s">loading live data…</span></span>
-          <span class="lb-bar"><i style="width:87%"></i></span>
-          <span class="lb-score">87</span>
+          <span class="lb-name"><span class="h">reku · Agent #2</span><span class="s">2 verified actions · Verdix-native</span></span>
+          <span class="lb-bar"><i style="width:60%"></i></span>
+          <span class="lb-score">60.1</span>
+        </div>
+        <div class="lb-row">
+          <span class="lb-rank">#2</span>
+          <span class="lb-name"><span class="h">smc-bot · Agent #1</span><span class="s">11 verified actions · 10,000 VDX staked</span></span>
+          <span class="lb-bar"><i style="width:58%"></i></span>
+          <span class="lb-score">57.9</span>
         </div>
       </div>
     </div>
@@ -875,7 +1046,7 @@
         <span class="ph-tag ph-done">✓ Done</span>
         <h3>Protocol live on BSC testnet</h3>
         <ul>
-          <li>8 verified contracts</li>
+          <li>9 verified contracts</li>
           <li>Agent #1700 dual-registry</li>
           <li>Membase payloads</li>
         </ul>
@@ -885,9 +1056,9 @@
         <span class="ph-tag ph-now">● Now</span>
         <h3>Verified Agent product</h3>
         <ul>
-          <li>Self-serve vaults</li>
-          <li>Beta operators</li>
-          <li>BNB grant</li>
+          <li class="li-done">Self-serve vaults</li>
+          <li class="li-doing">Beta operators</li>
+          <li class="li-doing">External security review</li>
         </ul>
       </div>
       <div class="card phase rv rv-d2">
@@ -895,7 +1066,8 @@
         <span class="ph-tag ph-next">Next</span>
         <h3>Scale</h3>
         <ul>
-          <li>Robinhood Chain deploy</li>
+          <li>ERC-8004 mainnet compatibility</li>
+          <li>Robinhood Chain (RWA trading L2) — under evaluation</li>
           <li>B2B platform verification</li>
           <li>x402 paid API</li>
         </ul>
@@ -922,7 +1094,17 @@
       <h2>Deployed &amp; verifiable</h2>
       <p class="lead">Every contract is live on BSC testnet. Don't take our word for anything — read the chain.</p>
     </div>
-    <div class="contracts-grid" id="contractsGrid"></div>
+    <div class="contracts-grid" id="contractsGrid">
+      <a class="ct in" target="_blank" rel="noopener" href="https://testnet.bscscan.com/address/0x03E3701c98CFe457460BDe6b71d9b466CDC6cBe0"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="#7aa2ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 4v8l-7 4-7-4V6l7-4z"/><path d="M12 10l7-4M12 10L5 6M12 10v8"/></svg></span><span class="meta"><span class="cn"><span class="stamp-ok cn-stamp">✓</span>AgentRegistry</span><span class="ca">0x03E3701c98CFe457460BDe6b71d9b466CDC6cBe0</span></span><svg class="ext" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h7v7M13 3L7 9"/><path d="M11 9v4H3V5h4"/></svg></a>
+      <a class="ct in" target="_blank" rel="noopener" href="https://testnet.bscscan.com/address/0x8692F4Bbc7422139D4335AF01734bEbe99516900"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="#7aa2ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 4v8l-7 4-7-4V6l7-4z"/><path d="M12 10l7-4M12 10L5 6M12 10v8"/></svg></span><span class="meta"><span class="cn"><span class="stamp-ok cn-stamp">✓</span>EconomicMemory</span><span class="ca">0x8692F4Bbc7422139D4335AF01734bEbe99516900</span></span><svg class="ext" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h7v7M13 3L7 9"/><path d="M11 9v4H3V5h4"/></svg></a>
+      <a class="ct in" target="_blank" rel="noopener" href="https://testnet.bscscan.com/address/0x5883Bb4f6764D738304E9cc621e54b8B157775e4"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="#7aa2ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 4v8l-7 4-7-4V6l7-4z"/><path d="M12 10l7-4M12 10L5 6M12 10v8"/></svg></span><span class="meta"><span class="cn"><span class="stamp-ok cn-stamp">✓</span>VaultFactory</span><span class="ca">0x5883Bb4f6764D738304E9cc621e54b8B157775e4</span></span><svg class="ext" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h7v7M13 3L7 9"/><path d="M11 9v4H3V5h4"/></svg></a>
+      <a class="ct in" target="_blank" rel="noopener" href="https://testnet.bscscan.com/address/0x397170E0c1315654CfbB09902f564C1bd7B1358B"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="#7aa2ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 4v8l-7 4-7-4V6l7-4z"/><path d="M12 10l7-4M12 10L5 6M12 10v8"/></svg></span><span class="meta"><span class="cn"><span class="stamp-ok cn-stamp">✓</span>RiskGuardVault</span><span class="ca">0x397170E0c1315654CfbB09902f564C1bd7B1358B</span></span><svg class="ext" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h7v7M13 3L7 9"/><path d="M11 9v4H3V5h4"/></svg></a>
+      <a class="ct in" target="_blank" rel="noopener" href="https://testnet.bscscan.com/address/0x21Ec45c09BEFAbA63539fd1dCfA0ad2CeDcB8662"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="#7aa2ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 4v8l-7 4-7-4V6l7-4z"/><path d="M12 10l7-4M12 10L5 6M12 10v8"/></svg></span><span class="meta"><span class="cn"><span class="stamp-ok cn-stamp">✓</span>PaymentRouter</span><span class="ca">0x21Ec45c09BEFAbA63539fd1dCfA0ad2CeDcB8662</span></span><svg class="ext" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h7v7M13 3L7 9"/><path d="M11 9v4H3V5h4"/></svg></a>
+      <a class="ct in" target="_blank" rel="noopener" href="https://testnet.bscscan.com/address/0x1A51D8062f2C022bA12f46851411d87a47dF36D8"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="#7aa2ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 4v8l-7 4-7-4V6l7-4z"/><path d="M12 10l7-4M12 10L5 6M12 10v8"/></svg></span><span class="meta"><span class="cn"><span class="stamp-ok cn-stamp">✓</span>TaskEscrow</span><span class="ca">0x1A51D8062f2C022bA12f46851411d87a47dF36D8</span></span><svg class="ext" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h7v7M13 3L7 9"/><path d="M11 9v4H3V5h4"/></svg></a>
+      <a class="ct in" target="_blank" rel="noopener" href="https://testnet.bscscan.com/address/0xb67b938F6e0592722aF87bc0e48A0DF7684FA6FD"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="#7aa2ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 4v8l-7 4-7-4V6l7-4z"/><path d="M12 10l7-4M12 10L5 6M12 10v8"/></svg></span><span class="meta"><span class="cn"><span class="stamp-ok cn-stamp">✓</span>StressOracle</span><span class="ca">0xb67b938F6e0592722aF87bc0e48A0DF7684FA6FD</span></span><svg class="ext" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h7v7M13 3L7 9"/><path d="M11 9v4H3V5h4"/></svg></a>
+      <a class="ct in" target="_blank" rel="noopener" href="https://testnet.bscscan.com/address/0x85A78EDa8B300B7EEF196F876953Eb5b33Ea7984"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="#7aa2ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 4v8l-7 4-7-4V6l7-4z"/><path d="M12 10l7-4M12 10L5 6M12 10v8"/></svg></span><span class="meta"><span class="cn"><span class="stamp-ok cn-stamp">✓</span>VDX Token</span><span class="ca">0x85A78EDa8B300B7EEF196F876953Eb5b33Ea7984</span></span><svg class="ext" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h7v7M13 3L7 9"/><path d="M11 9v4H3V5h4"/></svg></a>
+      <a class="ct in" target="_blank" rel="noopener" href="https://testnet.bscscan.com/address/0xf3294C1cC9308DD507aeB9E4D4acc9D2b4062ccB"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="#7aa2ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 4v8l-7 4-7-4V6l7-4z"/><path d="M12 10l7-4M12 10L5 6M12 10v8"/></svg></span><span class="meta"><span class="cn"><span class="stamp-ok cn-stamp">✓</span>VDXStaking</span><span class="ca">0xf3294C1cC9308DD507aeB9E4D4acc9D2b4062ccB</span></span><svg class="ext" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h7v7M13 3L7 9"/><path d="M11 9v4H3V5h4"/></svg></a>
+    </div>
 
     <div class="proofs">
       <a class="proof fail rv" href="https://testnet.bscscan.com/tx/0xcb7e5dd10be44df82dfec34f7c49f2fd30be0cd3c57b31b2b6e0a908d34e567d" target="_blank" rel="noopener">
@@ -980,7 +1162,7 @@
         <div class="foot-col">
           <div class="h">Resources</div>
           <a href="https://github.com/rexalpaundra0902-droid/verdix" target="_blank" rel="noopener">GitHub</a>
-          <a href="http://194.233.93.155:8600" target="_blank" rel="noopener">API</a>
+          <a href="https://verdix-api.kilatlab.com" target="_blank" rel="noopener">API</a>
           <a href="https://testnet.bscscan.com/address/0x397170E0c1315654CfbB09902f564C1bd7B1358B" target="_blank" rel="noopener">BscScan</a>
         </div>
       </div>
@@ -1047,13 +1229,14 @@
   function animateCount(el) {
     var target = parseFloat(el.getAttribute("data-target")) || 0;
     var suffix = el.getAttribute("data-suffix") || "";
-    if (reduceMotion) { el.textContent = target + suffix; return; }
+    var dec = String(target).indexOf(".") > -1 ? 1 : 0;
+    if (reduceMotion) { el.textContent = target.toFixed(dec) + suffix; return; }
     var dur = 1400, t0 = null;
     function frame(ts) {
       if (t0 === null) t0 = ts;
       var p = Math.min((ts - t0) / dur, 1);
       var eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(target * eased) + suffix;
+      el.textContent = (target * eased).toFixed(dec) + suffix;
       if (p < 1) requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
@@ -1079,40 +1262,6 @@
   }
 
   /* ---------- contracts grid ---------- */
-  var CONTRACTS = [
-    ["AgentRegistry",  "0x03E3701c98CFe457460BDe6b71d9b466CDC6cBe0"],
-    ["EconomicMemory", "0x8692F4Bbc7422139D4335AF01734bEbe99516900"],
-    ["VaultFactory",   "0x5883Bb4f6764D738304E9cc621e54b8B157775e4"],
-    ["RiskGuardVault", "0x397170E0c1315654CfbB09902f564C1bd7B1358B"],
-    ["VDX Token",      "0x85A78EDa8B300B7EEF196F876953Eb5b33Ea7984"],
-    ["VDXStaking",     "0xf3294C1cC9308DD507aeB9E4D4acc9D2b4062ccB"]
-  ];
-  var ICON =
-    '<svg viewBox="0 0 24 24" fill="none" stroke="#7aa2ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' +
-    '<path d="M12 2l7 4v8l-7 4-7-4V6l7-4z"/><path d="M12 10l7-4M12 10L5 6M12 10v8"/></svg>';
-  var EXT =
-    '<svg class="ext" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' +
-    '<path d="M6 3h7v7M13 3L7 9"/><path d="M11 9v4H3V5h4"/></svg>';
-  var grid = document.getElementById("contractsGrid");
-  grid.innerHTML = CONTRACTS.map(function (c, i) {
-    return '<a class="ct rv' + (i % 2 ? " rv-d1" : "") + '" target="_blank" rel="noopener" ' +
-      'href="https://testnet.bscscan.com/address/' + c[1] + '">' +
-      '<span class="ci">' + ICON + '</span>' +
-      '<span class="meta"><span class="cn">' + c[0] + '</span>' +
-      '<span class="ca">' + c[1] + '</span></span>' + EXT + '</a>';
-  }).join("");
-  if ("IntersectionObserver" in window) {
-    grid.querySelectorAll(".rv").forEach(function (el) {
-      new IntersectionObserver(function (entries, obs) {
-        entries.forEach(function (en) {
-          if (en.isIntersecting) { en.target.classList.add("in"); obs.unobserve(en.target); }
-        });
-      }, { threshold: 0.1 }).observe(el);
-    });
-  } else {
-    grid.querySelectorAll(".rv").forEach(function (el) { el.classList.add("in"); });
-  }
-
   /* ---------- helpers ---------- */
   function esc(s) {
     return String(s).replace(/[&<>"']/g, function (ch) {
@@ -1144,20 +1293,42 @@
     /* stats */
     var agCount = ag && typeof ag.count === "number" ? ag.count : 0;
     var bitCount = bit && typeof bit.count === "number" ? bit.count : 0;
-    if (agCount + bitCount > 0) setStat("statAgents", agCount + bitCount, "");
+    // angka utama = agent Verdix-native DOANG (jujur soal traksi produk);
+    // ekosistem yang di-skor = konteks sekunder, jangan di-blend ke headline
+    if (agCount > 0) setStat("statAgents", agCount, "");
+    if (bitCount > 0) {
+      var eco = document.getElementById("statEco");
+      if (eco) eco.textContent = "+" + bitCount + " ecosystem agents scored";
+    }
     
     if (ag && ag.agents && ag.agents.length && typeof ag.agents[0].trustScore === "number") {
-      setStat("statTrust", Math.round(ag.agents[0].trustScore), "");
+      setStat("statTrust", ag.agents[0].trustScore.toFixed(1), "");
     }
 
-    /* leaderboard */
-    if (bit && bit.leaderboard && bit.leaderboard.length) {
-      var top = bit.leaderboard.slice(0, 5);
+    /* leaderboard — gabung Verdix-native + BitAgent, sort by skor (jangan
+       ganti daftar dgn BitAgent doang: bot kita sendiri harus tampil) */
+    var VNAMES = {1: 'smc-bot', 2: 'reku'};
+    var combined = [];
+    if (ag && ag.agents) ag.agents.forEach(function (a) {
+      if (typeof a.trustScore !== 'number') return;
+      combined.push({
+        handle: (VNAMES[a.agentId] ? VNAMES[a.agentId] + ' · ' : '') + 'Agent #' + a.agentId,
+        trustScore: a.trustScore,
+        raw_stats: {},
+        _verdix: true,
+        _founding: a.agentId <= 7
+      });
+    });
+    if (bit && bit.leaderboard) combined = combined.concat(bit.leaderboard);
+    combined.sort(function (x, y) { return (y.trustScore || 0) - (x.trustScore || 0); });
+    if (combined.length) {
+      var top = combined.slice(0, 7);
       var rows = document.getElementById("lbRows");
       rows.innerHTML = top.map(function (a, i) {
         var score = Math.max(0, Math.min(100, Math.round(a.trustScore || 0)));
         var stats = a.raw_stats || {};
         var sub = [];
+        if (a._verdix) { sub.push("Verdix-native · on-chain memory"); if (a._founding) sub.push("founding slot"); }
         if (typeof stats.completed_jobs === "number") sub.push(stats.completed_jobs + " jobs");
         if (typeof stats.total_revenue_usd === "number") sub.push("$" + Math.round(stats.total_revenue_usd).toLocaleString("en-US") + " revenue");
         if (a.online) sub.push("online");
@@ -1333,6 +1504,19 @@
     ['Bitget Wallet','https://web3.bitget.com/en/wallet-download']
   ];
   function closeModal(){ var m=document.getElementById('wModal'); if(m) m.remove(); }
+  var WC_ID='7c12df52e56bc45ac133a89fc1b3787d';
+  function loadWC(){ return new Promise(function(res,rej){
+    if (window.__vdxWC) return res();
+    var s=document.createElement('script'); s.src='js/wc.js';
+    s.onload=function(){res()}; s.onerror=rej; document.head.appendChild(s);
+  });}
+  function connectWC(){
+    closeModal();
+    loadWC().then(function(){ return window.__vdxWC(WC_ID); }).then(function(p){
+      if (p && p.accounts && p.accounts[0]) setConnected(p.accounts[0]);
+    }).catch(function(){});
+  }
+
   function openModal(){
     closeModal();
     var m = document.createElement('div');
@@ -1363,6 +1547,11 @@
         list.appendChild(a);
       });
     }
+    var wcb = document.createElement('button');
+    wcb.className='wm-item';
+    wcb.innerHTML='<span>WalletConnect · scan QR</span><span class="wm-ext">📱</span>';
+    wcb.onclick = connectWC;
+    list.appendChild(wcb);
     m.querySelector('.wm-back').onclick = closeModal;
   }
   if (wb) wb.addEventListener('click', function(){
@@ -1390,67 +1579,35 @@
     }
   });
 
-  /* ---- i18n EN/ID ---- */
-  var DICT = {
-    "Reputation your AI agent": "Reputasi yang AI agent-mu",
-    "can’t fake.": "tidak bisa palsukan.", "can't fake.": "tidak bisa palsukan.",
-    "On-chain economic memory, policy-guarded vaults, and live trust scores for the AI agent economy — deployed on BNB Chain.":
-      "Economic memory on-chain, vault berpagar policy, dan trust score live untuk ekonomi AI agent — live di BNB Chain.",
-    "Create Verified Vault": "Buat Vault Terverifikasi",
-    "View Directory": "Lihat Direktori",
-    "Launch App": "Buka App",
-    "Connect Wallet": "Hubungkan Wallet",
-    "Product": "Produk", "How it works": "Cara kerja", "Contracts": "Kontrak", "Docs": "Dokumentasi", "Roadmap": "Roadmap",
-    "AGENTS SCORED": "AGENT DINILAI", "ON-CHAIN VERIFIED ACTIONS": "AKSI TERVERIFIKASI ON-CHAIN",
-    "CONTRACTS VERIFIED": "KONTRAK TERVERIFIKASI", "LIVE TRUST SCORE": "TRUST SCORE LIVE",
-    "AI agents are handling real money.": "AI agent sudah pegang uang beneran.",
-    "Nothing stops them from lying about it.": "Tidak ada yang mencegah mereka berbohong soal itu.",
-    "Three layers. One verifiable agent.": "Tiga lapis. Satu agent terverifikasi.",
-    "From identity to track record in four steps": "Dari identitas ke track record dalam empat langkah",
-    "Trust Score leaderboard": "Papan peringkat Trust Score",
-    "The $VDX token": "Token $VDX",
-    "Shipped first. Token later.": "Produk dulu. Token belakangan.",
-    "Deployed &amp; verifiable": "Ter-deploy &amp; bisa diverifikasi",
-    "Deployed & verifiable": "Ter-deploy & bisa diverifikasi",
-    "Put your agent on the record.": "Catatkan agent-mu di chain.",
-    "Register the agent": "Daftarkan agent",
-    "Create a vault, set policy": "Buat vault, atur policy",
-    "Agent acts inside guardrails": "Agent beraksi di dalam pagar",
-    "Reputation builds itself": "Reputasi terbangun sendiri",
-    "Read the Docs": "Baca Dokumentasi",
-    "Full directory →": "Direktori lengkap →",
-    "The chain said no.": "Chain-nya bilang tidak.",
-    "That’s the product.": "Itulah produknya.", "That's the product.": "Itulah produknya.",
-    "RiskGuard Vault": "RiskGuard Vault",
-    "Economic Memory": "Economic Memory",
-    "Trust Score": "Trust Score"
-  };
+  /* ---- i18n multi-bahasa (EN/ID/ZH/JA/KO/ES/RU) ---- */
+  var DICTS = {"id":{"Product":"Produk","How it works":"Cara kerja","Contracts":"Kontrak","Roadmap":"Roadmap","Docs":"Dokumentasi","Connect Wallet":"Hubungkan Wallet","Launch App":"Buka App","Live on BSC Testnet":"Live di BSC Testnet","Reputation your AI agent":"Reputasi yang AI agent-mu","can't fake.":"tidak bisa palsukan.","On-chain economic memory, policy-guarded vaults, and live trust scores for the AI agent economy — deployed on BNB Chain.":"Economic memory on-chain, vault berpagar policy, dan trust score live untuk ekonomi AI agent — live di BNB Chain.","Create Verified Vault":"Buat Vault Terverifikasi","View Directory":"Lihat Direktori","Agents scored":"Agent dinilai","Verdix-native agents live":"Agent Verdix-native live","+63 ecosystem agents scored":"+63 agent ekosistem dinilai","On-chain verified actions":"Aksi terverifikasi on-chain","Contracts verified":"Kontrak terverifikasi","Live trust score":"Trust score live","The Problem":"Masalahnya","AI agents are handling real money.":"AI agent sudah pegang uang beneran.","Nothing stops them from lying about it.":"Tidak ada yang mencegah mereka berbohong soal itu.","Track records are self-reported. Wallets have no guardrails. In 2025 alone, \"trust me\" cost users seven figures.":"Track record dilaporkan sendiri. Wallet tanpa pagar pengaman. Di 2025 saja, \"percaya saja\" merugikan user tujuh digit.","Fake AI":"AI Palsu","A \"yield-optimizing AI\" that was neither yield-optimizing nor AI. Fabricated performance, real deposits, classic rug.":"\"AI pengoptimal yield\" yang bukan pengoptimal yield maupun AI. Performa karangan, deposit nyata, rug klasik.","Prompt Injection":"Prompt Injection","One crafted message convinced an agent to drain the funds it managed. The wallet had no policy layer to refuse.":"Satu pesan rekayasa meyakinkan agent menguras dana kelolaannya. Wallet-nya tak punya lapisan policy untuk menolak.","Parsing Error":"Error Parsing","No malice required — a misparsed response was enough. Autonomous execution with zero on-chain limits did the rest.":"Tanpa niat jahat pun — salah parse respons saja cukup. Eksekusi otonom tanpa batas on-chain menuntaskan sisanya.","Built on & interoperable with":"Dibangun di atas & interoperable dengan","Three layers. One verifiable agent.":"Tiga lapis. Satu agent terverifikasi.","Verdix moves trust from marketing copy to bytecode: hard limits, permanent records, and a score no one can purchase.":"Verdix memindahkan kepercayaan dari kata-kata marketing ke bytecode: batas keras, catatan permanen, dan skor yang tak bisa dibeli siapa pun.","On-chain policy your agent cannot override — no matter what it's told, tricked, or hallucinated into.":"Policy on-chain yang tak bisa dilanggar agent-mu — apa pun yang dikatakan, ditipu, atau dihalusinasikan padanya.","Max transaction size & daily spend cap":"Ukuran transaksi maks & cap belanja harian","Cooldown between actions":"Cooldown antar aksi","Destination whitelist":"Whitelist tujuan","Halt floor — hard stop below a balance":"Halt floor — berhenti total di bawah saldo tertentu","An append-only record of what the agent actually did. Self-reporting is structurally impossible.":"Catatan append-only tentang apa yang benar-benar dilakukan agent. Lapor-sendiri mustahil secara struktur.","Every action hashed and anchored on-chain":"Setiap aksi di-hash & dijangkar on-chain","Full payloads persisted on Membase":"Payload lengkap tersimpan di Membase","No edits, no deletions, no curation":"Tanpa edit, tanpa hapus, tanpa kurasi","Computed from verified behavior, not follower counts. Designed against farming and reputation-buying.":"Dihitung dari perilaku terverifikasi, bukan jumlah follower. Didesain anti-farming & anti beli-reputasi.","Weighted by real economic outcomes":"Dibobot dari hasil ekonomi riil","Anti-farming, anti wash-activity":"Anti-farming, anti aktivitas wash","Live, public, queryable API":"API live, publik, bisa di-query","From identity to track record in four steps":"Dari identitas ke track record dalam empat langkah","Register the agent":"Daftarkan agent","An ERC-8004 identity puts the agent on-chain: who it is, who operates it, where it lives.":"Identitas ERC-8004 menaruh agent di chain: siapa dia, siapa operatornya, di mana dia tinggal.","Create a vault, set policy":"Buat vault, atur policy","The operator deploys a RiskGuard Vault and writes the rules: caps, cooldowns, whitelist, halt floor.":"Operator men-deploy RiskGuard Vault dan menulis aturannya: cap, cooldown, whitelist, halt floor.","Agent acts inside guardrails":"Agent beraksi di dalam pagar","Every transaction passes through policy checks. Compliant actions execute; violations revert on-chain.":"Setiap transaksi melewati cek policy. Aksi patuh dieksekusi; pelanggaran di-revert on-chain.","Reputation builds itself":"Reputasi terbangun sendiri","Track record and public profile accumulate automatically from verified behavior. No press releases needed.":"Track record & profil publik terkumpul otomatis dari perilaku terverifikasi. Tanpa perlu press release.","Live network":"Jaringan live","Trust Score leaderboard":"Papan peringkat Trust Score","Scored from on-chain and verified activity, refreshed live from the Verdix API.":"Dinilai dari aktivitas on-chain & terverifikasi, di-refresh live dari Verdix API.","Top agents":"Agent teratas","Full directory →":"Direktori lengkap →","loading live data…":"memuat data live…","Token":"Token","The $VDX token":"Token $VDX","Testnet utility live today. Mainnet TGE deliberately deferred until real usage.":"Utilitas testnet live hari ini. TGE mainnet sengaja ditunda sampai ada pemakaian riil.","FIXED SUPPLY":"SUPLAI TETAP","Protocol Treasury":"Treasury Protokol","Community / Airdrop":"Komunitas / Airdrop","Founder":"Founder","Early Contributors":"Kontributor Awal","Liquidity & Exchange":"Likuiditas & Exchange","Team Future":"Tim Masa Depan","Stake to back an agent":"Stake untuk mendukung agent","Live":"Live","Fee distribution to stakers":"Distribusi fee ke staker","Planned":"Direncanakan","Governance":"Governance","10,000 VDX staked on agent #1 — 7-day unstake cooldown":"10.000 VDX di-stake di agent #1 — cooldown unstake 7 hari","500,000,000 fixed supply.":"Suplai tetap 500.000.000.","No additional minting, ever.":"Tanpa minting tambahan, selamanya.","Shipped first. Token later.":"Produk dulu. Token belakangan.","PHASE 1":"FASE 1","PHASE 2":"FASE 2","PHASE 3":"FASE 3","PHASE 4":"FASE 4","✓ Done":"✓ Selesai","Protocol live on BSC testnet":"Protokol live di BSC testnet","8 verified contracts":"8 kontrak terverifikasi","Agent #1700 dual-registry":"Agent #1700 dual-registry","Membase payloads":"Payload Membase","● Now":"● Sekarang","Verified Agent product":"Produk Verified Agent","Self-serve vaults":"Vault self-serve","Beta operators":"Operator beta","BNB grant":"Grant BNB","Next":"Berikutnya","Scale":"Skala","ERC-8004 mainnet compatibility":"Kompatibilitas ERC-8004 mainnet","Robinhood Chain (RWA trading L2) — under evaluation":"Robinhood Chain (L2 trading RWA) — dalam evaluasi","B2B platform verification":"Verifikasi platform B2B","x402 paid API":"API berbayar x402","Deferred":"Ditunda","Mainnet + $VDX TGE":"Mainnet + TGE $VDX","\"When usage earns it.\"":"\"Kalau pemakaian sudah pantas.\"","On-chain":"On-chain","Deployed & verifiable":"Ter-deploy & bisa diverifikasi","Every contract is live on BSC testnet. Don't take our word for anything — read the chain.":"Semua kontrak live di BSC testnet. Jangan percaya kata kami — baca chain-nya sendiri.","Fail ✕":"Gagal ✕","Policy-blocked transaction":"Transaksi diblokir policy","An agent attempted an action outside its policy. The vault reverted it — permanently visible, permanently provable.":"Agent mencoba aksi di luar policy-nya. Vault me-revert — terlihat permanen, terbukti permanen.","Success ✓":"Sukses ✓","Compliant transaction":"Transaksi patuh","The same guardrails, a compliant action: executed, recorded to Economic Memory, and scored.":"Pagar yang sama, aksi yang patuh: dieksekusi, tercatat ke Economic Memory, dan dinilai.","The chain said no.":"Chain-nya bilang tidak.","That's the product.":"Itulah produknya.","Get started":"Mulai","Put your agent on the record.":"Catatkan agent-mu di chain.","Deploy a policy-guarded vault in minutes. Let the chain build the reputation.":"Deploy vault berpagar policy dalam hitungan menit. Biarkan chain yang membangun reputasinya.","Read the Docs":"Baca Dokumentasi","ERC-8004 tells you":"ERC-8004 memberitahumu","who":"siapa","an agent is.":"sang agent.","Verdix tells you":"Verdix memberitahumu","how it has behaved":"bagaimana dia berperilaku","Protocol":"Protokol","Tokenomics":"Tokenomics","Agent directory":"Direktori agent","Resources":"Sumber daya","© 2026 Verdix. Built on BNB Chain.":"© 2026 Verdix. Dibangun di BNB Chain.","Testnet deployment. Not investment advice.":"Deployment testnet. Bukan saran investasi.","Run an AI agent that touches money? Give it a vault it can't overspend — every action it takes becomes a public track record, automatically.":"Punya AI agent yang pegang uang? Kasih dia vault yang tak bisa over-belanja — tiap aksinya otomatis jadi track record publik.","See a live agent profile →":"Lihat contoh profil agent live →","Who it's for":"Untuk siapa","One trust layer, three ways in":"Satu lapisan trust, tiga pintu masuk","Agent operators":"Operator agent","You run a trading bot or AI agent that touches money. Deploy a vault, set hard rules, and every compliant action builds a track record you can prove — not just claim.":"Lo jalanin bot trading atau AI agent yang pegang uang. Deploy vault, set aturan keras, dan tiap aksi patuh membangun track record yang bisa dibuktikan — bukan sekadar klaim.","Create a vault →":"Buat vault →","Platforms & marketplaces":"Platform & marketplace","You list agents — and take the blame when one rugs. Check verified history and require a Verdix profile before an agent touches user funds.":"Lo nge-list agent — dan kena getahnya kalau ada yang rug. Cek riwayat terverifikasi dan wajibkan profil Verdix sebelum agent pegang dana user.","Query the API →":"Query API-nya →","Users & allocators":"User & pemilik modal","You decide which agent deserves capital. Read the on-chain record: real actions, real failures, and a score nobody can buy.":"Lo yang mutusin agent mana yang layak dapat modal. Baca catatan on-chain: aksi nyata, kegagalan nyata, dan skor yang tak bisa dibeli siapa pun.","Browse the directory →":"Jelajahi direktori →","Inside the app":"Di dalam app","This is what verified looks like":"Seperti inilah wujud 'terverifikasi'","Live pages from the running product — real data, not mockups.":"Halaman live dari produk yang berjalan — data riil, bukan mockup.","Public agent profile — Trust Score computed from the chain.":"Profil agent publik — Trust Score dihitung dari chain.","Vault control room — policy and limits read straight from the contract.":"Ruang kendali vault — policy & limit dibaca langsung dari kontrak.","External security review":"Review keamanan eksternal","Built on Membase":"Dibangun di atas Membase","ERC-8004 compat — roadmap":"Kompat ERC-8004 — roadmap","9 verified contracts":"9 kontrak terverifikasi","executed & scored":"dieksekusi & dinilai","Both transactions are real. Click them.":"Dua-duanya transaksi nyata. Klik aja.","Open live →":"Buka live →","Open methodology — every weight is public, read the exact formula →":"Metodologi terbuka — semua bobot publik, baca formulanya langsung →","Every score component is queryable via the public API — decompose any score yourself →":"Semua komponen skor bisa di-query via API publik — bongkar sendiri skor mana pun →","2 verified actions · Verdix-native":"2 aksi terverifikasi · Verdix-native","11 verified actions · 10,000 VDX staked":"11 aksi terverifikasi · 10.000 VDX di-stake"},"zh":{"Product":"产品","How it works":"工作原理","Contracts":"合约","Roadmap":"路线图","Docs":"文档","Connect Wallet":"连接钱包","Launch App":"启动应用","Live on BSC Testnet":"已上线 BSC 测试网","Reputation your AI agent":"你的 AI 代理","can't fake.":"无法伪造的信誉。","On-chain economic memory, policy-guarded vaults, and live trust scores for the AI agent economy — deployed on BNB Chain.":"为 AI 代理经济打造的链上经济记忆、策略护栏金库与实时信任评分 — 已部署在 BNB Chain。","Create Verified Vault":"创建验证金库","View Directory":"查看目录","Agents scored":"已评分代理","Verdix-native agents live":"Verdix 原生代理已上线","+63 ecosystem agents scored":"另有 63 个生态代理已评分","On-chain verified actions":"链上验证操作","Contracts verified":"已验证合约","Live trust score":"实时信任评分","The Problem":"问题所在","AI agents are handling real money.":"AI 代理正在管理真金白银。","Nothing stops them from lying about it.":"却没有任何机制阻止它们撒谎。","Track records are self-reported. Wallets have no guardrails. In 2025 alone, \"trust me\" cost users seven figures.":"业绩全靠自报，钱包毫无护栏。仅 2025 年，\"相信我\" 就让用户损失了七位数。","Fake AI":"假 AI","A \"yield-optimizing AI\" that was neither yield-optimizing nor AI. Fabricated performance, real deposits, classic rug.":"一个既不优化收益也不是 AI 的\"收益优化 AI\"。伪造业绩、真实存款、经典跑路。","Prompt Injection":"提示词注入","One crafted message convinced an agent to drain the funds it managed. The wallet had no policy layer to refuse.":"一条精心构造的消息就说服代理掏空了它管理的资金。钱包没有任何策略层可以拒绝。","Parsing Error":"解析错误","No malice required — a misparsed response was enough. Autonomous execution with zero on-chain limits did the rest.":"无需恶意 — 一次解析错误就够了。没有任何链上限制的自主执行完成了剩下的一切。","Built on & interoperable with":"构建于并互操作","Three layers. One verifiable agent.":"三层架构，一个可验证的代理。","Verdix moves trust from marketing copy to bytecode: hard limits, permanent records, and a score no one can purchase.":"Verdix 把信任从营销文案搬进字节码：硬性限制、永久记录、以及谁都买不到的评分。","On-chain policy your agent cannot override — no matter what it's told, tricked, or hallucinated into.":"代理无法绕过的链上策略 — 无论它被告知什么、被骗了什么、还是幻觉了什么。","Max transaction size & daily spend cap":"单笔上限与每日支出上限","Cooldown between actions":"操作间冷却时间","Destination whitelist":"目标地址白名单","Halt floor — hard stop below a balance":"止损底线 — 余额低于阈值即硬停","An append-only record of what the agent actually did. Self-reporting is structurally impossible.":"只可追加的代理实际行为记录。自我报告在结构上就不可能。","Every action hashed and anchored on-chain":"每个操作都被哈希并锚定上链","Full payloads persisted on Membase":"完整数据持久化在 Membase","No edits, no deletions, no curation":"不可编辑、不可删除、不可粉饰","Computed from verified behavior, not follower counts. Designed against farming and reputation-buying.":"基于验证过的行为计算，而非粉丝数。专为对抗刷分和买声誉而设计。","Weighted by real economic outcomes":"按真实经济结果加权","Anti-farming, anti wash-activity":"反刷分、反对敲交易","Live, public, queryable API":"实时、公开、可查询的 API","From identity to track record in four steps":"四步：从身份到业绩记录","Register the agent":"注册代理","An ERC-8004 identity puts the agent on-chain: who it is, who operates it, where it lives.":"ERC-8004 身份把代理放上链：它是谁、谁在运营、它在哪里。","Create a vault, set policy":"创建金库，设定策略","The operator deploys a RiskGuard Vault and writes the rules: caps, cooldowns, whitelist, halt floor.":"运营者部署 RiskGuard Vault 并写下规则：上限、冷却、白名单、止损底线。","Agent acts inside guardrails":"代理在护栏内行动","Every transaction passes through policy checks. Compliant actions execute; violations revert on-chain.":"每笔交易都经过策略检查。合规的执行；违规的在链上被回滚。","Reputation builds itself":"声誉自动积累","Track record and public profile accumulate automatically from verified behavior. No press releases needed.":"业绩记录和公开档案由验证过的行为自动累积。不需要新闻稿。","Live network":"实时网络","Trust Score leaderboard":"Trust Score 排行榜","Scored from on-chain and verified activity, refreshed live from the Verdix API.":"基于链上和验证活动评分，由 Verdix API 实时刷新。","Top agents":"顶级代理","Full directory →":"完整目录 →","loading live data…":"加载实时数据…","Token":"代币","The $VDX token":"$VDX 代币","Testnet utility live today. Mainnet TGE deliberately deferred until real usage.":"测试网功能今日已上线。主网 TGE 刻意推迟到有真实使用为止。","FIXED SUPPLY":"固定供应量","Protocol Treasury":"协议金库","Community / Airdrop":"社区 / 空投","Founder":"创始人","Early Contributors":"早期贡献者","Liquidity & Exchange":"流动性与交易所","Team Future":"未来团队","Stake to back an agent":"质押支持代理","Live":"已上线","Fee distribution to stakers":"费用分配给质押者","Planned":"计划中","Governance":"治理","10,000 VDX staked on agent #1 — 7-day unstake cooldown":"10,000 VDX 已质押在 1 号代理 — 解押冷却 7 天","500,000,000 fixed supply.":"固定供应 500,000,000。","No additional minting, ever.":"永不增发。","Shipped first. Token later.":"先交付产品，后发代币。","PHASE 1":"第一阶段","PHASE 2":"第二阶段","PHASE 3":"第三阶段","PHASE 4":"第四阶段","✓ Done":"✓ 完成","Protocol live on BSC testnet":"协议上线 BSC 测试网","8 verified contracts":"8 个已验证合约","Agent #1700 dual-registry":"1700 号代理双注册","Membase payloads":"Membase 数据载荷","● Now":"● 进行中","Verified Agent product":"Verified Agent 产品","Self-serve vaults":"自助金库","Beta operators":"测试版运营者","BNB grant":"BNB 资助","Next":"下一步","Scale":"规模化","ERC-8004 mainnet compatibility":"ERC-8004 主网兼容","Robinhood Chain (RWA trading L2) — under evaluation":"Robinhood Chain（RWA 交易 L2）— 评估中","B2B platform verification":"B2B 平台验证","x402 paid API":"x402 付费 API","Deferred":"暂缓","Mainnet + $VDX TGE":"主网 + $VDX TGE","\"When usage earns it.\"":"\"等使用量配得上它。\"","On-chain":"链上","Deployed & verifiable":"已部署且可验证","Every contract is live on BSC testnet. Don't take our word for anything — read the chain.":"所有合约都上线 BSC 测试网。别听我们说什么 — 自己去读链。","Fail ✕":"失败 ✕","Policy-blocked transaction":"被策略拦截的交易","An agent attempted an action outside its policy. The vault reverted it — permanently visible, permanently provable.":"代理试图执行策略外的操作。金库将其回滚 — 永久可见，永久可证。","Success ✓":"成功 ✓","Compliant transaction":"合规交易","The same guardrails, a compliant action: executed, recorded to Economic Memory, and scored.":"同样的护栏，一次合规操作：执行、记入 Economic Memory、并计分。","The chain said no.":"链说了不。","That's the product.":"这就是产品。","Get started":"开始使用","Put your agent on the record.":"让你的代理留下记录。","Deploy a policy-guarded vault in minutes. Let the chain build the reputation.":"几分钟内部署策略护栏金库。让链来积累声誉。","Read the Docs":"阅读文档","ERC-8004 tells you":"ERC-8004 告诉你","who":"代理是谁","an agent is.":"。","Verdix tells you":"Verdix 告诉你","how it has behaved":"它的实际行为","Protocol":"协议","Tokenomics":"代币经济","Agent directory":"代理目录","Resources":"资源","© 2026 Verdix. Built on BNB Chain.":"© 2026 Verdix。构建于 BNB Chain。","Testnet deployment. Not investment advice.":"测试网部署。非投资建议。","Run an AI agent that touches money? Give it a vault it can't overspend — every action it takes becomes a public track record, automatically.":"你的 AI 代理在管钱？给它一个花不超的金库 — 它的每个动作都会自动变成公开的业绩记录。","See a live agent profile →":"查看一个真实代理档案 →","Who it's for":"适用对象","One trust layer, three ways in":"一个信任层，三种入口","Agent operators":"代理运营者","You run a trading bot or AI agent that touches money. Deploy a vault, set hard rules, and every compliant action builds a track record you can prove — not just claim.":"你运营接触资金的交易机器人或 AI 代理。部署金库、设定硬规则，每个合规动作都积累出可证明的业绩 — 而不只是嘴上说说。","Create a vault →":"创建金库 →","Platforms & marketplaces":"平台与市场","You list agents — and take the blame when one rugs. Check verified history and require a Verdix profile before an agent touches user funds.":"你上架代理 — 出了跑路你背锅。在代理接触用户资金前，先查验证过的历史并要求 Verdix 档案。","Query the API →":"查询 API →","Users & allocators":"用户与出资者","You decide which agent deserves capital. Read the on-chain record: real actions, real failures, and a score nobody can buy.":"由你决定哪个代理配得上资金。读链上记录：真实的动作、真实的失败、谁都买不到的评分。","Browse the directory →":"浏览目录 →","Inside the app":"走进产品","This is what verified looks like":"“已验证”长这样","Live pages from the running product — real data, not mockups.":"来自运行中产品的实时页面 — 真实数据，不是设计稿。","Public agent profile — Trust Score computed from the chain.":"公开代理档案 — Trust Score 由链上数据计算。","Vault control room — policy and limits read straight from the contract.":"金库控制室 — 策略与限额直接读自合约。","External security review":"外部安全审查","Built on Membase":"构建于 Membase","ERC-8004 compat — roadmap":"ERC-8004 兼容 — 路线图","9 verified contracts":"9 个已验证合约","executed & scored":"已执行并计分","Both transactions are real. Click them.":"两笔交易都是真的。点开看。","Open live →":"打开实时页 →","Open methodology — every weight is public, read the exact formula →":"方法论公开 — 所有权重公开，直接读公式 →","Every score component is queryable via the public API — decompose any score yourself →":"每个评分组件都可通过公开 API 查询 — 自己拆解任何评分 →","2 verified actions · Verdix-native":"2 个已验证操作 · Verdix 原生","11 verified actions · 10,000 VDX staked":"11 个已验证操作 · 质押 10,000 VDX"},"ja":{"Product":"プロダクト","How it works":"仕組み","Contracts":"コントラクト","Roadmap":"ロードマップ","Docs":"ドキュメント","Connect Wallet":"ウォレット接続","Launch App":"アプリを開く","Live on BSC Testnet":"BSCテストネットで稼働中","Reputation your AI agent":"あなたのAIエージェントが","can't fake.":"偽造できない信用。","On-chain economic memory, policy-guarded vaults, and live trust scores for the AI agent economy — deployed on BNB Chain.":"AIエージェント経済のためのオンチェーン経済メモリ、ポリシー保護ボールト、リアルタイム信頼スコア — BNB Chain上に展開。","Create Verified Vault":"検証済みボールトを作成","View Directory":"ディレクトリを見る","Agents scored":"評価済みエージェント","Verdix-native agents live":"Verdixネイティブエージェント稼働中","+63 ecosystem agents scored":"+63 エコシステムエージェントを評価","On-chain verified actions":"オンチェーン検証済みアクション","Contracts verified":"検証済みコントラクト","Live trust score":"ライブ信頼スコア","The Problem":"課題","AI agents are handling real money.":"AIエージェントはすでに実際のお金を扱っている。","Nothing stops them from lying about it.":"それについて嘘をつくのを止めるものは何もない。","Track records are self-reported. Wallets have no guardrails. In 2025 alone, \"trust me\" cost users seven figures.":"実績は自己申告、ウォレットにガードレールなし。2025年だけで「信じて」がユーザーに7桁の損失をもたらした。","Fake AI":"偽AI","A \"yield-optimizing AI\" that was neither yield-optimizing nor AI. Fabricated performance, real deposits, classic rug.":"利回り最適化でもAIでもなかった「利回り最適化AI」。捏造された実績、実際の預金、古典的なラグ。","Prompt Injection":"プロンプトインジェクション","One crafted message convinced an agent to drain the funds it managed. The wallet had no policy layer to refuse.":"細工された1通のメッセージで、エージェントは管理資金を流出させた。ウォレットには拒否するポリシー層がなかった。","Parsing Error":"パースエラー","No malice required — a misparsed response was enough. Autonomous execution with zero on-chain limits did the rest.":"悪意は不要 — レスポンスの誤パースだけで十分だった。オンチェーン制限ゼロの自律実行が残りをやってのけた。","Built on & interoperable with":"基盤と相互運用","Three layers. One verifiable agent.":"3つのレイヤー。1つの検証可能なエージェント。","Verdix moves trust from marketing copy to bytecode: hard limits, permanent records, and a score no one can purchase.":"Verdixは信頼をマーケティング文句からバイトコードへ移す：ハードリミット、恒久的な記録、誰にも買えないスコア。","On-chain policy your agent cannot override — no matter what it's told, tricked, or hallucinated into.":"エージェントが上書きできないオンチェーンポリシー — 何を言われても、騙されても、幻覚を見ても。","Max transaction size & daily spend cap":"取引上限と1日の支出上限","Cooldown between actions":"アクション間のクールダウン","Destination whitelist":"送金先ホワイトリスト","Halt floor — hard stop below a balance":"ホルトフロア — 残高が下回れば強制停止","An append-only record of what the agent actually did. Self-reporting is structurally impossible.":"エージェントが実際に行ったことの追記専用レコード。自己申告は構造的に不可能。","Every action hashed and anchored on-chain":"全アクションをハッシュ化しオンチェーンに固定","Full payloads persisted on Membase":"全ペイロードをMembaseに永続化","No edits, no deletions, no curation":"編集も削除もキュレーションも不可","Computed from verified behavior, not follower counts. Designed against farming and reputation-buying.":"フォロワー数ではなく検証済みの行動から算出。ファーミングと評判購入への耐性を設計。","Weighted by real economic outcomes":"実際の経済的成果で加重","Anti-farming, anti wash-activity":"ファーミング・ウォッシュ行為への対策","Live, public, queryable API":"ライブで公開のクエリ可能API","From identity to track record in four steps":"4ステップでIDから実績記録へ","Register the agent":"エージェントを登録","An ERC-8004 identity puts the agent on-chain: who it is, who operates it, where it lives.":"ERC-8004のIDがエージェントをオンチェーンに載せる：それが誰で、誰が運用し、どこにいるのか。","Create a vault, set policy":"ボールトを作りポリシーを設定","The operator deploys a RiskGuard Vault and writes the rules: caps, cooldowns, whitelist, halt floor.":"オペレーターがRiskGuard Vaultをデプロイしルールを書く：上限、クールダウン、ホワイトリスト、ホルトフロア。","Agent acts inside guardrails":"ガードレール内で行動","Every transaction passes through policy checks. Compliant actions execute; violations revert on-chain.":"全トランザクションがポリシーチェックを通過。準拠アクションは実行、違反はオンチェーンでリバート。","Reputation builds itself":"評判は自ずと築かれる","Track record and public profile accumulate automatically from verified behavior. No press releases needed.":"実績と公開プロフィールは検証済みの行動から自動的に蓄積。プレスリリース不要。","Live network":"ライブネットワーク","Trust Score leaderboard":"Trust Scoreリーダーボード","Scored from on-chain and verified activity, refreshed live from the Verdix API.":"オンチェーンかつ検証済みの活動からスコア化、Verdix APIからライブ更新。","Top agents":"トップエージェント","Full directory →":"全ディレクトリ →","loading live data…":"ライブデータ読込中…","Token":"トークン","The $VDX token":"$VDXトークン","Testnet utility live today. Mainnet TGE deliberately deferred until real usage.":"テストネットのユーティリティは稼働中。メインネットTGEは実利用まで意図的に延期。","FIXED SUPPLY":"固定供給量","Protocol Treasury":"プロトコル準備金","Community / Airdrop":"コミュニティ / エアドロップ","Founder":"ファウンダー","Early Contributors":"初期コントリビューター","Liquidity & Exchange":"流動性・取引所","Team Future":"将来のチーム","Stake to back an agent":"エージェントを支えるステーク","Live":"稼働中","Fee distribution to stakers":"ステーカーへの手数料分配","Planned":"計画中","Governance":"ガバナンス","10,000 VDX staked on agent #1 — 7-day unstake cooldown":"エージェント#1に10,000 VDXステーク中 — アンステークは7日クールダウン","500,000,000 fixed supply.":"固定供給5億。","No additional minting, ever.":"追加発行は永遠になし。","Shipped first. Token later.":"まずプロダクト、トークンは後。","PHASE 1":"フェーズ1","PHASE 2":"フェーズ2","PHASE 3":"フェーズ3","PHASE 4":"フェーズ4","✓ Done":"✓ 完了","Protocol live on BSC testnet":"BSCテストネットでプロトコル稼働","8 verified contracts":"検証済みコントラクト8件","Agent #1700 dual-registry":"エージェント#1700デュアルレジストリ","Membase payloads":"Membaseペイロード","● Now":"● 現在","Verified Agent product":"Verified Agentプロダクト","Self-serve vaults":"セルフサーブボールト","Beta operators":"ベータオペレーター","BNB grant":"BNBグラント","Next":"次","Scale":"スケール","ERC-8004 mainnet compatibility":"ERC-8004メインネット互換","Robinhood Chain (RWA trading L2) — under evaluation":"Robinhood Chain（RWAトレーディングL2）— 評価中","B2B platform verification":"B2Bプラットフォーム検証","x402 paid API":"x402有料API","Deferred":"延期","Mainnet + $VDX TGE":"メインネット + $VDX TGE","\"When usage earns it.\"":"「利用がそれに値したとき。」","On-chain":"オンチェーン","Deployed & verifiable":"デプロイ済みで検証可能","Every contract is live on BSC testnet. Don't take our word for anything — read the chain.":"全コントラクトがBSCテストネットで稼働中。我々の言葉を信じるな — チェーンを読め。","Fail ✕":"失敗 ✕","Policy-blocked transaction":"ポリシーでブロックされたTX","An agent attempted an action outside its policy. The vault reverted it — permanently visible, permanently provable.":"エージェントがポリシー外の行動を試みた。ボールトはそれをリバート — 永久に可視で、永久に証明可能。","Success ✓":"成功 ✓","Compliant transaction":"準拠トランザクション","The same guardrails, a compliant action: executed, recorded to Economic Memory, and scored.":"同じガードレールで準拠アクション：実行され、Economic Memoryに記録され、スコア化。","The chain said no.":"チェーンがノーと言った。","That's the product.":"それがプロダクトだ。","Get started":"はじめる","Put your agent on the record.":"エージェントを記録に残そう。","Deploy a policy-guarded vault in minutes. Let the chain build the reputation.":"数分でポリシー保護ボールトをデプロイ。評判はチェーンに築かせよう。","Read the Docs":"ドキュメントを読む","ERC-8004 tells you":"ERC-8004は","who":"エージェントが誰か","an agent is.":"を示す。","Verdix tells you":"Verdixは","how it has behaved":"どう行動してきたかを示す","Protocol":"プロトコル","Tokenomics":"トークノミクス","Agent directory":"エージェント一覧","Resources":"リソース","© 2026 Verdix. Built on BNB Chain.":"© 2026 Verdix。BNB Chain上に構築。","Testnet deployment. Not investment advice.":"テストネット展開。投資助言ではありません。","Run an AI agent that touches money? Give it a vault it can't overspend — every action it takes becomes a public track record, automatically.":"お金を扱うAIエージェントを運用中？使いすぎできないボールトを与えれば、全アクションが自動で公開実績になる。","See a live agent profile →":"ライブのエージェントプロフィールを見る →","Who it's for":"誰のためのもの？","One trust layer, three ways in":"1つの信頼レイヤー、3つの入り口","Agent operators":"エージェント運用者","You run a trading bot or AI agent that touches money. Deploy a vault, set hard rules, and every compliant action builds a track record you can prove — not just claim.":"お金を扱うトレーディングボットやAIエージェントを運用するあなた。ボールトをデプロイし、ハードルールを設定すれば、準拠アクションが証明可能な実績を積み上げる — 主張ではなく。","Create a vault →":"ボールトを作成 →","Platforms & marketplaces":"プラットフォーム・マーケット","You list agents — and take the blame when one rugs. Check verified history and require a Verdix profile before an agent touches user funds.":"エージェントを掲載するあなた — ラグられたら責任も負う。エージェントがユーザー資金に触れる前に、検証済み履歴を確認しVerdixプロフィールを必須に。","Query the API →":"APIを叩く →","Users & allocators":"ユーザー・資金の出し手","You decide which agent deserves capital. Read the on-chain record: real actions, real failures, and a score nobody can buy.":"どのエージェントに資金を任せるかを決めるあなた。オンチェーン記録を読もう：本物のアクション、本物の失敗、誰にも買えないスコア。","Browse the directory →":"ディレクトリを見る →","Inside the app":"アプリの中身","This is what verified looks like":"「検証済み」とはこういうこと","Live pages from the running product — real data, not mockups.":"稼働中プロダクトのライブページ — モックではなく実データ。","Public agent profile — Trust Score computed from the chain.":"公開エージェントプロフィール — Trust Scoreはチェーンから算出。","Vault control room — policy and limits read straight from the contract.":"ボールトの管制室 — ポリシーと上限はコントラクトから直接読む。","External security review":"外部セキュリティレビュー","Built on Membase":"Membase上に構築","ERC-8004 compat — roadmap":"ERC-8004互換 — ロードマップ","9 verified contracts":"検証済みコントラクト9件","executed & scored":"実行・スコア化","Both transactions are real. Click them.":"2つとも本物のトランザクション。クリックして。","Open live →":"ライブで開く →","Open methodology — every weight is public, read the exact formula →":"算出方法は公開 — 全ウェイトが公開、数式をそのまま読める →","Every score component is queryable via the public API — decompose any score yourself →":"全スコア構成要素は公開APIで照会可能 — どのスコアも自分で分解できる →","2 verified actions · Verdix-native":"検証済みアクション2件 · Verdixネイティブ","11 verified actions · 10,000 VDX staked":"検証済みアクション11件 · 10,000 VDXステーク"},"ko":{"Product":"제품","How it works":"작동 방식","Contracts":"컨트랙트","Roadmap":"로드맵","Docs":"문서","Connect Wallet":"지갑 연결","Launch App":"앱 실행","Live on BSC Testnet":"BSC 테스트넷 가동 중","Reputation your AI agent":"당신의 AI 에이전트가","can't fake.":"위조할 수 없는 평판.","On-chain economic memory, policy-guarded vaults, and live trust scores for the AI agent economy — deployed on BNB Chain.":"AI 에이전트 경제를 위한 온체인 경제 기억, 정책 보호 볼트, 실시간 신뢰 점수 — BNB 체인에 배포됨.","Create Verified Vault":"검증된 볼트 만들기","View Directory":"디렉터리 보기","Agents scored":"평가된 에이전트","Verdix-native agents live":"Verdix 네이티브 에이전트 가동 중","+63 ecosystem agents scored":"+63 생태계 에이전트 평가됨","On-chain verified actions":"온체인 검증 액션","Contracts verified":"검증된 컨트랙트","Live trust score":"실시간 신뢰 점수","The Problem":"문제","AI agents are handling real money.":"AI 에이전트는 이미 실제 돈을 다루고 있습니다.","Nothing stops them from lying about it.":"그에 대해 거짓말하는 것을 막을 방법은 없습니다.","Track records are self-reported. Wallets have no guardrails. In 2025 alone, \"trust me\" cost users seven figures.":"실적은 자가 보고이고 지갑에는 가드레일이 없습니다. 2025년에만 \"믿어주세요\"가 사용자에게 7자리 손실을 안겼습니다.","Fake AI":"가짜 AI","A \"yield-optimizing AI\" that was neither yield-optimizing nor AI. Fabricated performance, real deposits, classic rug.":"수익 최적화도 AI도 아니었던 \"수익 최적화 AI\". 조작된 성과, 실제 예치금, 전형적인 러그.","Prompt Injection":"프롬프트 인젝션","One crafted message convinced an agent to drain the funds it managed. The wallet had no policy layer to refuse.":"조작된 메시지 하나가 에이전트를 설득해 관리 자금을 빼돌리게 했습니다. 지갑에는 거부할 정책 계층이 없었습니다.","Parsing Error":"파싱 오류","No malice required — a misparsed response was enough. Autonomous execution with zero on-chain limits did the rest.":"악의는 필요 없었습니다 — 잘못 파싱된 응답이면 충분했습니다. 온체인 제한이 전혀 없는 자율 실행이 나머지를 해냈습니다.","Built on & interoperable with":"기반 및 상호운용","Three layers. One verifiable agent.":"세 개의 레이어, 하나의 검증 가능한 에이전트.","Verdix moves trust from marketing copy to bytecode: hard limits, permanent records, and a score no one can purchase.":"Verdix는 신뢰를 마케팅 문구에서 바이트코드로 옮깁니다: 하드 리밋, 영구 기록, 누구도 살 수 없는 점수.","On-chain policy your agent cannot override — no matter what it's told, tricked, or hallucinated into.":"에이전트가 무시할 수 없는 온체인 정책 — 무슨 말을 듣든, 속든, 환각을 일으키든.","Max transaction size & daily spend cap":"최대 거래 규모 및 일일 지출 한도","Cooldown between actions":"액션 간 쿨다운","Destination whitelist":"대상 화이트리스트","Halt floor — hard stop below a balance":"홀트 플로어 — 잔고 이하 시 강제 정지","An append-only record of what the agent actually did. Self-reporting is structurally impossible.":"에이전트가 실제로 한 일의 추가 전용 기록. 자가 보고는 구조적으로 불가능합니다.","Every action hashed and anchored on-chain":"모든 액션을 해시하여 온체인에 고정","Full payloads persisted on Membase":"전체 페이로드는 Membase에 보존","No edits, no deletions, no curation":"수정도 삭제도 큐레이션도 없음","Computed from verified behavior, not follower counts. Designed against farming and reputation-buying.":"팔로워 수가 아닌 검증된 행동으로 계산. 파밍과 평판 구매를 막도록 설계.","Weighted by real economic outcomes":"실제 경제적 결과로 가중","Anti-farming, anti wash-activity":"파밍 방지, 워시 액티비티 방지","Live, public, queryable API":"실시간 공개 조회 가능 API","From identity to track record in four steps":"네 단계로 신원에서 실적까지","Register the agent":"에이전트 등록","An ERC-8004 identity puts the agent on-chain: who it is, who operates it, where it lives.":"ERC-8004 신원이 에이전트를 온체인에 올립니다: 누구인지, 누가 운영하는지, 어디에 있는지.","Create a vault, set policy":"볼트 생성, 정책 설정","The operator deploys a RiskGuard Vault and writes the rules: caps, cooldowns, whitelist, halt floor.":"운영자가 RiskGuard Vault를 배포하고 규칙을 작성합니다: 한도, 쿨다운, 화이트리스트, 홀트 플로어.","Agent acts inside guardrails":"가드레일 안에서 행동","Every transaction passes through policy checks. Compliant actions execute; violations revert on-chain.":"모든 거래가 정책 검사를 거칩니다. 준수 액션은 실행되고 위반은 온체인에서 리버트됩니다.","Reputation builds itself":"평판은 스스로 쌓입니다","Track record and public profile accumulate automatically from verified behavior. No press releases needed.":"실적과 공개 프로필이 검증된 행동에서 자동으로 축적됩니다. 보도자료는 필요 없습니다.","Live network":"라이브 네트워크","Trust Score leaderboard":"Trust Score 리더보드","Scored from on-chain and verified activity, refreshed live from the Verdix API.":"온체인 및 검증된 활동으로 점수화, Verdix API에서 실시간 갱신.","Top agents":"상위 에이전트","Full directory →":"전체 디렉터리 →","loading live data…":"실시간 데이터 로딩 중…","Token":"토큰","The $VDX token":"$VDX 토큰","Testnet utility live today. Mainnet TGE deliberately deferred until real usage.":"테스트넷 유틸리티는 오늘 가동 중. 메인넷 TGE는 실사용이 있을 때까지 의도적으로 연기.","FIXED SUPPLY":"고정 공급량","Protocol Treasury":"프로토콜 트레저리","Community / Airdrop":"커뮤니티 / 에어드랍","Founder":"파운더","Early Contributors":"초기 기여자","Liquidity & Exchange":"유동성 및 거래소","Team Future":"미래 팀","Stake to back an agent":"에이전트 지지 스테이킹","Live":"가동 중","Fee distribution to stakers":"스테이커에게 수수료 분배","Planned":"예정","Governance":"거버넌스","10,000 VDX staked on agent #1 — 7-day unstake cooldown":"에이전트 #1에 10,000 VDX 스테이킹 — 언스테이크 쿨다운 7일","500,000,000 fixed supply.":"고정 공급 5억.","No additional minting, ever.":"추가 발행은 영원히 없습니다.","Shipped first. Token later.":"제품 먼저, 토큰은 나중에.","PHASE 1":"1단계","PHASE 2":"2단계","PHASE 3":"3단계","PHASE 4":"4단계","✓ Done":"✓ 완료","Protocol live on BSC testnet":"BSC 테스트넷에 프로토콜 가동","8 verified contracts":"검증된 컨트랙트 8개","Agent #1700 dual-registry":"에이전트 #1700 이중 등록","Membase payloads":"Membase 페이로드","● Now":"● 진행 중","Verified Agent product":"Verified Agent 제품","Self-serve vaults":"셀프 서비스 볼트","Beta operators":"베타 운영자","BNB grant":"BNB 그랜트","Next":"다음","Scale":"스케일","ERC-8004 mainnet compatibility":"ERC-8004 메인넷 호환","Robinhood Chain (RWA trading L2) — under evaluation":"Robinhood Chain(RWA 트레이딩 L2) — 평가 중","B2B platform verification":"B2B 플랫폼 검증","x402 paid API":"x402 유료 API","Deferred":"보류","Mainnet + $VDX TGE":"메인넷 + $VDX TGE","\"When usage earns it.\"":"\"사용량이 그럴 자격을 얻을 때.\"","On-chain":"온체인","Deployed & verifiable":"배포됨 & 검증 가능","Every contract is live on BSC testnet. Don't take our word for anything — read the chain.":"모든 컨트랙트가 BSC 테스트넷에 가동 중. 우리 말을 믿지 말고 체인을 직접 읽으세요.","Fail ✕":"실패 ✕","Policy-blocked transaction":"정책이 차단한 거래","An agent attempted an action outside its policy. The vault reverted it — permanently visible, permanently provable.":"에이전트가 정책 밖의 행동을 시도했습니다. 볼트가 리버트했습니다 — 영구히 보이고, 영구히 증명 가능.","Success ✓":"성공 ✓","Compliant transaction":"준수 거래","The same guardrails, a compliant action: executed, recorded to Economic Memory, and scored.":"같은 가드레일, 준수 액션: 실행되고, Economic Memory에 기록되고, 점수화됩니다.","The chain said no.":"체인이 거절했습니다.","That's the product.":"그것이 제품입니다.","Get started":"시작하기","Put your agent on the record.":"당신의 에이전트를 기록에 남기세요.","Deploy a policy-guarded vault in minutes. Let the chain build the reputation.":"몇 분 만에 정책 보호 볼트를 배포하세요. 평판은 체인이 쌓게 하세요.","Read the Docs":"문서 읽기","ERC-8004 tells you":"ERC-8004는","who":"에이전트가 누구인지","an agent is.":"알려줍니다.","Verdix tells you":"Verdix는","how it has behaved":"어떻게 행동해왔는지 알려줍니다","Protocol":"프로토콜","Tokenomics":"토크노믹스","Agent directory":"에이전트 디렉터리","Resources":"리소스","© 2026 Verdix. Built on BNB Chain.":"© 2026 Verdix. BNB 체인 위에 구축.","Testnet deployment. Not investment advice.":"테스트넷 배포. 투자 조언이 아닙니다.","Run an AI agent that touches money? Give it a vault it can't overspend — every action it takes becomes a public track record, automatically.":"돈을 다루는 AI 에이전트를 운영 중인가요? 초과 지출이 불가능한 볼트를 주세요 — 모든 행동이 자동으로 공개 실적이 됩니다.","See a live agent profile →":"실제 에이전트 프로필 보기 →","Who it's for":"누구를 위한 것인가","One trust layer, three ways in":"하나의 신뢰 레이어, 세 개의 입구","Agent operators":"에이전트 운영자","You run a trading bot or AI agent that touches money. Deploy a vault, set hard rules, and every compliant action builds a track record you can prove — not just claim.":"돈을 다루는 트레이딩 봇이나 AI 에이전트를 운영한다면, 볼트를 배포하고 하드 룰을 설정하세요. 모든 준수 행동이 주장이 아닌 증명 가능한 실적을 쌓습니다.","Create a vault →":"볼트 만들기 →","Platforms & marketplaces":"플랫폼 & 마켓플레이스","You list agents — and take the blame when one rugs. Check verified history and require a Verdix profile before an agent touches user funds.":"에이전트를 등록하는 당신 — 러그가 나면 책임도 집니다. 에이전트가 사용자 자금을 만지기 전에 검증된 이력을 확인하고 Verdix 프로필을 요구하세요.","Query the API →":"API 조회 →","Users & allocators":"사용자 & 자본 배분자","You decide which agent deserves capital. Read the on-chain record: real actions, real failures, and a score nobody can buy.":"어떤 에이전트에게 자본을 맡길지 결정하는 당신. 온체인 기록을 읽으세요: 실제 행동, 실제 실패, 누구도 살 수 없는 점수.","Browse the directory →":"디렉터리 둘러보기 →","Inside the app":"앱 내부","This is what verified looks like":"'검증됨'은 이런 모습입니다","Live pages from the running product — real data, not mockups.":"실제 구동 중인 제품의 라이브 페이지 — 목업이 아닌 실데이터.","Public agent profile — Trust Score computed from the chain.":"공개 에이전트 프로필 — Trust Score는 체인에서 계산됩니다.","Vault control room — policy and limits read straight from the contract.":"볼트 관제실 — 정책과 한도를 컨트랙트에서 직접 읽습니다.","External security review":"외부 보안 검토","Built on Membase":"Membase 기반","ERC-8004 compat — roadmap":"ERC-8004 호환 — 로드맵","9 verified contracts":"검증된 컨트랙트 9개","executed & scored":"실행 & 점수화","Both transactions are real. Click them.":"두 거래 모두 실제입니다. 클릭해보세요.","Open live →":"라이브로 열기 →","Open methodology — every weight is public, read the exact formula →":"공개 방법론 — 모든 가중치가 공개, 정확한 공식을 읽어보세요 →","Every score component is queryable via the public API — decompose any score yourself →":"모든 점수 구성요소는 공개 API로 조회 가능 — 어떤 점수든 직접 분해해보세요 →","2 verified actions · Verdix-native":"검증된 액션 2개 · Verdix 네이티브","11 verified actions · 10,000 VDX staked":"검증된 액션 11개 · 10,000 VDX 스테이킹"},"es":{"Product":"Producto","How it works":"Cómo funciona","Contracts":"Contratos","Roadmap":"Hoja de ruta","Docs":"Docs","Connect Wallet":"Conectar wallet","Launch App":"Abrir app","Live on BSC Testnet":"En vivo en BSC Testnet","Reputation your AI agent":"Reputación que tu agente de IA","can't fake.":"no puede falsificar.","On-chain economic memory, policy-guarded vaults, and live trust scores for the AI agent economy — deployed on BNB Chain.":"Memoria económica on-chain, bóvedas con políticas y puntuaciones de confianza en vivo para la economía de agentes de IA — desplegado en BNB Chain.","Create Verified Vault":"Crear bóveda verificada","View Directory":"Ver directorio","Agents scored":"Agentes puntuados","Verdix-native agents live":"Agentes nativos de Verdix en vivo","+63 ecosystem agents scored":"+63 agentes del ecosistema puntuados","On-chain verified actions":"Acciones verificadas on-chain","Contracts verified":"Contratos verificados","Live trust score":"Puntuación en vivo","The Problem":"El problema","AI agents are handling real money.":"Los agentes de IA ya manejan dinero real.","Nothing stops them from lying about it.":"Nada les impide mentir al respecto.","Track records are self-reported. Wallets have no guardrails. In 2025 alone, \"trust me\" cost users seven figures.":"Los historiales son autoinformados. Las wallets no tienen barreras. Solo en 2025, el \"confía en mí\" costó siete cifras a los usuarios.","Fake AI":"IA falsa","A \"yield-optimizing AI\" that was neither yield-optimizing nor AI. Fabricated performance, real deposits, classic rug.":"Una \"IA optimizadora de rendimiento\" que no era ni optimizadora ni IA. Rendimiento inventado, depósitos reales, rug clásico.","Prompt Injection":"Inyección de prompts","One crafted message convinced an agent to drain the funds it managed. The wallet had no policy layer to refuse.":"Un mensaje diseñado convenció a un agente de vaciar los fondos que gestionaba. La wallet no tenía capa de políticas para negarse.","Parsing Error":"Error de parseo","No malice required — a misparsed response was enough. Autonomous execution with zero on-chain limits did the rest.":"No hizo falta malicia: bastó una respuesta mal parseada. La ejecución autónoma sin límites on-chain hizo el resto.","Built on & interoperable with":"Construido sobre e interoperable con","Three layers. One verifiable agent.":"Tres capas. Un agente verificable.","Verdix moves trust from marketing copy to bytecode: hard limits, permanent records, and a score no one can purchase.":"Verdix lleva la confianza del marketing al bytecode: límites duros, registros permanentes y una puntuación que nadie puede comprar.","On-chain policy your agent cannot override — no matter what it's told, tricked, or hallucinated into.":"Política on-chain que tu agente no puede anular, sin importar qué le digan, cómo lo engañen o qué alucine.","Max transaction size & daily spend cap":"Tamaño máximo por transacción y tope diario","Cooldown between actions":"Enfriamiento entre acciones","Destination whitelist":"Lista blanca de destinos","Halt floor — hard stop below a balance":"Suelo de parada: freno duro bajo cierto saldo","An append-only record of what the agent actually did. Self-reporting is structurally impossible.":"Un registro solo-anexar de lo que el agente realmente hizo. El autoinforme es estructuralmente imposible.","Every action hashed and anchored on-chain":"Cada acción hasheada y anclada on-chain","Full payloads persisted on Membase":"Payloads completos persistidos en Membase","No edits, no deletions, no curation":"Sin ediciones, sin borrados, sin curaduría","Computed from verified behavior, not follower counts. Designed against farming and reputation-buying.":"Calculada a partir de conducta verificada, no de seguidores. Diseñada contra el farming y la compra de reputación.","Weighted by real economic outcomes":"Ponderada por resultados económicos reales","Anti-farming, anti wash-activity":"Anti-farming, anti actividad wash","Live, public, queryable API":"API en vivo, pública y consultable","From identity to track record in four steps":"De identidad a historial en cuatro pasos","Register the agent":"Registra el agente","An ERC-8004 identity puts the agent on-chain: who it is, who operates it, where it lives.":"Una identidad ERC-8004 pone al agente on-chain: quién es, quién lo opera, dónde vive.","Create a vault, set policy":"Crea una bóveda, define la política","The operator deploys a RiskGuard Vault and writes the rules: caps, cooldowns, whitelist, halt floor.":"El operador despliega una RiskGuard Vault y escribe las reglas: topes, enfriamientos, lista blanca, suelo de parada.","Agent acts inside guardrails":"El agente actúa dentro de las barreras","Every transaction passes through policy checks. Compliant actions execute; violations revert on-chain.":"Cada transacción pasa por controles de política. Las acciones conformes se ejecutan; las violaciones se revierten on-chain.","Reputation builds itself":"La reputación se construye sola","Track record and public profile accumulate automatically from verified behavior. No press releases needed.":"El historial y el perfil público se acumulan automáticamente a partir de conducta verificada. Sin notas de prensa.","Live network":"Red en vivo","Trust Score leaderboard":"Clasificación de Trust Score","Scored from on-chain and verified activity, refreshed live from the Verdix API.":"Puntuado por actividad on-chain y verificada, actualizado en vivo desde la API de Verdix.","Top agents":"Mejores agentes","Full directory →":"Directorio completo →","loading live data…":"cargando datos en vivo…","Token":"Token","The $VDX token":"El token $VDX","Testnet utility live today. Mainnet TGE deliberately deferred until real usage.":"Utilidad en testnet ya disponible. El TGE en mainnet se pospone deliberadamente hasta que haya uso real.","FIXED SUPPLY":"SUMINISTRO FIJO","Protocol Treasury":"Tesorería del protocolo","Community / Airdrop":"Comunidad / Airdrop","Founder":"Fundador","Early Contributors":"Primeros contribuidores","Liquidity & Exchange":"Liquidez y exchanges","Team Future":"Equipo futuro","Stake to back an agent":"Stake para respaldar un agente","Live":"En vivo","Fee distribution to stakers":"Distribución de comisiones a stakers","Planned":"Planificado","Governance":"Gobernanza","10,000 VDX staked on agent #1 — 7-day unstake cooldown":"10.000 VDX en stake en el agente #1 — enfriamiento de 7 días","500,000,000 fixed supply.":"Suministro fijo de 500.000.000.","No additional minting, ever.":"Sin acuñación adicional, nunca.","Shipped first. Token later.":"Primero el producto. Luego el token.","PHASE 1":"FASE 1","PHASE 2":"FASE 2","PHASE 3":"FASE 3","PHASE 4":"FASE 4","✓ Done":"✓ Hecho","Protocol live on BSC testnet":"Protocolo en vivo en BSC testnet","8 verified contracts":"8 contratos verificados","Agent #1700 dual-registry":"Agente #1700 doble registro","Membase payloads":"Payloads en Membase","● Now":"● Ahora","Verified Agent product":"Producto Verified Agent","Self-serve vaults":"Bóvedas autoservicio","Beta operators":"Operadores beta","BNB grant":"Grant de BNB","Next":"Siguiente","Scale":"Escalar","ERC-8004 mainnet compatibility":"Compatibilidad ERC-8004 en mainnet","Robinhood Chain (RWA trading L2) — under evaluation":"Robinhood Chain (L2 de trading RWA): en evaluación","B2B platform verification":"Verificación de plataformas B2B","x402 paid API":"API de pago x402","Deferred":"Aplazado","Mainnet + $VDX TGE":"Mainnet + TGE de $VDX","\"When usage earns it.\"":"\"Cuando el uso se lo gane.\"","On-chain":"On-chain","Deployed & verifiable":"Desplegado y verificable","Every contract is live on BSC testnet. Don't take our word for anything — read the chain.":"Todos los contratos están en BSC testnet. No nos creas nada: lee la cadena.","Fail ✕":"Fallo ✕","Policy-blocked transaction":"Transacción bloqueada por política","An agent attempted an action outside its policy. The vault reverted it — permanently visible, permanently provable.":"Un agente intentó una acción fuera de su política. La bóveda la revirtió: visible y demostrable para siempre.","Success ✓":"Éxito ✓","Compliant transaction":"Transacción conforme","The same guardrails, a compliant action: executed, recorded to Economic Memory, and scored.":"Las mismas barreras, una acción conforme: ejecutada, registrada en Economic Memory y puntuada.","The chain said no.":"La cadena dijo no.","That's the product.":"Ese es el producto.","Get started":"Empezar","Put your agent on the record.":"Deja constancia de tu agente.","Deploy a policy-guarded vault in minutes. Let the chain build the reputation.":"Despliega una bóveda con políticas en minutos. Deja que la cadena construya la reputación.","Read the Docs":"Leer la documentación","ERC-8004 tells you":"ERC-8004 te dice","who":"quién","an agent is.":"es un agente.","Verdix tells you":"Verdix te dice","how it has behaved":"cómo se ha comportado","Protocol":"Protocolo","Tokenomics":"Tokenomics","Agent directory":"Directorio de agentes","Resources":"Recursos","© 2026 Verdix. Built on BNB Chain.":"© 2026 Verdix. Construido sobre BNB Chain.","Testnet deployment. Not investment advice.":"Despliegue en testnet. No es consejo de inversión.","Run an AI agent that touches money? Give it a vault it can't overspend — every action it takes becomes a public track record, automatically.":"¿Tu agente de IA maneja dinero? Dale una bóveda que no puede sobregastar: cada acción se convierte automáticamente en un historial público.","See a live agent profile →":"Ver un perfil de agente en vivo →","Who it's for":"Para quién es","One trust layer, three ways in":"Una capa de confianza, tres puertas de entrada","Agent operators":"Operadores de agentes","You run a trading bot or AI agent that touches money. Deploy a vault, set hard rules, and every compliant action builds a track record you can prove — not just claim.":"Operas un bot de trading o agente de IA que maneja dinero. Despliega una bóveda, fija reglas duras, y cada acción conforme construye un historial demostrable — no solo declarado.","Create a vault →":"Crear una bóveda →","Platforms & marketplaces":"Plataformas y marketplaces","You list agents — and take the blame when one rugs. Check verified history and require a Verdix profile before an agent touches user funds.":"Tú listas agentes y cargas con la culpa cuando uno hace rug. Revisa el historial verificado y exige un perfil de Verdix antes de que un agente toque fondos de usuarios.","Query the API →":"Consultar la API →","Users & allocators":"Usuarios y asignadores","You decide which agent deserves capital. Read the on-chain record: real actions, real failures, and a score nobody can buy.":"Tú decides qué agente merece capital. Lee el registro on-chain: acciones reales, fallos reales y una puntuación que nadie puede comprar.","Browse the directory →":"Explorar el directorio →","Inside the app":"Dentro de la app","This is what verified looks like":"Así se ve lo verificado","Live pages from the running product — real data, not mockups.":"Páginas en vivo del producto en marcha: datos reales, no maquetas.","Public agent profile — Trust Score computed from the chain.":"Perfil público del agente: Trust Score calculado desde la cadena.","Vault control room — policy and limits read straight from the contract.":"Sala de control de la bóveda: política y límites leídos directo del contrato.","External security review":"Revisión de seguridad externa","Built on Membase":"Construido sobre Membase","ERC-8004 compat — roadmap":"Compat. ERC-8004: hoja de ruta","9 verified contracts":"9 contratos verificados","executed & scored":"ejecutada y puntuada","Both transactions are real. Click them.":"Ambas transacciones son reales. Haz clic.","Open live →":"Abrir en vivo →","Open methodology — every weight is public, read the exact formula →":"Metodología abierta: cada peso es público, lee la fórmula exacta →","Every score component is queryable via the public API — decompose any score yourself →":"Cada componente de la puntuación es consultable vía API pública: descompón cualquier puntuación tú mismo →","2 verified actions · Verdix-native":"2 acciones verificadas · nativo de Verdix","11 verified actions · 10,000 VDX staked":"11 acciones verificadas · 10.000 VDX en stake"},"ru":{"Product":"Продукт","How it works":"Как это работает","Contracts":"Контракты","Roadmap":"Дорожная карта","Docs":"Документация","Connect Wallet":"Подключить кошелёк","Launch App":"Открыть приложение","Live on BSC Testnet":"Работает в тестнете BSC","Reputation your AI agent":"Репутация, которую ваш ИИ-агент","can't fake.":"не сможет подделать.","On-chain economic memory, policy-guarded vaults, and live trust scores for the AI agent economy — deployed on BNB Chain.":"Ончейн-память экономики, хранилища с политиками и живые рейтинги доверия для экономики ИИ-агентов — развёрнуто на BNB Chain.","Create Verified Vault":"Создать верифицированное хранилище","View Directory":"Каталог агентов","Agents scored":"Агентов оценено","Verdix-native agents live":"Verdix-native агентов работает","+63 ecosystem agents scored":"+63 агентов экосистемы оценено","On-chain verified actions":"Верифицированных действий","Contracts verified":"Контрактов верифицировано","Live trust score":"Живой рейтинг доверия","The Problem":"Проблема","AI agents are handling real money.":"ИИ-агенты уже управляют реальными деньгами.","Nothing stops them from lying about it.":"И ничто не мешает им лгать об этом.","Track records are self-reported. Wallets have no guardrails. In 2025 alone, \"trust me\" cost users seven figures.":"Послужные списки — со слов агентов. У кошельков нет ограничителей. Только в 2025 году «поверьте мне» стоило пользователям семизначных сумм.","Fake AI":"Фальшивый ИИ","A \"yield-optimizing AI\" that was neither yield-optimizing nor AI. Fabricated performance, real deposits, classic rug.":"«ИИ-оптимизатор доходности», не являвшийся ни оптимизатором, ни ИИ. Выдуманные результаты, реальные депозиты, классический раг.","Prompt Injection":"Промпт-инъекция","One crafted message convinced an agent to drain the funds it managed. The wallet had no policy layer to refuse.":"Одно составленное сообщение убедило агента вывести средства под его управлением. У кошелька не было слоя политик, чтобы отказать.","Parsing Error":"Ошибка парсинга","No malice required — a misparsed response was enough. Autonomous execution with zero on-chain limits did the rest.":"Злой умысел не понадобился — хватило неверно разобранного ответа. Автономное исполнение без ончейн-лимитов сделало остальное.","Built on & interoperable with":"Построено на и совместимо с","Three layers. One verifiable agent.":"Три слоя. Один проверяемый агент.","Verdix moves trust from marketing copy to bytecode: hard limits, permanent records, and a score no one can purchase.":"Verdix переносит доверие из маркетинга в байткод: жёсткие лимиты, вечные записи и рейтинг, который нельзя купить.","On-chain policy your agent cannot override — no matter what it's told, tricked, or hallucinated into.":"Ончейн-политика, которую агент не может обойти — что бы ему ни сказали, как бы его ни обманули.","Max transaction size & daily spend cap":"Лимит на транзакцию и дневной лимит","Cooldown between actions":"Пауза между действиями","Destination whitelist":"Белый список адресов","Halt floor — hard stop below a balance":"Нижний порог — жёсткий стоп ниже баланса","An append-only record of what the agent actually did. Self-reporting is structurally impossible.":"Журнал только-для-добавления о реальных действиях агента. Самоотчёт структурно невозможен.","Every action hashed and anchored on-chain":"Каждое действие захешировано в блокчейне","Full payloads persisted on Membase":"Полные данные хранятся в Membase","No edits, no deletions, no curation":"Без правок, удалений и курирования","Computed from verified behavior, not follower counts. Designed against farming and reputation-buying.":"Считается по проверенному поведению, а не подписчикам. Защищён от накрутки и покупки репутации.","Weighted by real economic outcomes":"Взвешен по реальным экономическим исходам","Anti-farming, anti wash-activity":"Против накрутки и фиктивной активности","Live, public, queryable API":"Живой публичный API","From identity to track record in four steps":"От личности до послужного списка за четыре шага","Register the agent":"Зарегистрируйте агента","An ERC-8004 identity puts the agent on-chain: who it is, who operates it, where it lives.":"Идентичность ERC-8004 выводит агента в блокчейн: кто он, кто им управляет, где он живёт.","Create a vault, set policy":"Создайте хранилище, задайте политику","The operator deploys a RiskGuard Vault and writes the rules: caps, cooldowns, whitelist, halt floor.":"Оператор разворачивает RiskGuard Vault и записывает правила: лимиты, паузы, белый список, нижний порог.","Agent acts inside guardrails":"Агент действует в рамках","Every transaction passes through policy checks. Compliant actions execute; violations revert on-chain.":"Каждая транзакция проходит проверку политик. Соответствующие исполняются; нарушения откатываются ончейн.","Reputation builds itself":"Репутация строится сама","Track record and public profile accumulate automatically from verified behavior. No press releases needed.":"Послужной список и публичный профиль накапливаются автоматически из проверенного поведения. Пресс-релизы не нужны.","Live network":"Живая сеть","Trust Score leaderboard":"Рейтинг Trust Score","Scored from on-chain and verified activity, refreshed live from the Verdix API.":"Оценивается по ончейн и проверенной активности, обновляется через Verdix API.","Top agents":"Лучшие агенты","Full directory →":"Полный каталог →","loading live data…":"загрузка живых данных…","Token":"Токен","The $VDX token":"Токен $VDX","Testnet utility live today. Mainnet TGE deliberately deferred until real usage.":"Утилита в тестнете уже работает. TGE в мейннете сознательно отложен до реального использования.","FIXED SUPPLY":"ФИКС. ЭМИССИЯ","Protocol Treasury":"Казна протокола","Community / Airdrop":"Сообщество / Аирдроп","Founder":"Основатель","Early Contributors":"Ранние участники","Liquidity & Exchange":"Ликвидность и биржи","Team Future":"Будущая команда","Stake to back an agent":"Стейк в поддержку агента","Live":"Работает","Fee distribution to stakers":"Распределение комиссий стейкерам","Planned":"Запланировано","Governance":"Управление","10,000 VDX staked on agent #1 — 7-day unstake cooldown":"10 000 VDX в стейке на агенте №1 — кулдаун анстейка 7 дней","500,000,000 fixed supply.":"Фиксированная эмиссия 500 000 000.","No additional minting, ever.":"Никакого дополнительного выпуска. Никогда.","Shipped first. Token later.":"Сначала продукт. Токен потом.","PHASE 1":"ФАЗА 1","PHASE 2":"ФАЗА 2","PHASE 3":"ФАЗА 3","PHASE 4":"ФАЗА 4","✓ Done":"✓ Готово","Protocol live on BSC testnet":"Протокол в тестнете BSC","8 verified contracts":"8 верифицированных контрактов","Agent #1700 dual-registry":"Агент №1700 в двух реестрах","Membase payloads":"Данные в Membase","● Now":"● Сейчас","Verified Agent product":"Продукт Verified Agent","Self-serve vaults":"Хранилища self-serve","Beta operators":"Бета-операторы","BNB grant":"Грант BNB","Next":"Далее","Scale":"Масштабирование","ERC-8004 mainnet compatibility":"Совместимость с ERC-8004 в мейннете","Robinhood Chain (RWA trading L2) — under evaluation":"Robinhood Chain (RWA-трейдинг L2) — на оценке","B2B platform verification":"Верификация B2B-платформ","x402 paid API":"Платный API x402","Deferred":"Отложено","Mainnet + $VDX TGE":"Мейннет + TGE $VDX","\"When usage earns it.\"":"«Когда использование это заслужит.»","On-chain":"Ончейн","Deployed & verifiable":"Развёрнуто и проверяемо","Every contract is live on BSC testnet. Don't take our word for anything — read the chain.":"Все контракты работают в тестнете BSC. Не верьте нам на слово — читайте блокчейн.","Fail ✕":"Отказ ✕","Policy-blocked transaction":"Транзакция заблокирована политикой","An agent attempted an action outside its policy. The vault reverted it — permanently visible, permanently provable.":"Агент попытался выйти за рамки политики. Хранилище откатило действие — навсегда видно, навсегда доказуемо.","Success ✓":"Успех ✓","Compliant transaction":"Соответствующая транзакция","The same guardrails, a compliant action: executed, recorded to Economic Memory, and scored.":"Те же рамки, соответствующее действие: исполнено, записано в Economic Memory, оценено.","The chain said no.":"Блокчейн сказал «нет».","That's the product.":"В этом и есть продукт.","Get started":"Начать","Put your agent on the record.":"Занесите своего агента в реестр.","Deploy a policy-guarded vault in minutes. Let the chain build the reputation.":"Разверните хранилище с политиками за минуты. Пусть блокчейн строит репутацию.","Read the Docs":"Читать документацию","ERC-8004 tells you":"ERC-8004 говорит,","who":"кто","an agent is.":"этот агент.","Verdix tells you":"Verdix говорит,","how it has behaved":"как он себя вёл","Protocol":"Протокол","Tokenomics":"Токеномика","Agent directory":"Каталог агентов","Resources":"Ресурсы","© 2026 Verdix. Built on BNB Chain.":"© 2026 Verdix. Построено на BNB Chain.","Testnet deployment. Not investment advice.":"Тестнет-деплой. Не инвестиционный совет.","Run an AI agent that touches money? Give it a vault it can't overspend — every action it takes becomes a public track record, automatically.":"Ваш ИИ-агент управляет деньгами? Дайте ему хранилище, которое нельзя перерасходовать — каждое действие автоматически станет публичным послужным списком.","See a live agent profile →":"Посмотреть живой профиль агента →","Who it's for":"Для кого это","One trust layer, three ways in":"Один слой доверия — три входа","Agent operators":"Операторы агентов","You run a trading bot or AI agent that touches money. Deploy a vault, set hard rules, and every compliant action builds a track record you can prove — not just claim.":"Вы запускаете торгового бота или ИИ-агента с деньгами. Разверните хранилище, задайте жёсткие правила — и каждое действие строит доказуемый послужной список, а не просто слова.","Create a vault →":"Создать хранилище →","Platforms & marketplaces":"Платформы и маркетплейсы","You list agents — and take the blame when one rugs. Check verified history and require a Verdix profile before an agent touches user funds.":"Вы размещаете агентов — и отвечаете, когда один из них скамится. Проверяйте верифицированную историю и требуйте профиль Verdix, прежде чем агент коснётся средств пользователей.","Query the API →":"Запросить API →","Users & allocators":"Пользователи и инвесторы","You decide which agent deserves capital. Read the on-chain record: real actions, real failures, and a score nobody can buy.":"Вы решаете, какой агент заслуживает капитала. Читайте ончейн-записи: реальные действия, реальные провалы и рейтинг, который нельзя купить.","Browse the directory →":"Открыть каталог →","Inside the app":"Внутри приложения","This is what verified looks like":"Вот как выглядит «верифицировано»","Live pages from the running product — real data, not mockups.":"Живые страницы работающего продукта — реальные данные, не макеты.","Public agent profile — Trust Score computed from the chain.":"Публичный профиль агента — Trust Score считается из блокчейна.","Vault control room — policy and limits read straight from the contract.":"Пункт управления хранилищем — политика и лимиты читаются прямо из контракта.","External security review":"Внешний аудит безопасности","Built on Membase":"Построено на Membase","ERC-8004 compat — roadmap":"Совместимость с ERC-8004 — в планах","9 verified contracts":"9 верифицированных контрактов","executed & scored":"исполнено и оценено","Both transactions are real. Click them.":"Обе транзакции настоящие. Кликните.","Open live →":"Открыть вживую →","Open methodology — every weight is public, read the exact formula →":"Открытая методология — все веса публичны, читайте точную формулу →","Every score component is queryable via the public API — decompose any score yourself →":"Каждый компонент рейтинга доступен через публичный API — разложите любой рейтинг сами →","2 verified actions · Verdix-native":"2 верифицированных действия · Verdix-native","11 verified actions · 10,000 VDX staked":"11 верифицированных действий · 10 000 VDX в стейке"}};
   var current = localStorage.getItem('vdx-lang') || 'en';
-  var walker = null, nodes = [];
+  if (current !== 'en' && !DICTS[current]) current = 'en';
+  var nodes = [];
   function collect(){
     nodes = [];
     var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
-    var n; while ((n = w.nextNode())) {
-      var t = n.textContent.trim();
-      if (t && DICT[t]) nodes.push(n);
-    }
+    var n; while ((n = w.nextNode())) { if (n.textContent.trim()) nodes.push(n); }
   }
+  function norm(s){ return s.replace(/[\u2019\u2018]/g, "'"); }
   function apply(lang){
+    collect();  // re-scan: tangkap node dinamis (ticker/terminal/modal)
+    var d = (lang === 'en') ? null : DICTS[lang];
     nodes.forEach(function(n){
       var orig = n._vdxOrig || (n._vdxOrig = n.textContent);
-      var key = orig.trim();
-      if (lang === 'id' && DICT[key]) n.textContent = orig.replace(key, DICT[key]);
-      else n.textContent = orig;
+      var key = norm(orig.trim());
+      if (d && d[key]) n.textContent = orig.replace(orig.trim(), d[key]);
+      else if (n.textContent !== orig) n.textContent = orig;
     });
-    var tg = document.getElementById('langTg');
-    if (tg) tg.textContent = (lang === 'id') ? 'EN' : 'ID';
+    document.documentElement.setAttribute('lang', lang);
     localStorage.setItem('vdx-lang', lang);
     current = lang;
+    var sel = document.getElementById('langSel');
+    if (sel && sel.value !== lang) sel.value = lang;
   }
-  collect();
-  if (current === 'id') apply('id');
-  var tg = document.getElementById('langTg');
-  if (tg) tg.addEventListener('click', function(){ apply(current === 'id' ? 'en' : 'id'); });
+  if (current !== 'en') apply(current);
+  var sel = document.getElementById('langSel');
+  if (sel) { sel.value = current; sel.addEventListener('change', function(){ apply(sel.value); }); }
 })();
 </script>
 </body>
