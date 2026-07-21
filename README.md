@@ -15,7 +15,7 @@
 | Category | AI / Infrastructure |
 | Website | https://verdix.pages.dev |
 | Logo 512×512 | https://verdix.pages.dev/img/verdix-logo-512.png (transparent: [here](https://verdix.pages.dev/img/verdix-logo-512-transparent.png)) |
-| Main contract | VaultFactory `0x46DD4ED8178cF97F5B8D7E7e55E1e879Ec057C0c` (**BSC Testnet, chain 97** — all 9 contracts BscScan-verified; mainnet deployment pending, tracked in roadmap Phase 4) |
+| Main contract | VaultFactory `0x564339644325dc147BF6F944f4253Dc59d268D7B` (**BSC Testnet, chain 97** — all 9 contracts BscScan-verified; mainnet deployment pending, tracked in roadmap Phase 4) |
 | GitHub | https://github.com/rexalpaundra0902-droid/verdix |
 | Status | Testnet — self-serve product live, first external beta operators onboarding |
 
@@ -43,15 +43,15 @@ All contracts are **verified on BscScan** — see `deployments/bsc-testnet.json`
 
 | Contract | Address |
 |---|---|
-| AgentRegistry (ERC-8004 surface) | `0x5cC6f74214FbD3D390E3be73aBCfc9fb1A41036C` |
-| **EconomicMemory** (core asset) | `0x6329a6e3920EBA211808a103662136772ad20510` |
-| PaymentRouter (Tier-1 recorder) | `0xA5e1Ab0ED4dE13Dc5E605296ebE7a2b3Da57f094` |
-| TaskEscrow (Tier-2/3 recorder) | `0x2D7C9Ffe8Ea86E434442CEE63AE2Aa5C3741B5Ca` |
-| StressOracle (Tier-4 recorder) | `0xB272346911f0604930215AF84Bee374A2c5327DF` |
-| **RiskGuardVault** (first app) | `0x43B2419c4af0dc27F0d307c26FC91951C39CDB97` |
-| VDX token (testnet, 500M fixed) | `0x28F0DBCEaF3be247BE04DbB6C0ed8d3EF0d3cB60` |
-| VDXStaking (skin in the game) | `0x1Bcca0c616C745D40f71cA84AB1B9a5675BD43A0` |
-| **VaultFactory** (self-serve product) | `0x46DD4ED8178cF97F5B8D7E7e55E1e879Ec057C0c` |
+| AgentRegistry (ERC-8004 surface) | `0x23dd8707AE4159A39303B3d193308AfBcAaf865F` |
+| **EconomicMemory** (core asset) | `0x9913A072915EF382b680bb4a0ff3CD8373490C4D` |
+| PaymentRouter (Tier-1 recorder) | `0x6Ef6f4e5e085b38836Df25262C8a6931fa132F91` |
+| TaskEscrow (Tier-2/3 recorder) | `0x75906e7D12631b4A6214EA8b8F5a04657F31a31E` |
+| StressOracle (Tier-4 recorder) | `0x170a7BdfA4a7A56D816B89537Ba51EA488a70b26` |
+| **RiskGuardVault** (first app) | `0xed0A7Fc38bd5D910b30F069D50859e285952d05e` |
+| VDX token (testnet, 500M fixed) | `0x086643DfAC746D48c0774c2DB20728b7f5ceeEFD` |
+| VDXStaking (skin in the game) | `0x10CA53Eff1bd37BAc72F4076A8Cfed0091Ce5C16` |
+| **VaultFactory** (self-serve product) | `0x564339644325dc147BF6F944f4253Dc59d268D7B` |
 
 **Product — Verdix Verified Agent (self-serve):** https://verdix.pages.dev/web/create
 — anyone can register an ERC-8004 agent and deploy their own policy-guarded,

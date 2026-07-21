@@ -4,17 +4,17 @@
   "explorer": "https://testnet.bscscan.com",
   "deployer": "0xeB517e1ef8A282E8B5dd1f102cf61b76b02dBaCE",
   "redeployedAt": "2026-07-21",
-  "note": "Redeploy dengan fix audit 2026-07-21 (docs/AUDIT_2026-07-21.md). Alamat pre-fix diarsip di deployments/bsc-testnet.pre-audit.json.",
+  "note": "Redeploy #3 dengan fix audit + re-audit 2026-07-21 (docs/AUDIT_2026-07-21.md + docs/REAUDIT_2026-07-21.md). Alamat pre-fix asli diarsip di deployments/bsc-testnet.pre-audit.json.",
   "contracts": {
-    "AgentRegistry": "0x5cC6f74214FbD3D390E3be73aBCfc9fb1A41036C",
-    "EconomicMemory": "0x6329a6e3920EBA211808a103662136772ad20510",
-    "PaymentRouter": "0xA5e1Ab0ED4dE13Dc5E605296ebE7a2b3Da57f094",
-    "TaskEscrow": "0x2D7C9Ffe8Ea86E434442CEE63AE2Aa5C3741B5Ca",
-    "StressOracle": "0xB272346911f0604930215AF84Bee374A2c5327DF",
-    "VaultFactory": "0x46DD4ED8178cF97F5B8D7E7e55E1e879Ec057C0c",
-    "VDX": "0x28F0DBCEaF3be247BE04DbB6C0ed8d3EF0d3cB60",
-    "VDXStaking": "0x1Bcca0c616C745D40f71cA84AB1B9a5675BD43A0",
-    "RiskGuardVault": "0x43B2419c4af0dc27F0d307c26FC91951C39CDB97"
+    "AgentRegistry": "0x23dd8707AE4159A39303B3d193308AfBcAaf865F",
+    "EconomicMemory": "0x9913A072915EF382b680bb4a0ff3CD8373490C4D",
+    "PaymentRouter": "0x6Ef6f4e5e085b38836Df25262C8a6931fa132F91",
+    "TaskEscrow": "0x75906e7D12631b4A6214EA8b8F5a04657F31a31E",
+    "StressOracle": "0x170a7BdfA4a7A56D816B89537Ba51EA488a70b26",
+    "VaultFactory": "0x564339644325dc147BF6F944f4253Dc59d268D7B",
+    "VDX": "0x086643DfAC746D48c0774c2DB20728b7f5ceeEFD",
+    "VDXStaking": "0x10CA53Eff1bd37BAc72F4076A8Cfed0091Ce5C16",
+    "RiskGuardVault": "0xed0A7Fc38bd5D910b30F069D50859e285952d05e"
   },
   "agents": {
     "1": {"name": "smc-bot", "controller": "0xeB517e1ef8A282E8B5dd1f102cf61b76b02dBaCE"},

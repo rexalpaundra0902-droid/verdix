@@ -22,8 +22,8 @@ STATE = Path(__file__).with_name(".operator_state.json")
 BOT_ENV = Path("/root/smc-bot-v19/.env")
 CAST = "/root/.foundry/bin/cast"
 RPC = "https://bsc-testnet.bnbchain.org"
-REGISTRY = "0x5cC6f74214FbD3D390E3be73aBCfc9fb1A41036C"
-FACTORY = "0x46DD4ED8178cF97F5B8D7E7e55E1e879Ec057C0c"
+REGISTRY = "0x23dd8707AE4159A39303B3d193308AfBcAaf865F"
+FACTORY = "0x564339644325dc147BF6F944f4253Dc59d268D7B"
 
 
 def tg(text: str) -> None:

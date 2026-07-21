@@ -69,6 +69,6 @@ verified by anyone.
 ## Links
 
 - Reputation API: http://194.233.93.155:8600
-- EconomicMemory: https://testnet.bscscan.com/address/0x6329a6e3920EBA211808a103662136772ad20510
+- EconomicMemory: https://testnet.bscscan.com/address/0x9913A072915EF382b680bb4a0ff3CD8373490C4D
 - RiskGuardVault blocked tx: https://testnet.bscscan.com/tx/0xcb7e5dd10be44df82dfec34f7c49f2fd30be0cd3c57b31b2b6e0a908d34e567d
 - Agent card: https://api.aip.unibase.com/agents/handle/verdix-smc-bot
