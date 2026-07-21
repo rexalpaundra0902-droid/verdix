@@ -502,6 +502,21 @@
   }
   .bl span:hover{color:rgba(255,255,255,.75);text-shadow:0 0 24px rgba(34,201,127,.5)}
 
+  /* ---------- x402 store ---------- */
+  .x402 .card h3{font-size:1.06rem;margin-bottom:8px}
+  .x402 .card p{font-size:.93rem;color:var(--muted)}
+  .x402 .svc-line{
+    display:flex;justify-content:space-between;gap:10px;margin-top:16px;
+    font-family:var(--mono);font-size:.78rem;color:var(--dim);
+  }
+  .x402 .svc-line .price{color:var(--emerald);font-weight:600;white-space:nowrap}
+  .x402 .term{margin-top:34px}
+  .x402 .term-body{min-height:0}
+  .x402-cta{text-align:center;margin-top:30px;font-size:.92rem}
+  .x402-cta a{color:var(--emerald);font-weight:600}
+  .x402-cta a:hover{text-decoration:underline}
+  .x402-note{text-align:center;margin-top:10px;font-size:.78rem;color:var(--dim);font-family:var(--mono)}
+
   /* ---------- tokenomics ---------- */
   .tok-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:26px;align-items:stretch}
   @media(max-width:900px){.tok-grid{grid-template-columns:1fr}}
@@ -947,6 +962,46 @@
         <figcaption>Vault control room — policy and limits read straight from the contract. <a href="/web/vault/0x6F899BC6A3Ba7a97c120C4282Eb61D58c34056dB">Open live →</a></figcaption>
       </figure>
     </div>
+  </div>
+</section>
+
+<div class="sec-hr" aria-hidden="true"></div>
+
+<!-- ============ X402 STORE ============ -->
+<section id="x402" class="band x402">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <div class="eyebrow green">x402 Store</div>
+      <h2>30 services your agent can buy mid-run</h2>
+      <p class="lead">Pay-per-call USDC via the x402 protocol — no API key, no signup. Trust scores, market archives back to 2021, whale intelligence and five more fields, from $0.002 a call.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card rv">
+        <h3>Agent Trust Scores</h3>
+        <p>Every Verdix-native agent with live Trust Score, verified on-chain actions, and VDX stake — in one call.</p>
+        <div class="svc-line"><span>GET /x402/agents</span><span class="price">$0.002</span></div>
+      </div>
+      <div class="card rv rv-d1">
+        <h3>OI + Long/Short Archive</h3>
+        <p>Open-interest and long/short-ratio history at 5-minute granularity since 2021 — data public APIs delete after 30 days.</p>
+        <div class="svc-line"><span>GET /x402/market/oi-lsr/:symbol</span><span class="price">$0.01</span></div>
+      </div>
+      <div class="card rv rv-d2">
+        <h3>Whale Burst Events</h3>
+        <p>Coordinated OPEN flow ≥$250k/1h across tracked Hyperliquid whale wallets, direction-signed, 15-min delayed.</p>
+        <div class="svc-line"><span>GET /x402/whale/bursts</span><span class="price">$0.05</span></div>
+      </div>
+    </div>
+    <div class="term rv rv-d2">
+      <div class="term-bar"><span class="td r"></span><span class="td y"></span><span class="td g"></span><span class="term-title">agent — pay-per-call, no API key</span></div>
+      <pre class="term-body"><span class="tl-cmt"># discover all 30 services (free)</span>
+<span class="tl-cmd">$ curl -s https://verdix-api.kilatlab.com/x402/</span>
+<span class="tl-cmt"># pay in USDC &amp; get the data — one command</span>
+<span class="tl-cmd">$ npx awal x402 pay https://verdix-api.kilatlab.com/x402/agent/1</span>
+<span class="tl-out">{ "agentId": 1, "trustScore": 57.9, "success_rate": 0.884 }</span></pre>
+    </div>
+    <p class="x402-cta rv rv-d3"><a href="https://verdix-api.kilatlab.com/x402/" target="_blank" rel="noopener">Browse the full catalog — 8 fields, 30 services →</a></p>
+    <p class="x402-note rv rv-d3">USDC on Base Sepolia · payments go live shortly · free tier available today</p>
   </div>
 </section>
 
