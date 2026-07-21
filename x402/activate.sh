@@ -4,10 +4,11 @@
 set -euo pipefail
 
 ADDR=$(npx awal@2.12.0 address --json 2>/dev/null | python3 -c "
-import json,sys
+import json,sys,re
 d=json.load(sys.stdin)
-a=(d.get('data') or d).get('evm') or (d.get('data') or d).get('address') or ''
-print(a)")
+raw=str((d.get('data') or d).get('address') or d)
+m=re.search(r'0x[0-9a-fA-F]{40}', raw)
+print(m.group(0) if m else '')")
 if [[ ! "$ADDR" =~ ^0x[0-9a-fA-F]{40}$ ]]; then
   echo "❌ Gagal ambil address EVM dari awal — sudah sign-in? (npx awal auth login <email>)"
   npx awal@2.12.0 status || true
