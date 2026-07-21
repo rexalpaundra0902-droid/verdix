@@ -1662,6 +1662,102 @@
     var sel = document.getElementById('langSel');
     if (sel && sel.value !== lang) sel.value = lang;
   }
+  // Terjemahan section x402 Store (ditambah 2026-07-21 — sebelumnya section
+  // ini lahir setelah DICTS dibuat, jadi tetap Inggris di semua bahasa).
+  var X402 = {
+    "id": {
+      "30 services your agent can buy mid-run": "30 layanan yang bisa dibeli agent-mu saat berjalan",
+      "Pay-per-call USDC via the x402 protocol — no API key, no signup. Trust scores, market archives back to 2021, whale intelligence and five more fields, from $0.002 a call.": "Bayar-per-panggil USDC via protokol x402 — tanpa API key, tanpa daftar. Trust score, arsip pasar sampai 2021, intelijen whale dan lima bidang lain, mulai $0.002 per panggilan.",
+      "Agent Trust Scores": "Trust Score Agent",
+      "Every Verdix-native agent with live Trust Score, verified on-chain actions, and VDX stake — in one call.": "Setiap agent Verdix-native dengan Trust Score live, aksi terverifikasi on-chain, dan stake VDX — dalam satu panggilan.",
+      "OI + Long/Short Archive": "Arsip OI + Long/Short",
+      "Open-interest and long/short-ratio history at 5-minute granularity since 2021 — data public APIs delete after 30 days.": "Riwayat open-interest dan rasio long/short granularitas 5 menit sejak 2021 — data yang dihapus API publik setelah 30 hari.",
+      "Whale Burst Events": "Event Burst Whale",
+      "Coordinated OPEN flow ≥$250k/1h across tracked Hyperliquid whale wallets, direction-signed, 15-min delayed.": "Aliran OPEN terkoordinasi ≥$250k/1jam di dompet whale Hyperliquid yang dilacak, bertanda arah, delay 15 menit.",
+      "agent — pay-per-call, no API key": "agent — bayar-per-panggil, tanpa API key",
+      "# discover all 30 services (free)": "# jelajahi semua 30 layanan (gratis)",
+      "# pay in USDC & get the data — one command": "# bayar pakai USDC & ambil datanya — satu perintah",
+      "Browse the full catalog — 8 fields, 30 services →": "Jelajahi katalog lengkap — 8 bidang, 30 layanan →",
+      "USDC on Base Sepolia · payments go live shortly · free tier available today": "USDC di Base Sepolia · pembayaran segera aktif · tier gratis tersedia hari ini"
+    },
+    "es": {
+      "30 services your agent can buy mid-run": "30 servicios que tu agente puede comprar en marcha",
+      "Pay-per-call USDC via the x402 protocol — no API key, no signup. Trust scores, market archives back to 2021, whale intelligence and five more fields, from $0.002 a call.": "Pago por llamada en USDC vía el protocolo x402 — sin API key, sin registro. Trust scores, archivos de mercado desde 2021, inteligencia de ballenas y cinco campos más, desde $0.002 por llamada.",
+      "Agent Trust Scores": "Trust Scores de Agentes",
+      "Every Verdix-native agent with live Trust Score, verified on-chain actions, and VDX stake — in one call.": "Cada agente Verdix-native con Trust Score en vivo, acciones verificadas on-chain y stake de VDX — en una sola llamada.",
+      "OI + Long/Short Archive": "Archivo de OI + Long/Short",
+      "Open-interest and long/short-ratio history at 5-minute granularity since 2021 — data public APIs delete after 30 days.": "Historial de interés abierto y ratio long/short con granularidad de 5 minutos desde 2021 — datos que las APIs públicas borran tras 30 días.",
+      "Whale Burst Events": "Eventos de Ráfaga de Ballenas",
+      "Coordinated OPEN flow ≥$250k/1h across tracked Hyperliquid whale wallets, direction-signed, 15-min delayed.": "Flujo OPEN coordinado ≥$250k/1h en billeteras de ballenas de Hyperliquid rastreadas, con dirección firmada, retraso de 15 min.",
+      "agent — pay-per-call, no API key": "agente — pago por llamada, sin API key",
+      "# discover all 30 services (free)": "# descubre los 30 servicios (gratis)",
+      "# pay in USDC & get the data — one command": "# paga en USDC y obtén los datos — un comando",
+      "Browse the full catalog — 8 fields, 30 services →": "Explora el catálogo completo — 8 campos, 30 servicios →",
+      "USDC on Base Sepolia · payments go live shortly · free tier available today": "USDC en Base Sepolia · los pagos se activan pronto · nivel gratuito disponible hoy"
+    },
+    "ru": {
+      "30 services your agent can buy mid-run": "30 сервисов, которые ваш агент может купить на ходу",
+      "Pay-per-call USDC via the x402 protocol — no API key, no signup. Trust scores, market archives back to 2021, whale intelligence and five more fields, from $0.002 a call.": "Оплата за вызов в USDC через протокол x402 — без API-ключа, без регистрации. Trust score, архивы рынка с 2021 года, аналитика китов и ещё пять направлений, от $0.002 за вызов.",
+      "Agent Trust Scores": "Trust Score агентов",
+      "Every Verdix-native agent with live Trust Score, verified on-chain actions, and VDX stake — in one call.": "Каждый Verdix-native агент с актуальным Trust Score, проверенными on-chain действиями и стейком VDX — в одном вызове.",
+      "OI + Long/Short Archive": "Архив OI + Long/Short",
+      "Open-interest and long/short-ratio history at 5-minute granularity since 2021 — data public APIs delete after 30 days.": "История открытого интереса и соотношения long/short с 5-минутной детализацией с 2021 года — данные, которые публичные API удаляют через 30 дней.",
+      "Whale Burst Events": "События всплесков китов",
+      "Coordinated OPEN flow ≥$250k/1h across tracked Hyperliquid whale wallets, direction-signed, 15-min delayed.": "Скоординированный поток OPEN ≥$250k/1ч по отслеживаемым кошелькам китов Hyperliquid, со знаком направления, задержка 15 мин.",
+      "agent — pay-per-call, no API key": "агент — оплата за вызов, без API-ключа",
+      "# discover all 30 services (free)": "# посмотреть все 30 сервисов (бесплатно)",
+      "# pay in USDC & get the data — one command": "# оплатить в USDC и получить данные — одна команда",
+      "Browse the full catalog — 8 fields, 30 services →": "Открыть полный каталог — 8 направлений, 30 сервисов →",
+      "USDC on Base Sepolia · payments go live shortly · free tier available today": "USDC на Base Sepolia · платежи скоро заработают · бесплатный тариф доступен уже сегодня"
+    },
+    "zh": {
+      "30 services your agent can buy mid-run": "你的智能体可即时购买的 30 项服务",
+      "Pay-per-call USDC via the x402 protocol — no API key, no signup. Trust scores, market archives back to 2021, whale intelligence and five more fields, from $0.002 a call.": "通过 x402 协议按次付费（USDC）—— 无需 API key，无需注册。Trust Score、可追溯到 2021 年的市场存档、鲸鱼情报等共八大领域，每次调用低至 $0.002。",
+      "Agent Trust Scores": "智能体 Trust Score",
+      "Every Verdix-native agent with live Trust Score, verified on-chain actions, and VDX stake — in one call.": "每个 Verdix-native 智能体的实时 Trust Score、链上已验证行为与 VDX 质押 —— 一次调用即可获取。",
+      "OI + Long/Short Archive": "OI + 多空比存档",
+      "Open-interest and long/short-ratio history at 5-minute granularity since 2021 — data public APIs delete after 30 days.": "自 2021 年起 5 分钟粒度的未平仓量与多空比历史 —— 公共 API 在 30 天后即删除的数据。",
+      "Whale Burst Events": "鲸鱼爆发事件",
+      "Coordinated OPEN flow ≥$250k/1h across tracked Hyperliquid whale wallets, direction-signed, 15-min delayed.": "受监控的 Hyperliquid 鲸鱼钱包中 ≥$250k/1 小时的协同 OPEN 流向，带方向标记，延迟 15 分钟。",
+      "agent — pay-per-call, no API key": "智能体 —— 按次付费，无需 API key",
+      "# discover all 30 services (free)": "# 查看全部 30 项服务（免费）",
+      "# pay in USDC & get the data — one command": "# 用 USDC 付费并获取数据 —— 一条命令",
+      "Browse the full catalog — 8 fields, 30 services →": "浏览完整目录 —— 8 大领域，30 项服务 →",
+      "USDC on Base Sepolia · payments go live shortly · free tier available today": "USDC（Base Sepolia）· 支付即将上线 · 今日提供免费额度"
+    },
+    "ja": {
+      "30 services your agent can buy mid-run": "エージェントが実行中に購入できる30のサービス",
+      "Pay-per-call USDC via the x402 protocol — no API key, no signup. Trust scores, market archives back to 2021, whale intelligence and five more fields, from $0.002 a call.": "x402プロトコルによるUSDC従量課金 —— APIキー不要、登録不要。Trust Score、2021年まで遡る市場アーカイブ、ホエール分析など全8分野を、1回$0.002から。",
+      "Agent Trust Scores": "エージェントのTrust Score",
+      "Every Verdix-native agent with live Trust Score, verified on-chain actions, and VDX stake — in one call.": "Verdix-nativeな各エージェントのライブTrust Score、オンチェーンで検証済みのアクション、VDXステーク —— 1回の呼び出しで取得。",
+      "OI + Long/Short Archive": "OI + ロング/ショート アーカイブ",
+      "Open-interest and long/short-ratio history at 5-minute granularity since 2021 — data public APIs delete after 30 days.": "2021年以降の建玉とロング/ショート比率を5分粒度で記録 —— 公開APIが30日後に削除するデータ。",
+      "Whale Burst Events": "ホエール・バースト・イベント",
+      "Coordinated OPEN flow ≥$250k/1h across tracked Hyperliquid whale wallets, direction-signed, 15-min delayed.": "追跡中のHyperliquidホエールウォレットにおける≥$250k/1時間の協調的なOPENフロー、方向符号付き、15分遅延。",
+      "agent — pay-per-call, no API key": "エージェント —— 従量課金、APIキー不要",
+      "# discover all 30 services (free)": "# 全30サービスを見る（無料）",
+      "# pay in USDC & get the data — one command": "# USDCで支払いデータを取得 —— コマンド1つ",
+      "Browse the full catalog — 8 fields, 30 services →": "フルカタログを見る —— 8分野、30サービス →",
+      "USDC on Base Sepolia · payments go live shortly · free tier available today": "Base SepoliaのUSDC · 決済は間もなく開始 · 無料枠は本日利用可能"
+    },
+    "ko": {
+      "30 services your agent can buy mid-run": "에이전트가 실행 중에 구매할 수 있는 30가지 서비스",
+      "Pay-per-call USDC via the x402 protocol — no API key, no signup. Trust scores, market archives back to 2021, whale intelligence and five more fields, from $0.002 a call.": "x402 프로토콜을 통한 USDC 호출당 결제 —— API 키 불필요, 가입 불필요. Trust Score, 2021년까지 거슬러 올라가는 시장 아카이브, 고래 인텔리전스 등 8개 분야를 호출당 $0.002부터.",
+      "Agent Trust Scores": "에이전트 Trust Score",
+      "Every Verdix-native agent with live Trust Score, verified on-chain actions, and VDX stake — in one call.": "모든 Verdix-native 에이전트의 실시간 Trust Score, 온체인 검증된 활동, VDX 스테이크 —— 한 번의 호출로.",
+      "OI + Long/Short Archive": "OI + 롱/숏 아카이브",
+      "Open-interest and long/short-ratio history at 5-minute granularity since 2021 — data public APIs delete after 30 days.": "2021년 이후 5분 단위의 미결제약정 및 롱/숏 비율 기록 —— 공개 API가 30일 후 삭제하는 데이터.",
+      "Whale Burst Events": "고래 버스트 이벤트",
+      "Coordinated OPEN flow ≥$250k/1h across tracked Hyperliquid whale wallets, direction-signed, 15-min delayed.": "추적 중인 Hyperliquid 고래 지갑의 ≥$250k/1시간 협조적 OPEN 흐름, 방향 표시, 15분 지연.",
+      "agent — pay-per-call, no API key": "에이전트 —— 호출당 결제, API 키 불필요",
+      "# discover all 30 services (free)": "# 30개 서비스 모두 보기 (무료)",
+      "# pay in USDC & get the data — one command": "# USDC로 결제하고 데이터 받기 —— 명령어 하나",
+      "Browse the full catalog — 8 fields, 30 services →": "전체 카탈로그 보기 —— 8개 분야, 30개 서비스 →",
+      "USDC on Base Sepolia · payments go live shortly · free tier available today": "Base Sepolia의 USDC · 결제 곧 활성화 · 무료 티어 오늘 이용 가능"
+    }
+  };
+  for (var _lang in X402) { if (DICTS[_lang]) { var _s = X402[_lang]; for (var _k in _s) DICTS[_lang][_k] = _s[_k]; } }
+
   if (current !== 'en') apply(current);
   var sel = document.getElementById('langSel');
   if (sel) { sel.value = current; sel.addEventListener('change', function(){ apply(sel.value); }); }
