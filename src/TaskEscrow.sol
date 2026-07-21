@@ -34,6 +34,12 @@ contract TaskEscrow {
     }
 
     uint256 public constant BOND_BPS = 1000; // bond 10% dari payment, dua sisi
+    // Audit 2026-07-21 M1: worker punya jendela dispute yang tak bisa di-front-run
+    // oleh expire() setelah deadline (client tak bisa rampas bond dgn balapan gas).
+    uint64 public constant DISPUTE_GRACE = 1 hours;
+    // Audit 2026-07-21 M2: kalau arbitrator hilang/tak merespons, dana dispute
+    // tak boleh terkunci selamanya — setelah timeout ini bisa dibubarkan adil.
+    uint64 public constant DISPUTE_TIMEOUT = 30 days;
 
     AgentRegistry public immutable registry;
     EconomicMemory public immutable memoryLog;
@@ -42,6 +48,7 @@ contract TaskEscrow {
 
     uint256 private _nextTaskId = 1;
     mapping(uint256 => Task) public tasks;
+    mapping(uint256 => uint64) public disputedAt; // taskId => waktu dispute diangkat
 
     event TaskCreated(
         uint256 indexed taskId, uint256 indexed clientId, uint256 indexed workerId, uint128 payment, uint64 deadline
@@ -63,6 +70,8 @@ contract TaskEscrow {
     error DeadlineNotPassed();
     error DeadlinePassed();
     error TransferFailed();
+    error ZeroAddress();
+    error DisputeNotTimedOut();
 
     modifier onlyOwner() {
         if (msg.sender != owner) revert NotOwner();
@@ -70,6 +79,7 @@ contract TaskEscrow {
     }
 
     constructor(AgentRegistry _registry, EconomicMemory _memoryLog, address _arbitrator) {
+        if (_arbitrator == address(0)) revert ZeroAddress(); // audit M2
         registry = _registry;
         memoryLog = _memoryLog;
         owner = msg.sender;
@@ -77,7 +87,24 @@ contract TaskEscrow {
     }
 
     function setArbitrator(address _arbitrator) external onlyOwner {
+        if (_arbitrator == address(0)) revert ZeroAddress(); // audit M2
         arbitrator = _arbitrator;
+    }
+
+    /// @dev Audit 2026-07-21 M3: penulisan Economic Memory TIDAK boleh memblokir
+    ///      pelepasan dana. Kalau escrow dicabut sebagai recorder saat task
+    ///      in-flight, settlement tetap jalan; entry memory dilewati (best-effort).
+    function _tryRecord(
+        uint256 agentId,
+        uint256 counterpartyId,
+        EconomicMemory.ActionClass actionClass,
+        uint8 tier,
+        uint128 valueWei,
+        EconomicMemory.Outcome outcome,
+        bytes32 dataHash
+    ) private {
+        try memoryLog.record(agentId, counterpartyId, actionClass, tier, valueWei, outcome, dataHash) returns (uint64) {}
+        catch {}
     }
 
     function bondOf(uint128 payment) public pure returns (uint128) {
@@ -133,7 +160,7 @@ contract TaskEscrow {
         _send(registry.controllerOf(t.workerId), uint256(t.payment) + t.workerBond);
         _send(msg.sender, t.clientBond);
 
-        memoryLog.record(
+        _tryRecord(
             t.workerId,
             t.clientId,
             EconomicMemory.ActionClass.Agreement,
@@ -142,7 +169,7 @@ contract TaskEscrow {
             EconomicMemory.Outcome.Success,
             t.specHash
         );
-        memoryLog.record(
+        _tryRecord(
             t.clientId,
             t.workerId,
             EconomicMemory.ActionClass.Settlement,
@@ -163,6 +190,7 @@ contract TaskEscrow {
         else if (registry.isController(t.workerId, msg.sender)) byAgent = t.workerId;
         else revert NotAgentOwner();
         t.status = Status.Disputed;
+        disputedAt[taskId] = uint64(block.timestamp);
         emit TaskDisputed(taskId, byAgent);
     }
 
@@ -181,7 +209,7 @@ contract TaskEscrow {
         } else {
             _send(clientAddr, uint256(t.payment) + t.clientBond + t.workerBond);
         }
-        memoryLog.record(
+        _tryRecord(
             t.workerId,
             t.clientId,
             EconomicMemory.ActionClass.Adjudicated,
@@ -204,9 +232,15 @@ contract TaskEscrow {
             t.status = Status.Expired;
             _send(clientAddr, uint256(t.payment) + t.clientBond);
         } else if (t.status == Status.Accepted) {
+            // Audit 2026-07-21 M1: task Accepted lewat-deadline hanya bisa
+            // di-expire SETELAH DISPUTE_GRACE — kalau tidak, client bisa
+            // front-run tx dispute() worker (gas lebih tinggi) tepat di blok
+            // deadline untuk merampas workerBond + kerja gratis. Grace ini
+            // menjamin worker punya jendela dispute yang tak bisa dibalap.
+            if (block.timestamp < uint256(t.deadline) + DISPUTE_GRACE) revert DeadlineNotPassed();
             t.status = Status.Expired;
             _send(clientAddr, uint256(t.payment) + t.clientBond + t.workerBond);
-            memoryLog.record(
+            _tryRecord(
                 t.workerId,
                 t.clientId,
                 EconomicMemory.ActionClass.Agreement,
@@ -218,6 +252,21 @@ contract TaskEscrow {
         } else {
             revert BadStatus();
         }
+        emit TaskExpired(taskId);
+    }
+
+    /// @notice Audit 2026-07-21 M2: escape-hatch kalau arbitrator hilang. Setelah
+    ///         DISPUTE_TIMEOUT tanpa ruling, siapa pun boleh membubarkan dispute
+    ///         secara ADIL: tiap pihak menerima kembali dana miliknya sendiri
+    ///         (client: payment+clientBond, worker: workerBond). Tak ada pemenang
+    ///         → tak ada entry reputasi (dispute tak terselesaikan bukan bukti).
+    function expireDispute(uint256 taskId) external {
+        Task storage t = tasks[taskId];
+        if (t.status != Status.Disputed) revert BadStatus();
+        if (block.timestamp < uint256(disputedAt[taskId]) + DISPUTE_TIMEOUT) revert DisputeNotTimedOut();
+        t.status = Status.Expired;
+        _send(registry.controllerOf(t.clientId), uint256(t.payment) + t.clientBond);
+        _send(registry.controllerOf(t.workerId), t.workerBond);
         emit TaskExpired(taskId);
     }
 

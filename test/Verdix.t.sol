@@ -80,7 +80,7 @@ contract VerdixTest is Test {
         bytes32 digest = keccak256(
             abi.encodePacked(
                 "\x19Ethereum Signed Message:\n32",
-                keccak256(abi.encode("VerdixAgentWallet", block.chainid, address(reg), bobId, wallet, deadline))
+                keccak256(abi.encode("VerdixAgentWallet", block.chainid, address(reg), bobId, wallet, reg.walletNonce(bobId), deadline))
             )
         );
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(walletPk, digest);
@@ -107,7 +107,7 @@ contract VerdixTest is Test {
         bytes32 digest = keccak256(
             abi.encodePacked(
                 "\x19Ethereum Signed Message:\n32",
-                keccak256(abi.encode("VerdixAgentWallet", block.chainid, address(reg), bobId, wallet, deadline))
+                keccak256(abi.encode("VerdixAgentWallet", block.chainid, address(reg), bobId, wallet, reg.walletNonce(bobId), deadline))
             )
         );
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(walletPk, digest);
@@ -316,7 +316,7 @@ contract VerdixTest is Test {
         bytes32 digest = keccak256(
             abi.encodePacked(
                 "\x19Ethereum Signed Message:\n32",
-                keccak256(abi.encode("VerdixAgentWallet", block.chainid, address(reg), bobId, wallet, deadline))
+                keccak256(abi.encode("VerdixAgentWallet", block.chainid, address(reg), bobId, wallet, reg.walletNonce(bobId), deadline))
             )
         );
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(walletPk, digest);

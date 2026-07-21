@@ -32,15 +32,20 @@ contract VDXStaking {
         uint64 unlockAt;
     }
 
-    mapping(uint256 => uint256) public stakedOf; // agentId => total staked aktif
-    mapping(uint256 => Pending) public pendingOf; // agentId => unstake menunggu cooldown
+    mapping(uint256 => uint256) public stakedOf; // agentId => total staked aktif (agregat utk Trust score)
+    // Audit 2026-07-21 M4: catat stake PER STAKER. Sebelumnya unstake di-gate
+    // controller agent — controller NFT yang transferable bisa berubah ke pihak
+    // asing setelah stake masuk, lalu merampas stake voucher. Sekarang HANYA
+    // staker yang bisa menarik miliknya sendiri (vouching tetap bisa: voucher
+    // pilih tidak menarik), dan controller baru tak bisa menyentuh stake orang.
+    mapping(uint256 => mapping(address => uint256)) public stakeByStaker; // agentId => staker => aktif
+    mapping(uint256 => mapping(address => Pending)) public pendingByStaker; // agentId => staker => pending
 
     event Staked(uint256 indexed agentId, address indexed from, uint256 amount);
-    event UnstakeRequested(uint256 indexed agentId, uint256 amount, uint64 unlockAt);
+    event UnstakeRequested(uint256 indexed agentId, address indexed staker, uint256 amount, uint64 unlockAt);
     event Unstaked(uint256 indexed agentId, address indexed to, uint256 amount);
 
     error UnknownAgent();
-    error NotController();
     error NothingPending();
     error CooldownActive();
     error InsufficientStake();
@@ -56,28 +61,28 @@ contract VDXStaking {
         if (amount == 0) revert ZeroAmount();
         vdx.safeTransferFrom(msg.sender, address(this), amount);
         stakedOf[agentId] += amount;
+        stakeByStaker[agentId][msg.sender] += amount;
         emit Staked(agentId, msg.sender, amount);
     }
 
-    /// @notice Mulai unstake — dana terkunci selama cooldown dulu.
+    /// @notice Mulai unstake stake MILIKMU SENDIRI — dana terkunci cooldown dulu.
     function requestUnstake(uint256 agentId, uint256 amount) external {
-        if (!registry.isController(agentId, msg.sender)) revert NotController();
         if (amount == 0) revert ZeroAmount();
-        if (stakedOf[agentId] < amount) revert InsufficientStake();
+        if (stakeByStaker[agentId][msg.sender] < amount) revert InsufficientStake();
+        stakeByStaker[agentId][msg.sender] -= amount;
         stakedOf[agentId] -= amount;
-        Pending storage p = pendingOf[agentId];
+        Pending storage p = pendingByStaker[agentId][msg.sender];
         p.amount += uint128(amount);
         p.unlockAt = uint64(block.timestamp + UNSTAKE_COOLDOWN);
-        emit UnstakeRequested(agentId, amount, p.unlockAt);
+        emit UnstakeRequested(agentId, msg.sender, amount, p.unlockAt);
     }
 
     function claimUnstake(uint256 agentId) external {
-        if (!registry.isController(agentId, msg.sender)) revert NotController();
-        Pending storage p = pendingOf[agentId];
+        Pending storage p = pendingByStaker[agentId][msg.sender];
         if (p.amount == 0) revert NothingPending();
         if (block.timestamp < p.unlockAt) revert CooldownActive();
         uint256 amount = p.amount;
-        delete pendingOf[agentId];
+        delete pendingByStaker[agentId][msg.sender];
         vdx.safeTransfer(msg.sender, amount);
         emit Unstaked(agentId, msg.sender, amount);
     }

@@ -26,6 +26,8 @@ contract AgentRegistry is ERC721 {
     mapping(uint256 => mapping(string => bytes)) private _metadata;
     mapping(uint256 => address) private _agentWallet; // operational wallet; 0 = pakai owner
     mapping(uint256 => uint64[]) private _controlChanges; // timestamp tiap perpindahan kontrol
+    mapping(uint256 => uint256) public walletNonce; // audit LOW: anti-replay setAgentWallet
+    mapping(address => uint256) private _walletAgent; // audit LOW: wallet operasional => agentId (keunikan)
 
     event Registered(uint256 indexed agentId, string agentURI, address indexed owner);
     event URIUpdated(uint256 indexed agentId, string newURI, address indexed updatedBy);
@@ -114,16 +116,32 @@ contract AgentRegistry is ERC721 {
         onlyAgentOwner(agentId)
     {
         if (block.timestamp > deadline) revert SignatureExpired();
+        // Audit 2026-07-21 LOW: nonce per-agent supaya signature tidak bisa
+        // di-replay (mis. pasang ulang wallet lama pasca-unset dalam deadline).
+        uint256 nonce = walletNonce[agentId];
         bytes32 digest = MessageHashUtils.toEthSignedMessageHash(
-            keccak256(abi.encode("VerdixAgentWallet", block.chainid, address(this), agentId, newWallet, deadline))
+            keccak256(
+                abi.encode("VerdixAgentWallet", block.chainid, address(this), agentId, newWallet, nonce, deadline)
+            )
         );
         if (ECDSA.recover(digest, signature) != newWallet) revert BadWalletSignature();
+        // Audit 2026-07-21 LOW: keunikan wallet operasional (enforce WalletInUse
+        // yang sebelumnya dideklarasi tapi mati) — cegah 1 wallet jadi controller
+        // banyak agent (sybil reputasi).
+        uint256 boundTo = _walletAgent[newWallet];
+        if (boundTo != 0 && boundTo != agentId) revert WalletInUse();
+        address old = _agentWallet[agentId];
+        if (old != address(0)) _walletAgent[old] = 0;
+        walletNonce[agentId] = nonce + 1;
         _agentWallet[agentId] = newWallet;
+        _walletAgent[newWallet] = agentId;
         _logControlChange(agentId, newWallet, "wallet_set");
         emit AgentWalletSet(agentId, newWallet);
     }
 
     function unsetAgentWallet(uint256 agentId) external onlyAgentOwner(agentId) {
+        address old = _agentWallet[agentId];
+        if (old != address(0)) _walletAgent[old] = 0;
         delete _agentWallet[agentId];
         _logControlChange(agentId, _ownerOf(agentId), "wallet_unset");
         emit AgentWalletUnset(agentId);
@@ -169,6 +187,8 @@ contract AgentRegistry is ERC721 {
     function _update(address to, uint256 tokenId, address auth) internal override returns (address from) {
         from = super._update(to, tokenId, auth);
         if (from != address(0) && to != address(0)) {
+            address old = _agentWallet[tokenId];
+            if (old != address(0)) _walletAgent[old] = 0; // audit LOW: lepas keunikan
             delete _agentWallet[tokenId];
             _logControlChange(tokenId, to, "ownership_transfer");
         }

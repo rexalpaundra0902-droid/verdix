@@ -13,13 +13,18 @@ contract StressOracle {
     AgentRegistry public immutable registry;
     EconomicMemory public immutable memoryLog;
     address public owner;
+    address public pendingOwner;
     mapping(address => bool) public isAttestor;
 
     event AttestorSet(address indexed attestor, bool allowed);
     event StressAttested(uint256 indexed agentId, bytes32 dataHash, bool positiveOutcome);
+    event OwnershipTransferStarted(address indexed previousOwner, address indexed newOwner);
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
 
     error NotOwner();
     error NotAttestor();
+    error ZeroAddress();
+    error NotPendingOwner();
 
     constructor(AgentRegistry _registry, EconomicMemory _memoryLog) {
         registry = _registry;
@@ -31,6 +36,22 @@ contract StressOracle {
         if (msg.sender != owner) revert NotOwner();
         isAttestor[attestor] = allowed;
         emit AttestorSet(attestor, allowed);
+    }
+
+    /// @notice Transfer ownership 2-langkah (audit 2026-07-21 HIGH-2) — owner
+    ///         attestor-gate sebaiknya multisig; sebelumnya tak ada jalur transfer.
+    function transferOwnership(address newOwner) external {
+        if (msg.sender != owner) revert NotOwner();
+        if (newOwner == address(0)) revert ZeroAddress();
+        pendingOwner = newOwner;
+        emit OwnershipTransferStarted(owner, newOwner);
+    }
+
+    function acceptOwnership() external {
+        if (msg.sender != pendingOwner) revert NotPendingOwner();
+        emit OwnershipTransferred(owner, pendingOwner);
+        owner = pendingOwner;
+        pendingOwner = address(0);
     }
 
     /// @param positiveOutcome true = agent keluar dari stress event dengan disiplin

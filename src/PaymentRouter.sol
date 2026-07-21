@@ -31,9 +31,9 @@ contract PaymentRouter {
         if (msg.value == 0) revert ZeroAmount();
 
         address to = registry.controllerOf(toAgentId);
-        (bool ok,) = to.call{value: msg.value}("");
-        if (!ok) revert TransferFailed();
-
+        // Audit 2026-07-21 LOW-4: CEI — catat memory (efek) sebelum transfer
+        // (interaksi). Router stateless jadi tak eksploitabel, tapi urutan ini
+        // konsisten dan bikin event tak bisa berselang oleh reentrancy.
         memoryLog.record(
             fromAgentId,
             toAgentId,
@@ -43,6 +43,9 @@ contract PaymentRouter {
             EconomicMemory.Outcome.Success,
             memo
         );
+        (bool ok,) = to.call{value: msg.value}("");
+        if (!ok) revert TransferFailed();
+
         emit Paid(fromAgentId, toAgentId, msg.value, memo);
     }
 }

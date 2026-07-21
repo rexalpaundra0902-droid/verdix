@@ -40,6 +40,8 @@ contract RiskGuardVault {
     uint64 public windowStart;
     uint64 public lastActionAt;
 
+    uint256 private _lock = 1; // reentrancy guard (1=idle, 2=entered)
+
     event Deposited(address indexed from, uint256 amount);
     event Withdrawn(address indexed to, uint256 amount);
     event PolicySet(uint128 maxTxValue, uint128 dailyCap, uint64 cooldown, uint128 haltFloor);
@@ -56,10 +58,20 @@ contract RiskGuardVault {
     error CooldownActive();
     error BreachesHaltFloor();
     error TransferFailed();
+    error ZeroValue();
+    error SelfDealing();
+    error Reentrancy();
 
     modifier onlyOwner() {
         if (msg.sender != owner) revert NotOwner();
         _;
+    }
+
+    modifier nonReentrant() {
+        if (_lock == 2) revert Reentrancy();
+        _lock = 2;
+        _;
+        _lock = 1;
     }
 
     constructor(AgentRegistry _registry, EconomicMemory _memoryLog, uint256 _managerAgentId, Policy memory _policy) {
@@ -79,7 +91,7 @@ contract RiskGuardVault {
 
     // ---------- kontrol principal (owner selalu pegang kendali penuh) ----------
 
-    function withdraw(uint256 amount) external onlyOwner {
+    function withdraw(uint256 amount) external onlyOwner nonReentrant {
         (bool ok,) = owner.call{value: amount}("");
         if (!ok) revert TransferFailed();
         emit Withdrawn(owner, amount);
@@ -105,9 +117,14 @@ contract RiskGuardVault {
 
     /// @notice AI agent mengeksekusi aksi (kirim dana ke venue whitelist).
     ///         Semua rule policy dicek on-chain; pelanggaran apa pun = revert.
-    function act(address target, uint256 value, bytes32 memo) external {
+    function act(address target, uint256 value, bytes32 memo) external nonReentrant {
         if (!registry.isController(managerAgentId, msg.sender)) revert NotManagerAgent();
         if (!allowedTarget[target]) revert TargetNotAllowed();
+        // Audit 2026-07-21 HIGH-1: cegah fabrikasi Economic Memory. Settlement
+        // value-0 bukan bukti apa pun; kirim ke owner/controller sendiri =
+        // wash-trading (track record palsu tanpa aktivitas ekonomi riil).
+        if (value == 0) revert ZeroValue();
+        if (target == owner || target == msg.sender) revert SelfDealing();
         if (value > policy.maxTxValue) revert ExceedsMaxTx();
 
         if (block.timestamp >= windowStart + 1 days) {

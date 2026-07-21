@@ -48,14 +48,16 @@ contract VDXTest is Test {
         vm.stopPrank();
     }
 
-    function test_OnlyControllerUnstakes() public {
+    /// Audit 2026-07-21 M4: hanya STAKER yang bisa menarik stake-nya sendiri.
+    /// Pihak yang tak pernah stake (mallory) tak punya apa-apa untuk ditarik.
+    function test_NonStakerCannotUnstake() public {
         vm.startPrank(bot);
         vdx.approve(address(staking), 10_000e18);
         staking.stake(botId, 10_000e18);
         vm.stopPrank();
 
         vm.prank(mallory);
-        vm.expectRevert(VDXStaking.NotController.selector);
+        vm.expectRevert(VDXStaking.InsufficientStake.selector);
         staking.requestUnstake(botId, 5_000e18);
     }
 
@@ -77,17 +79,25 @@ contract VDXTest is Test {
         vm.stopPrank();
     }
 
-    /// Identity dijual → controller baru yang pegang hak unstake, bukan key lama.
-    function test_StakeFollowsController() public {
+    /// Audit 2026-07-21 M4: stake TIDAK bisa dirampas controller baru. Identity
+    /// dijual ke mallory, tapi stake milik bot tetap hak bot; mallory (staked 0)
+    /// tak bisa menyentuhnya. (Dulu: controller baru menyapu stake voucher.)
+    function test_StakeNotSeizableByNewController() public {
         vm.startPrank(bot);
         vdx.approve(address(staking), 10_000e18);
         staking.stake(botId, 10_000e18);
         reg.transferFrom(bot, mallory, botId);
-        vm.expectRevert(VDXStaking.NotController.selector);
-        staking.requestUnstake(botId, 10_000e18);
         vm.stopPrank();
+
+        // Controller baru tak punya stake → tak bisa menarik apa pun.
         vm.prank(mallory);
+        vm.expectRevert(VDXStaking.InsufficientStake.selector);
         staking.requestUnstake(botId, 10_000e18);
+
+        // Staker asli tetap bisa menarik miliknya sendiri.
+        vm.prank(bot);
+        staking.requestUnstake(botId, 10_000e18);
+        assertEq(staking.stakeByStaker(botId, bot), 0);
     }
 
     function testFuzz_StakeAccounting(uint96 a, uint96 b) public {

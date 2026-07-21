@@ -42,12 +42,15 @@ contract EconomicMemory {
 
     AgentRegistry public immutable registry;
     address public owner;
+    address public pendingOwner;
 
     Entry[] private _entries;
     mapping(uint256 => uint64[]) private _entriesByAgent; // agentId => entry indices (subjek maupun counterparty)
     mapping(address => bool) public isRecorder;
 
     event RecorderSet(address indexed recorder, bool allowed);
+    event OwnershipTransferStarted(address indexed previousOwner, address indexed newOwner);
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
     event ActionRecorded(
         uint64 indexed entryId,
         uint256 indexed agentId,
@@ -65,6 +68,8 @@ contract EconomicMemory {
     error UnknownAgent();
     error BadClass();
     error BadTier();
+    error ZeroAddress();
+    error NotPendingOwner();
 
     modifier onlyOwner() {
         if (msg.sender != owner) revert NotOwner();
@@ -76,8 +81,20 @@ contract EconomicMemory {
         owner = msg.sender;
     }
 
-    function setOwner(address newOwner) external onlyOwner {
-        owner = newOwner;
+    /// @notice Transfer ownership 2-langkah (audit 2026-07-21 HIGH-2): owner
+    ///         core-asset harus multisig+timelock; 2-langkah cegah salah-ketik
+    ///         alamat & setOwner(0) yang mem-brick recorder governance.
+    function transferOwnership(address newOwner) external onlyOwner {
+        if (newOwner == address(0)) revert ZeroAddress();
+        pendingOwner = newOwner;
+        emit OwnershipTransferStarted(owner, newOwner);
+    }
+
+    function acceptOwnership() external {
+        if (msg.sender != pendingOwner) revert NotPendingOwner();
+        emit OwnershipTransferred(owner, pendingOwner);
+        owner = pendingOwner;
+        pendingOwner = address(0);
     }
 
     /// @notice Otorisasi kontrak recorder. Governance path: hanya kontrak yang

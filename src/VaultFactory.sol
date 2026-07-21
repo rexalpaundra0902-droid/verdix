@@ -29,6 +29,7 @@ contract VaultFactory {
     event ActionRecorded(address indexed vault, uint256 indexed agentId, uint256 value, bytes32 memo);
 
     error NotAVault();
+    error AgentMismatch();
 
     constructor(AgentRegistry _registry, EconomicMemory _memoryLog) {
         registry = _registry;
@@ -41,6 +42,12 @@ contract VaultFactory {
         payable
         returns (address vault)
     {
+        // Audit 2026-07-21 LOW-6 (diterima sebagai risiko): SENGAJA tidak
+        // memaksa msg.sender == controller(managerAgentId). Pola sah: principal
+        // (owner vault) BEDA dari controller agent (kunci operasional AI yang
+        // ia sewa). Grief atribusi vaultsOfAgent murni kosmetik — vault palsu
+        // tetap tak bisa menulis memory (act butuh isController). UI listing
+        // harus verifikasi kepemilikan sebelum menampilkan, bukan kontrak.
         GuardedVault v = new GuardedVault{value: msg.value}(registry, this, msg.sender, managerAgentId, policy);
         vault = address(v);
         isVault[vault] = true;
@@ -53,6 +60,10 @@ contract VaultFactory {
     /// @notice Dipanggil vault anak setiap aksi compliant → entry Tier-1 di Economic Memory.
     function recordAction(uint256 agentId, uint128 valueWei, bytes32 memo) external {
         if (!isVault[msg.sender]) revert NotAVault();
+        // Audit 2026-07-21 M6: jangan percaya argumen agentId — derive dari
+        // vault pemanggil. Tanpa ini, varian vault yang kelak di-isVault bisa
+        // menulis reputasi atas agentId milik korban.
+        if (agentId != GuardedVault(payable(msg.sender)).managerAgentId()) revert AgentMismatch();
         memoryLog.record(
             agentId, 0, EconomicMemory.ActionClass.Settlement, 1, valueWei, EconomicMemory.Outcome.Success, memo
         );
@@ -96,6 +107,8 @@ contract GuardedVault {
     uint64 public windowStart;
     uint64 public lastActionAt;
 
+    uint256 private _lock = 1; // reentrancy guard (1=idle, 2=entered)
+
     event Deposited(address indexed from, uint256 amount);
     event Withdrawn(address indexed to, uint256 amount);
     event PolicySet(uint128 maxTxValue, uint128 dailyCap, uint64 cooldown, uint128 haltFloor);
@@ -112,10 +125,20 @@ contract GuardedVault {
     error CooldownActive();
     error BreachesHaltFloor();
     error TransferFailed();
+    error ZeroValue();
+    error SelfDealing();
+    error Reentrancy();
 
     modifier onlyOwner() {
         if (msg.sender != owner) revert NotOwner();
         _;
+    }
+
+    modifier nonReentrant() {
+        if (_lock == 2) revert Reentrancy();
+        _lock = 2;
+        _;
+        _lock = 1;
     }
 
     constructor(
@@ -140,7 +163,7 @@ contract GuardedVault {
         emit Deposited(msg.sender, msg.value);
     }
 
-    function withdraw(uint256 amount) external onlyOwner {
+    function withdraw(uint256 amount) external onlyOwner nonReentrant {
         (bool ok,) = owner.call{value: amount}("");
         if (!ok) revert TransferFailed();
         emit Withdrawn(owner, amount);
@@ -164,9 +187,13 @@ contract GuardedVault {
 
     /// @notice Aksi agent — semua rule dicek on-chain; pelanggaran = revert;
     ///         aksi lolos = track record terverifikasi (via factory → EconomicMemory).
-    function act(address target, uint256 value, bytes32 memo) external {
+    function act(address target, uint256 value, bytes32 memo) external nonReentrant {
         if (!registry.isController(managerAgentId, msg.sender)) revert NotManagerAgent();
         if (!allowedTarget[target]) revert TargetNotAllowed();
+        // Audit 2026-07-21 HIGH-1: value-0 bukan bukti; kirim ke owner/controller
+        // sendiri = wash-trading track record. Lihat RiskGuardVault.act.
+        if (value == 0) revert ZeroValue();
+        if (target == owner || target == msg.sender) revert SelfDealing();
         if (value > policy.maxTxValue) revert ExceedsMaxTx();
 
         if (block.timestamp >= windowStart + 1 days) {
