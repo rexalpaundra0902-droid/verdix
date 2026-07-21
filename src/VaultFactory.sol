@@ -193,7 +193,8 @@ contract GuardedVault {
         // Audit 2026-07-21 HIGH-1: value-0 bukan bukti; kirim ke owner/controller
         // sendiri = wash-trading track record. Lihat RiskGuardVault.act.
         if (value == 0) revert ZeroValue();
-        if (target == owner || target == msg.sender) revert SelfDealing();
+        // Re-audit 2026-07-21 M-1: +target==address(this) (loopback wash).
+        if (target == owner || target == msg.sender || target == address(this)) revert SelfDealing();
         if (value > policy.maxTxValue) revert ExceedsMaxTx();
 
         if (block.timestamp >= windowStart + 1 days) {

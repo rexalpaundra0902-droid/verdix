@@ -18,6 +18,7 @@ contract PaymentRouter {
     error SelfPayment();
     error ZeroAmount();
     error TransferFailed();
+    error SameController();
 
     constructor(AgentRegistry _registry, EconomicMemory _memoryLog) {
         registry = _registry;
@@ -31,6 +32,10 @@ contract PaymentRouter {
         if (msg.value == 0) revert ZeroAmount();
 
         address to = registry.controllerOf(toAgentId);
+        // Re-audit 2026-07-21 H-A: cegah self-settlement wash — kalau penerima =
+        // pengirim (controller sama antar dua agent milik 1 operator), dana
+        // round-trip ke diri sendiri tapi mencetak entry Tier-1 palsu. Nol at-risk.
+        if (to == msg.sender || to == registry.controllerOf(fromAgentId)) revert SameController();
         // Audit 2026-07-21 LOW-4: CEI — catat memory (efek) sebelum transfer
         // (interaksi). Router stateless jadi tak eksploitabel, tapi urutan ini
         // konsisten dan bikin event tak bisa berselang oleh reentrancy.

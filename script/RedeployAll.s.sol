@@ -81,19 +81,14 @@ contract RedeployAll is Script {
     }
 
     function _seed() internal {
-        // escrow Tier2/1: reku(client) delegasi ke smc-bot(worker)
-        uint128 pay = 0.005 ether;
-        uint128 bond = escrow.bondOf(pay);
-        uint256 taskId = escrow.createTask{value: uint256(pay) + bond}(
-            rekuId, botId, pay, uint64(block.timestamp + 1 days), keccak256("analisis 4H + sinyal harian")
-        );
-        escrow.acceptTask{value: bond}(taskId);
-        escrow.confirm(taskId);
+        // Re-audit 2026-07-21: seed pakai SATU controller (deployer) utk dua agent.
+        // Escrow & payment SENGAJA tak di-seed di sini — fix H-A/H-B kini menolak
+        // settlement/task antar-agent yang controllernya SAMA (anti wash), jadi
+        // demo dua-tier itu butuh 2 key operator beda (di-seed manual / bootstrap).
+        // Jalur yang sah single-controller: aksi vault (target venue independen)
+        // + stress attest. Escrow/payment tetap tercakup 63 forge test.
 
-        // payment Tier1: reku -> smc-bot
-        router.pay{value: 0.003 ether}(rekuId, botId, keccak256("invoice-signal"));
-
-        // aksi vault compliant (value>0, target venue != owner/controller) — fix HIGH-1 aktif
+        // aksi vault compliant (value>0, target venue != owner/controller/self) — HIGH-1 + M-1 aktif
         address venue = address(uint160(uint256(keccak256("verdix-demo-venue"))));
         vault.setTarget(venue, true);
         vault.act(venue, 0.004 ether, keccak256("open-pos"));

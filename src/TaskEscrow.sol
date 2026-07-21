@@ -72,6 +72,7 @@ contract TaskEscrow {
     error TransferFailed();
     error ZeroAddress();
     error DisputeNotTimedOut();
+    error SameController();
 
     modifier onlyOwner() {
         if (msg.sender != owner) revert NotOwner();
@@ -119,10 +120,16 @@ contract TaskEscrow {
     {
         if (!registry.isController(clientId, msg.sender)) revert NotAgentOwner();
         if (clientId == workerId) revert SelfDelegation();
-        registry.controllerOf(workerId); // revert kalau worker tidak terdaftar
+        // Re-audit 2026-07-21 H-B: satu operator (1 controller EOA) memegang
+        // client-agent DAN worker-agent berbeda → siklus escrow net-0 mencetak
+        // entry Tier-2 palsu. Larang kedua sisi berbagi controller.
+        if (registry.controllerOf(clientId) == registry.controllerOf(workerId)) revert SameController();
         if (deadline <= block.timestamp) revert BadDeadline();
         if (payment == 0) revert BadValue();
         uint128 clientBond = bondOf(payment);
+        // Re-audit 2026-07-21 M-2: bondOf = payment/10 truncate ke 0 utk payment
+        // < 10 wei → worker tanpa skin-in-the-game. Wajib bond > 0.
+        if (clientBond == 0) revert BadValue();
         if (msg.value != uint256(payment) + clientBond) revert BadValue();
 
         taskId = _nextTaskId++;
@@ -144,6 +151,9 @@ contract TaskEscrow {
         Task storage t = tasks[taskId];
         if (t.status != Status.Open) revert BadStatus();
         if (!registry.isController(t.workerId, msg.sender)) revert NotAgentOwner();
+        // Re-audit 2026-07-21 H-B: controller worker bisa berubah jadi = controller
+        // client SETELAH createTask (transfer/setWallet) → cek ulang saat accept.
+        if (registry.controllerOf(t.clientId) == registry.controllerOf(t.workerId)) revert SameController();
         if (block.timestamp >= t.deadline) revert DeadlinePassed();
         if (msg.value != t.workerBond) revert BadValue();
         t.status = Status.Accepted;

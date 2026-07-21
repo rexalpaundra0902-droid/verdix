@@ -124,7 +124,9 @@ contract RiskGuardVault {
         // value-0 bukan bukti apa pun; kirim ke owner/controller sendiri =
         // wash-trading (track record palsu tanpa aktivitas ekonomi riil).
         if (value == 0) revert ZeroValue();
-        if (target == owner || target == msg.sender) revert SelfDealing();
+        // Re-audit 2026-07-21 M-1: +target==address(this) — loopback ke receive()
+        // vault sendiri = wash tanpa modal keluar.
+        if (target == owner || target == msg.sender || target == address(this)) revert SelfDealing();
         if (value > policy.maxTxValue) revert ExceedsMaxTx();
 
         if (block.timestamp >= windowStart + 1 days) {

@@ -254,4 +254,48 @@ contract AuditFixesTest is Test {
         v.act(venue, 1 ether, bytes32("ok"));
         assertEq(venue.balance, 1 ether);
     }
+
+    // ---------- RE-AUDIT 2026-07-21: wash-trading lintas recorder ----------
+
+    // H-A: PaymentRouter self-settlement (dua agent, controller sama) ditolak.
+    function test_HA_SelfSettlementRejected() public {
+        vm.prank(alice);
+        uint256 alice2 = reg.register("a2"); // alice kontrol 2 agent
+        vm.deal(alice, 10 ether);
+        vm.prank(alice);
+        vm.expectRevert(PaymentRouter.SameController.selector);
+        router.pay{value: 1 ether}(aliceId, alice2, bytes32("wash"));
+    }
+
+    // H-B: TaskEscrow client & worker satu controller ditolak.
+    function test_HB_SameControllerTaskRejected() public {
+        vm.prank(alice);
+        uint256 alice2 = reg.register("a2");
+        vm.deal(alice, 10 ether);
+        uint128 pay = 1 ether;
+        uint128 bond = escrow.bondOf(pay);
+        vm.prank(alice);
+        vm.expectRevert(TaskEscrow.SameController.selector);
+        escrow.createTask{value: uint256(pay) + bond}(
+            aliceId, alice2, pay, uint64(block.timestamp + 1 days), "spec"
+        );
+    }
+
+    // M-1: vault act ke address vault sendiri (loopback wash) ditolak.
+    function test_M1_VaultSelfTargetRejected() public {
+        GuardedVault v = _vault();
+        vm.prank(alice);
+        v.setTarget(address(v), true); // owner sengaja allowlist vault sendiri
+        vm.prank(bob);
+        vm.expectRevert(GuardedVault.SelfDealing.selector);
+        v.act(address(v), 1 ether, bytes32("loop"));
+    }
+
+    // M-2: payment < 10 wei (bond membulat ke 0) ditolak.
+    function test_M2_ZeroBondTaskRejected() public {
+        vm.deal(alice, 1 ether);
+        vm.prank(alice);
+        vm.expectRevert(TaskEscrow.BadValue.selector);
+        escrow.createTask{value: 9}(aliceId, bobId, 9, uint64(block.timestamp + 1 days), "spec");
+    }
 }
